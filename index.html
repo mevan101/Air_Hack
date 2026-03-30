@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Hackathon 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { background: #020810; }
+    html.js-cursor { cursor: none; }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #020810;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ══════════════════════════════════════════ CURSOR */
+    #cur-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(148, 218, 255, 0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      transition: width .35s ease, height .35s ease, border-color .3s ease;
+    }
+    #cur-dot {
+      position: fixed;
+      width: 4px; height: 4px;
+      background: rgba(148, 218, 255, 0.95);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+    }
+
+    /* ══════════════════════════════════════════ CANVAS */
+    #c-stars, #c-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+    #c-stars     { z-index: 1; }
+    #c-particles { z-index: 3; }
+
+    /* ══════════════════════════════════════════ AURORA BLOBS */
+    .glb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .glb1 {
+      z-index: 2;
+      width: 58vw; height: 42vh;
+      background: radial-gradient(ellipse, rgba(22, 110, 205, 0.13) 0%, transparent 70%);
+      top: -12vh; left: 14%;
+      animation: glb-drift 16s ease-in-out infinite alternate;
+    }
+    .glb2 {
+      z-index: 2;
+      width: 42vw; height: 36vh;
+      background: radial-gradient(ellipse, rgba(14, 165, 148, 0.09) 0%, transparent 70%);
+      top: 4vh; right: 4%;
+      animation: glb-drift 21s ease-in-out infinite alternate-reverse;
+    }
+    .glb3 {
+      z-index: 2;
+      width: 28vw; height: 24vh;
+      background: radial-gradient(ellipse, rgba(88, 40, 168, 0.07) 0%, transparent 70%);
+      top: 28vh; left: 2%;
+      animation: glb-drift 26s ease-in-out infinite alternate;
+    }
+    @keyframes glb-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(3vw, 2.5vh) scale(1.1); }
+    }
+
+    /* ══════════════════════════════════════════ HORIZON HAZE */
+    #horizon {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 44vh;
+      background: linear-gradient(to top,
+        rgba(6, 14, 30, 0.95) 0%,
+        rgba(6, 14, 30, 0.45) 38%,
+        transparent 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════ SCENE WRAPPER */
+    #scene-wrap {
+      position: fixed;
+      bottom: 36px;
+      left: 0; right: 0;
+      height: 36vh;
+      z-index: 4;
+      pointer-events: none;
+    }
+    #scene-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Wind turbine blades */
+    .t-bl {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: t-spin 11s linear infinite;
+    }
+    .t-bl-b { animation-duration: 16s; animation-direction: reverse; }
+    .t-bl-c { animation-duration: 8s; }
+    @keyframes t-spin { to { transform: rotate(360deg); } }
+
+    /* Tree sway */
+    .tree { transform-box: fill-box; transform-origin: 50% 100%; }
+    .sw-a { animation: swy 5.2s ease-in-out infinite alternate; }
+    .sw-b { animation: swy 6.8s ease-in-out infinite alternate-reverse; }
+    .sw-c { animation: swy 4.5s ease-in-out infinite alternate; }
+    @keyframes swy {
+      from { transform: rotate(-1.3deg); }
+      to   { transform: rotate( 1.3deg); }
+    }
+
+    /* ══════════════════════════════════════════ TEXT STAGE */
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      padding-bottom: 30vh;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .t-hack {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(3rem, 7.5vw, 8.8rem);
+      letter-spacing: 0.10em;
+      color: rgba(255, 255, 255, 0.94);
+      text-shadow: 0 0 80px rgba(120, 210, 255, 0.10);
+      line-height: 1;
+      opacity: 0;
+      animation: fd-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+
+    .t-year {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 4.5vw, 5rem);
+      letter-spacing: 0.28em;
+      color: rgba(120, 210, 255, 0.62);
+      line-height: 1;
+      margin-top: 0.14em;
+      opacity: 0;
+      animation: fd-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.95s forwards;
+    }
+
+    .div-line {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(120, 210, 255, 0.32), transparent);
+      margin: 2.2em auto;
+      opacity: 0;
+      animation: fd-in 1.2s ease 1.7s forwards;
+    }
+
+    .t-soon {
+      font-family: 'Inter', sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.58rem, 0.85vw, 0.78rem);
+      letter-spacing: 0.58em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      opacity: 0;
+      animation: fd-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+    }
+
+    @keyframes fd-up {
+      from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+      to   { opacity: 1; transform: none; filter: blur(0); }
+    }
+    @keyframes fd-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════════ SENSOR BAR */
+    #sbar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      z-index: 10;
+      background: rgba(2, 7, 18, 0.90);
+      border-top: 1px solid rgba(120, 200, 255, 0.07);
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      gap: 0;
+      overflow: hidden;
+      opacity: 0;
+      animation: fd-in 1s ease 3.1s forwards;
+      backdrop-filter: blur(10px);
+    }
+    .si {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 15px;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .si:last-child { border-right: none; }
+    .si-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .si-dot.g { background: #22c55e; animation: pdot 2.2s ease-in-out infinite; }
+    .si-dot.y { background: #f59e0b; animation: pdot 2.8s ease-in-out infinite; }
+    .si-dot.r { background: #ef4444; animation: pdot 1.6s ease-in-out infinite; }
+    @keyframes pdot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.35; transform: scale(0.55); }
+    }
+    .si-lbl {
+      font-size: 8.5px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(120, 200, 255, 0.38);
+      font-weight: 300;
+    }
+    .si-val {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.52);
+      font-weight: 300;
+    }
+
+    /* ══════════════════════════════════════════ VIGNETTE */
+    #vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 7;
+      background: radial-gradient(ellipse 78% 68% at 50% 42%, transparent 38%, rgba(2, 8, 18, 0.52) 100%);
+      pointer-events: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .t-hack, .t-year, .t-soon, .div-line, #sbar { opacity: 1 !important; filter: none !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div id="cur-ring"></div>
+<div id="cur-dot"></div>
+
+<!-- Aurora blobs -->
+<div class="glb glb1"></div>
+<div class="glb glb2"></div>
+<div class="glb glb3"></div>
+
+<!-- Layers -->
+<canvas id="c-stars"></canvas>
+<canvas id="c-particles"></canvas>
+<div id="horizon"></div>
+
+<!-- ══ SCENE SVG ══ -->
+<div id="scene-wrap">
+  <svg id="scene-svg" viewBox="0 0 1440 280"
+       preserveAspectRatio="xMidYMax meet"
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0c1e38"/>
+        <stop offset="100%" stop-color="#060d1e"/>
+      </linearGradient>
+      <linearGradient id="gg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#060d1e"/>
+        <stop offset="100%" stop-color="#020810"/>
+      </linearGradient>
+    </defs>
+
+    <!-- ── FAR HILLS ── -->
+    <path d="M0,185 Q180,115 380,155 Q580,195 720,132
+             Q880,72  1080,142 Q1260,205 1440,162 L1440,280 L0,280 Z"
+          fill="#0b1c35" opacity="0.55"/>
+
+    <!-- ── BUILDINGS LEFT ── -->
+    <g fill="#070e1d">
+      <rect x="28"  y="188" width="22" height="92"/>
+      <rect x="54"  y="174" width="16" height="106"/>
+      <rect x="74"  y="198" width="26" height="82"/>
+      <rect x="104" y="170" width="20" height="110"/>
+      <rect x="128" y="186" width="14" height="94"/>
+      <rect x="146" y="198" width="24" height="82"/>
+      <!-- antennae -->
+      <rect x="105" y="162" width="2" height="8"/>
+      <rect x="56"  y="166" width="2" height="8"/>
+    </g>
+    <g fill="rgba(155,210,255,0.22)">
+      <rect x="31"  y="193" width="4" height="3"/>
+      <rect x="37"  y="193" width="4" height="3"/>
+      <rect x="31"  y="202" width="4" height="3"/>
+      <rect x="57"  y="179" width="4" height="3"/>
+      <rect x="63"  y="179" width="4" height="3"/>
+      <rect x="57"  y="188" width="4" height="3"/>
+      <rect x="106" y="175" width="4" height="3"/>
+      <rect x="112" y="175" width="4" height="3"/>
+      <rect x="106" y="184" width="4" height="3"/>
+    </g>
+
+    <!-- ── BUILDINGS RIGHT ── -->
+    <g fill="#070e1d">
+      <rect x="1238" y="183" width="24" height="97"/>
+      <rect x="1266" y="170" width="18" height="110"/>
+      <rect x="1288" y="190" width="28" height="90"/>
+      <rect x="1320" y="176" width="16" height="104"/>
+      <rect x="1340" y="192" width="22" height="88"/>
+      <rect x="1365" y="182" width="26" height="98"/>
+      <rect x="1395" y="200" width="20" height="80"/>
+      <rect x="1268" y="162" width="2" height="8"/>
+      <rect x="1322" y="168" width="2" height="8"/>
+    </g>
+    <g fill="rgba(155,210,255,0.22)">
+      <rect x="1241" y="188" width="4" height="3"/>
+      <rect x="1247" y="188" width="4" height="3"/>
+      <rect x="1269" y="175" width="4" height="3"/>
+      <rect x="1275" y="175" width="4" height="3"/>
+      <rect x="1290" y="195" width="4" height="3"/>
+      <rect x="1296" y="195" width="4" height="3"/>
+      <rect x="1323" y="181" width="4" height="3"/>
+    </g>
+
+    <!-- ── AIR SENSORS ── -->
+    <!-- Sensor A -->
+    <line x1="318" y1="244" x2="318" y2="266" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
+    <rect x="312" y="238" width="12" height="8" rx="2"
+          fill="rgba(12,85,145,0.5)" stroke="rgba(90,175,215,0.28)" stroke-width="0.8"/>
+    <circle cx="318" cy="238" r="1.8" fill="rgba(72,220,175,0.9)">
+      <animate attributeName="opacity" values="1;0.25;1" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Sensor B -->
+    <line x1="688" y1="240" x2="688" y2="262" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
+    <rect x="682" y="234" width="12" height="8" rx="2"
+          fill="rgba(12,85,145,0.5)" stroke="rgba(90,175,215,0.28)" stroke-width="0.8"/>
+    <circle cx="688" cy="234" r="1.8" fill="rgba(72,220,175,0.9)">
+      <animate attributeName="opacity" values="1;0.25;1" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Sensor C -->
+    <line x1="1108" y1="243" x2="1108" y2="265" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
+    <rect x="1102" y="237" width="12" height="8" rx="2"
+          fill="rgba(12,85,145,0.5)" stroke="rgba(90,175,215,0.28)" stroke-width="0.8"/>
+    <circle cx="1108" cy="237" r="1.8" fill="rgba(72,220,175,0.9)">
+      <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- ── PINE TREES LEFT ── -->
+    <g class="tree sw-a">
+      <polygon points="382,264 360,208 404,208" fill="#060d1b"/>
+      <polygon points="382,238 362,186 402,186" fill="#071020"/>
+      <polygon points="382,214 365,170 399,170" fill="#081121"/>
+      <rect x="378" y="264" width="8" height="14" fill="#040b16"/>
+    </g>
+    <g class="tree sw-b">
+      <polygon points="422,268 402,218 442,218" fill="#060d1b"/>
+      <polygon points="422,244 404,198 440,198" fill="#071020"/>
+      <polygon points="422,220 406,182 438,182" fill="#081121"/>
+      <rect x="418" y="268" width="8" height="11" fill="#040b16"/>
+    </g>
+    <g class="tree sw-c">
+      <polygon points="458,266 438,218 478,218" fill="#060d1b"/>
+      <polygon points="458,242 440,196 476,196" fill="#071020"/>
+      <polygon points="458,218 442,180 474,180" fill="#081121"/>
+      <rect x="454" y="266" width="8" height="13" fill="#040b16"/>
+    </g>
+
+    <!-- ── PINE TREES RIGHT ── -->
+    <g class="tree sw-b">
+      <polygon points="988,266 968,214 1008,214" fill="#060d1b"/>
+      <polygon points="988,240 968,192 1008,192" fill="#071020"/>
+      <polygon points="988,216 970,176 1006,176" fill="#081121"/>
+      <rect x="984" y="266" width="8" height="13" fill="#040b16"/>
+    </g>
+    <g class="tree sw-a">
+      <polygon points="1025,270 1006,220 1044,220" fill="#060d1b"/>
+      <polygon points="1025,246 1007,200 1043,200" fill="#071020"/>
+      <polygon points="1025,222 1008,184 1042,184" fill="#081121"/>
+      <rect x="1021" y="270" width="8" height="10" fill="#040b16"/>
+    </g>
+    <g class="tree sw-c">
+      <polygon points="1060,264 1042,216 1078,216" fill="#060d1b"/>
+      <polygon points="1060,240 1043,194 1077,194" fill="#071020"/>
+      <polygon points="1060,216 1044,178 1076,178" fill="#081121"/>
+      <rect x="1056" y="264" width="8" height="14" fill="#040b16"/>
+    </g>
+
+    <!-- ── WIND TURBINE 1 (x=562) ── -->
+    <!-- Turbine tower + nacelle -->
+    <polygon points="558,268 562,192 568,192 572,268" fill="#07101e"/>
+    <rect x="559" y="188" width="17" height="6" rx="2" fill="#0b1c32"/>
+    <!-- Rotating blades: hub at (565, 191). Blade tip is 34px above hub = y=157 -->
+    <g class="t-bl">
+      <!-- blade 1 pointing up -->
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
+            fill="#0d2040" transform-origin="565 191" transform-box="fill-box"/>
+      <!-- blade 2: rotated 120° around hub -->
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
+            fill="#0d2040" transform="rotate(120,565,191)"/>
+      <!-- blade 3: rotated 240° around hub -->
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
+            fill="#0d2040" transform="rotate(240,565,191)"/>
+      <circle cx="565" cy="191" r="3.5" fill="#091827"/>
+    </g>
+
+    <!-- ── WIND TURBINE 2 (x=820) ── -->
+    <polygon points="816,270 820,208 826,208 830,270" fill="#07101e"/>
+    <rect x="817" y="204" width="16" height="5.5" rx="2" fill="#0b1c32"/>
+    <g class="t-bl t-bl-b">
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
+            fill="#0d2040" transform="rotate(0,823,207)"/>
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
+            fill="#0d2040" transform="rotate(120,823,207)"/>
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
+            fill="#0d2040" transform="rotate(240,823,207)"/>
+      <circle cx="823" cy="207" r="3" fill="#091827"/>
+    </g>
+
+    <!-- ── WIND TURBINE 3 (x=1258, far/small) ── -->
+    <g opacity="0.62">
+      <polygon points="1254,270 1258,225 1262,225 1266,270" fill="#07101e"/>
+      <rect x="1255" y="222" width="12" height="4.5" rx="1.5" fill="#0b1c32"/>
+      <g class="t-bl t-bl-c">
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
+              fill="#0d2040" transform="rotate(0,1259,224)"/>
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
+              fill="#0d2040" transform="rotate(120,1259,224)"/>
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
+              fill="#0d2040" transform="rotate(240,1259,224)"/>
+        <circle cx="1259" cy="224" r="2.4" fill="#091827"/>
+      </g>
+    </g>
+
+    <!-- ── GROUND + ROAD ── -->
+    <rect x="0" y="264" width="1440" height="16" fill="#060c1a"/>
+    <rect x="0" y="267" width="1440" height="11" fill="#07101c"/>
+    <!-- road dashes -->
+    <g fill="rgba(100,180,255,0.09)">
+      <rect x="0"    y="272" width="52" height="1.5"/>
+      <rect x="72"   y="272" width="52" height="1.5"/>
+      <rect x="144"  y="272" width="52" height="1.5"/>
+      <rect x="216"  y="272" width="52" height="1.5"/>
+      <rect x="288"  y="272" width="52" height="1.5"/>
+      <rect x="360"  y="272" width="52" height="1.5"/>
+      <rect x="432"  y="272" width="52" height="1.5"/>
+      <rect x="504"  y="272" width="52" height="1.5"/>
+      <rect x="576"  y="272" width="52" height="1.5"/>
+      <rect x="648"  y="272" width="52" height="1.5"/>
+      <rect x="720"  y="272" width="52" height="1.5"/>
+      <rect x="792"  y="272" width="52" height="1.5"/>
+      <rect x="864"  y="272" width="52" height="1.5"/>
+      <rect x="936"  y="272" width="52" height="1.5"/>
+      <rect x="1008" y="272" width="52" height="1.5"/>
+      <rect x="1080" y="272" width="52" height="1.5"/>
+      <rect x="1152" y="272" width="52" height="1.5"/>
+      <rect x="1224" y="272" width="52" height="1.5"/>
+      <rect x="1296" y="272" width="52" height="1.5"/>
+      <rect x="1368" y="272" width="52" height="1.5"/>
+    </g>
+
+    <!-- ── VEHICLES (SMIL translate) ── -->
+    <!-- Car 1 → right -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-140 0" to="1600 0" dur="24s" repeatCount="indefinite"/>
+      <rect x="0" y="260" width="46" height="15" rx="3.5" fill="#09192c"/>
+      <rect x="4" y="253" width="28" height="9" rx="2.5" fill="#0a1e35"/>
+      <rect x="7"  y="255" width="10" height="6" rx="1" fill="rgba(100,175,255,0.2)"/>
+      <rect x="19" y="255" width="10" height="6" rx="1" fill="rgba(100,175,255,0.2)"/>
+      <rect x="42" y="262" width="5"  height="3" rx="1" fill="rgba(255,210,100,0.5)"/>
+      <circle cx="9"  cy="275" r="3.2" fill="#040a14"/>
+      <circle cx="34" cy="275" r="3.2" fill="#040a14"/>
+    </g>
+    <!-- Car 2 → right (offset) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-140 0" to="1600 0" dur="30s" begin="-14s" repeatCount="indefinite"/>
+      <rect x="0" y="261" width="40" height="14" rx="3" fill="#081422"/>
+      <rect x="3" y="255" width="24" height="8" rx="2" fill="#091828"/>
+      <rect x="6"  y="257" width="9"  height="5" rx="1" fill="rgba(100,175,255,0.16)"/>
+      <rect x="17" y="257" width="9"  height="5" rx="1" fill="rgba(100,175,255,0.16)"/>
+      <rect x="37" y="263" width="4"  height="3" rx="1" fill="rgba(255,200,80,0.45)"/>
+      <circle cx="8"  cy="275" r="3"   fill="#040a14"/>
+      <circle cx="30" cy="275" r="3"   fill="#040a14"/>
+    </g>
+    <!-- Bus/truck ← left -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1590 0" to="-180 0" dur="32s" begin="-8s" repeatCount="indefinite"/>
+      <rect x="0" y="257" width="62" height="18" rx="3" fill="#080f1e"/>
+      <rect x="0" y="250" width="40" height="10" rx="2" fill="#0a1528"/>
+      <rect x="3"  y="252" width="15" height="7" rx="1" fill="rgba(100,175,255,0.13)"/>
+      <rect x="20" y="252" width="15" height="7" rx="1" fill="rgba(100,175,255,0.13)"/>
+      <rect x="0"  y="260" width="5"  height="4" rx="1" fill="rgba(255,50,50,0.4)"/>
+      <circle cx="12" cy="275" r="4"  fill="#040a14"/>
+      <circle cx="50" cy="275" r="4"  fill="#040a14"/>
+    </g>
+
+    <!-- ── PLANES (SMIL translate) ── -->
+    <!-- Plane 1 → right, altitude 95 -->
+    <g opacity="0.82">
+      <animateTransform attributeName="transform" type="translate"
+        from="-180 95" to="1640 95" dur="30s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="28" ry="4.2" fill="#0e2245"/>
+      <polygon points="-4,-2 -4,11  14,1.5" fill="#0f2848"/>
+      <polygon points="-4, 2 -4,-11 14,-1.5" fill="#0f2848"/>
+      <polygon points="-22,-2 -28,-8 -16,-2" fill="#0e2245"/>
+      <line x1="-28" y1="0" x2="-130" y2="0"
+            stroke="rgba(190,220,255,0.055)" stroke-width="2"/>
+      <circle cx="14" cy=" 1.5" r="1.8" fill="rgba(255,75,75,0.9)">
+        <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="14" cy="-1.5" r="1.8" fill="rgba(70,215,70,0.9)">
+        <animate attributeName="opacity" values="0;1;0" dur="1.1s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Plane 2 → right, altitude 50, smaller -->
+    <g opacity="0.52">
+      <animateTransform attributeName="transform" type="translate"
+        from="-180 48" to="1640 48" dur="44s" begin="-20s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="18" ry="2.8" fill="#0d2040"/>
+      <polygon points="-2,-1.5 -2,7  9,1"   fill="#0e2545"/>
+      <polygon points="-2, 1.5 -2,-7 9,-1"  fill="#0e2545"/>
+      <polygon points="-14,-1.5 -18,-5.5 -10,-1.5" fill="#0d2040"/>
+      <line x1="-18" y1="0" x2="-90" y2="0"
+            stroke="rgba(190,220,255,0.04)" stroke-width="1.5"/>
+      <circle cx="9" cy="1" r="1.2" fill="rgba(255,75,75,0.7)">
+        <animate attributeName="opacity" values="1;0;1" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Plane 3 ← left, altitude 72 -->
+    <g opacity="0.70">
+      <animateTransform attributeName="transform" type="translate"
+        from="1640 72" to="-180 72" dur="38s" begin="-12s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <ellipse cx="0" cy="0" rx="23" ry="3.8" fill="#0e2245"/>
+        <polygon points="-3,-2 -3,10 12,1.5" fill="#0f2848"/>
+        <polygon points="-3, 2 -3,-10 12,-1.5" fill="#0f2848"/>
+        <polygon points="-19,-2 -24,-7 -14,-2" fill="#0e2245"/>
+        <line x1="-24" y1="0" x2="-110" y2="0"
+              stroke="rgba(190,220,255,0.045)" stroke-width="1.5"/>
+        <circle cx="12" cy="1.5" r="1.5" fill="rgba(70,215,70,0.8)">
+          <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+
+    <!-- foreground ground fade -->
+    <rect x="0" y="276" width="1440" height="4" fill="url(#gg)"/>
+  </svg>
+</div>
+
+<!-- ══ TEXT ══ -->
+<div id="stage">
+  <div class="t-hack">Air Hackathon</div>
+  <div class="t-year">2026</div>
+  <div class="div-line"></div>
+  <div class="t-soon">Coming Soon</div>
+</div>
+
+<!-- ══ SENSOR BAR ══ -->
+<div id="sbar">
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">42</span></div>
+  <div class="si"><div class="si-dot y"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">18.4 µg/m³</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">CO₂</span><span class="si-val" id="s-co2">412 ppm</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">NO₂</span><span class="si-val">0.04 ppm</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">O₃</span><span class="si-val">0.03 ppm</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Temp</span><span class="si-val">28.5 °C</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Humidity</span><span class="si-val">72 %</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Wind</span><span class="si-val">14 km/h NE</span></div>
+</div>
+
+<div id="vignette"></div>
+
+<script>
+// ══════════════════════════════════════════════════════ CURSOR
+const cRing = document.getElementById('cur-ring');
+const cDot  = document.getElementById('cur-dot');
+let mx = innerWidth / 2, my = innerHeight / 2;
+let rx = mx, ry = my;
+
+// Only hide native cursor once JS cursor is ready
+document.documentElement.classList.add('js-cursor');
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+  cDot.style.left = mx + 'px';
+  cDot.style.top  = my + 'px';
+});
+
+(function rafCursor() {
+  rx += (mx - rx) * 0.1;
+  ry += (my - ry) * 0.1;
+  cRing.style.left = rx + 'px';
+  cRing.style.top  = ry + 'px';
+  requestAnimationFrame(rafCursor);
+}());
+
+// ══════════════════════════════════════════════════════ STARS
+const sc   = document.getElementById('c-stars');
+const sctx = sc.getContext('2d');
+let stars  = [];
+
+function buildStars() {
+  sc.width  = innerWidth;
+  sc.height = innerHeight;
+  const n = Math.floor(sc.width * sc.height / 2600);
+  stars = Array.from({ length: n }, () => ({
+    x: Math.random() * sc.width,
+    y: Math.random() * sc.height * 0.60,
+    r: Math.random() * 1.1 + 0.15,
+    a: Math.random() * 0.62 + 0.1,
+    p: Math.random() * Math.PI * 2,
+    s: Math.random() * 0.45 + 0.18
+  }));
+}
+
+function rafStars(ts) {
+  const t = ts * 0.001;
+  sctx.clearRect(0, 0, sc.width, sc.height);
+  for (const s of stars) {
+    const a = s.a * (0.68 + 0.32 * Math.sin(t * s.s + s.p));
+    sctx.beginPath();
+    sctx.arc(s.x, s.y, s.r, 0, 6.2832);
+    sctx.fillStyle = `rgba(210,230,255,${a})`;
+    sctx.fill();
+  }
+  requestAnimationFrame(rafStars);
+}
+
+buildStars();
+requestAnimationFrame(rafStars);
+
+let starResizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(starResizeTimer);
+  starResizeTimer = setTimeout(buildStars, 150);
+});
+
+// ══════════════════════════════════════════════════════ AIR PARTICLES
+const pc   = document.getElementById('c-particles');
+const pctx = pc.getContext('2d');
+const PCNT = 200;
+let parts  = [];
+
+function buildParticles() {
+  pc.width  = innerWidth;
+  pc.height = innerHeight;
+}
+
+function mkPart(rand) {
+  return {
+    x:  Math.random() * pc.width,
+    y:  rand ? Math.random() * pc.height : pc.height + 6,
+    r:  Math.random() * 1.4 + 0.2,
+    vx: (Math.random() - 0.5) * 0.32,
+    vy: -(Math.random() * 0.42 + 0.1),
+    a:  Math.random() * 0.25 + 0.04,
+    h:  [196, 200, 185, 208][Math.floor(Math.random() * 4)],
+    ph: Math.random() * 1000
+  };
+}
+
+function rafParticles() {
+  pctx.clearRect(0, 0, pc.width, pc.height);
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    p.x += p.vx + Math.sin(p.y * 0.011 + p.ph) * 0.11;
+    p.y += p.vy;
+    if (p.y < -8) { parts[i] = mkPart(false); continue; }
+    pctx.beginPath();
+    pctx.arc(p.x, p.y, p.r, 0, 6.2832);
+    pctx.fillStyle = `hsla(${p.h},52%,86%,${p.a})`;
+    pctx.fill();
+  }
+  requestAnimationFrame(rafParticles);
+}
+
+buildParticles();
+parts = Array.from({ length: PCNT }, () => mkPart(true));
+requestAnimationFrame(rafParticles);
+
+let partResizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(partResizeTimer);
+  partResizeTimer = setTimeout(buildParticles, 150);
+});
+
+// ══════════════════════════════════════════════════════ SENSOR FLUCTUATION
+const sDefs = [
+  { id: 's-aqi', base: 42,   range: 6,   dec: 0, unit: ''        },
+  { id: 's-pm',  base: 18.4, range: 2.5, dec: 1, unit: ' µg/m³' },
+  { id: 's-co2', base: 412,  range: 4,   dec: 0, unit: ' ppm'   }
+];
+const sEls = sDefs.map(d => ({ ...d, el: document.getElementById(d.id) }));
+
+setInterval(() => {
+  for (const s of sEls) {
+    const v = s.base + (Math.random() - 0.5) * s.range;
+    s.el.textContent = v.toFixed(s.dec) + s.unit;
+  }
+}, 3500);
+</script>
+</body>
+</html>
