@@ -645,9 +645,10 @@ if (useCustomCursor && cRing && cDot) {
 const sc   = document.getElementById('c-stars');
 const sctx = sc.getContext('2d');
 let stars  = [];
+const getRenderDpr = () => Math.max(1, Math.min(2, window.devicePixelRatio || 1));
 
 function buildStars() {
-  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  const dpr = getRenderDpr();
   sc.width  = Math.floor(innerWidth * dpr);
   sc.height = Math.floor(innerHeight * dpr);
   sc.style.width = `${innerWidth}px`;
@@ -693,7 +694,7 @@ const PCNT = 200;
 let parts  = [];
 
 function buildParticles() {
-  const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+  const dpr = getRenderDpr();
   pc.width  = Math.floor(innerWidth * dpr);
   pc.height = Math.floor(innerHeight * dpr);
   pc.style.width = `${innerWidth}px`;
