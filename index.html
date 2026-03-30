@@ -1,667 +1,739 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AIR Hackathon 2026 — Coming Soon</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Air Hackathon 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --white:   #ffffff;
-      --off:     #f7f8fc;
-      --soft:    #eef0f8;
-      --sky:     #d6e8ff;
-      --blue:    #4a90e2;
-      --teal:    #38bdf8;
-      --green:   #22c55e;
-      --air:     #a8d8ea;
-      --text:    #1a1a2e;
-      --muted:   #7a7a9d;
-    }
-
-    html, body {
-      height: 100%;
-      overflow-x: hidden;
-    }
+    html { background: #020810; }
+    html.js-cursor { cursor: none; }
 
     body {
-      font-family: 'Space Grotesk', sans-serif;
-      background: var(--white);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #020810;
+      font-family: 'Inter', sans-serif;
     }
 
-    /* ──────────────────────────────────────── PARTICLES */
-    #particle-canvas {
+    /* ══════════════════════════════════════════ CURSOR */
+    #cur-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(148, 218, 255, 0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      transition: width .35s ease, height .35s ease, border-color .3s ease;
+    }
+    #cur-dot {
+      position: fixed;
+      width: 4px; height: 4px;
+      background: rgba(148, 218, 255, 0.95);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+    }
+
+    /* ══════════════════════════════════════════ CANVAS */
+    #c-stars, #c-particles {
       position: fixed;
       inset: 0;
       pointer-events: none;
-      z-index: 0;
-      opacity: .55;
     }
+    #c-stars     { z-index: 1; }
+    #c-particles { z-index: 3; }
 
-    /* ──────────────────────────────────────── LAYOUT */
-    .page {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      width: 100%;
-      padding: 40px 20px 60px;
-      gap: 0;
-    }
-
-    /* ──────────────────────────────────────── BADGE */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--soft);
-      border: 1px solid #dce0f0;
-      border-radius: 999px;
-      padding: 6px 18px;
-      font-size: 12px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 600;
-      margin-bottom: 36px;
-      animation: fadeUp .8s ease both;
-    }
-    .badge-dot {
-      width: 7px; height: 7px;
+    /* ══════════════════════════════════════════ AURORA BLOBS */
+    .glb {
+      position: fixed;
       border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 0 3px rgba(34,197,94,.2);
-      animation: pulse 2s ease infinite;
-    }
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,.2); }
-      50%      { box-shadow: 0 0 0 7px rgba(34,197,94,.05); }
-    }
-
-    /* ──────────────────────────────────────── HEADLINE */
-    .headline-wrap {
-      text-align: center;
-      margin-bottom: 20px;
-      animation: fadeUp .9s .1s ease both;
-    }
-    .tagline {
-      font-family: 'Poppins', sans-serif;
-      font-size: clamp(13px, 2vw, 16px);
-      font-weight: 300;
-      letter-spacing: .3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 14px;
-    }
-    .headline {
-      font-family: 'Poppins', sans-serif;
-      font-size: clamp(32px, 7vw, 76px);
-      font-weight: 800;
-      line-height: 1.08;
-      letter-spacing: -.02em;
-      color: var(--text);
-    }
-    .headline .air-word {
-      position: relative;
-      display: inline-block;
-      background: linear-gradient(135deg, #4a90e2 0%, #38bdf8 50%, #06b6d4 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .headline .air-word::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: inherit;
-      filter: blur(28px);
-      opacity: .25;
-      z-index: -1;
-      -webkit-text-fill-color: transparent;
-    }
-
-    /* ──────────────────────────────────────── SCENE */
-    .scene {
-      position: relative;
-      width: min(540px, 92vw);
-      height: min(400px, 70vw);
-      margin: 10px auto;
-      animation: fadeUp 1s .2s ease both;
-    }
-
-    /* CLOUDS */
-    .cloud {
-      position: absolute;
-      border-radius: 999px;
-      background: white;
-      filter: drop-shadow(0 4px 16px rgba(74,144,226,.12));
-      animation: floatCloud linear infinite;
-    }
-    .cloud::before, .cloud::after {
-      content: '';
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-    }
-    .c1 { width:90px; height:30px; top:18%; left:-4%; animation-duration:22s; animation-delay:0s; opacity:.9; }
-    .c1::before { width:40px;height:40px;top:-20px;left:14px; }
-    .c1::after  { width:28px;height:28px;top:-12px;left:42px; }
-
-    .c2 { width:70px; height:22px; top:24%; right:0%; animation-duration:28s; animation-delay:-8s; opacity:.7; }
-    .c2::before { width:30px;height:30px;top:-16px;left:10px; }
-    .c2::after  { width:22px;height:22px;top:-10px;left:32px; }
-
-    .c3 { width:50px; height:16px; top:8%;  left:22%; animation-duration:18s; animation-delay:-4s; opacity:.6; }
-    .c3::before { width:22px;height:22px;top:-12px;left:8px; }
-    .c3::after  { width:16px;height:16px;top:-8px; left:26px; }
-
-    @keyframes floatCloud {
-      0%   { transform: translateX(0); }
-      50%  { transform: translateX(18px); }
-      100% { transform: translateX(0); }
-    }
-
-    /* EARTH SVG wrapper */
-    .earth-wrap {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(340px, 62vw);
-    }
-    .earth-wrap svg { width: 100%; height: auto; display: block; }
-
-    /* COMING SOON LABEL */
-    .coming-soon-wrap {
-      position: absolute;
-      top: 4%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      white-space: nowrap;
-    }
-    .coming-soon {
-      font-family: 'Poppins', sans-serif;
-      font-size: clamp(26px, 6.5vw, 62px);
-      font-weight: 700;
-      letter-spacing: -.01em;
-      color: var(--text);
-      animation: shimmer 4s ease infinite;
-      background: linear-gradient(270deg, #1a1a2e 0%, #4a90e2 40%, #38bdf8 60%, #1a1a2e 100%);
-      background-size: 300% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    @keyframes shimmer {
-      0%   { background-position: 0% 50%; }
-      50%  { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .cs-sub {
-      font-size: clamp(10px, 1.8vw, 13px);
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 400;
-      margin-top: 2px;
-    }
-
-    /* ARROW lines from characters to label */
-    .arrow-svg {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      filter: blur(100px);
       pointer-events: none;
-      overflow: visible;
+      mix-blend-mode: screen;
     }
-    .arrow-line {
-      stroke: var(--blue);
-      stroke-width: 1.5;
-      fill: none;
-      stroke-dasharray: 4 4;
-      opacity: .55;
-      animation: dashMove 1.8s linear infinite;
+    .glb1 {
+      z-index: 2;
+      width: 58vw; height: 42vh;
+      background: radial-gradient(ellipse, rgba(22, 110, 205, 0.13) 0%, transparent 70%);
+      top: -12vh; left: 14%;
+      animation: glb-drift 16s ease-in-out infinite alternate;
     }
-    @keyframes dashMove {
-      to { stroke-dashoffset: -24; }
+    .glb2 {
+      z-index: 2;
+      width: 42vw; height: 36vh;
+      background: radial-gradient(ellipse, rgba(14, 165, 148, 0.09) 0%, transparent 70%);
+      top: 4vh; right: 4%;
+      animation: glb-drift 21s ease-in-out infinite alternate-reverse;
     }
-
-    /* ──────────────────────────────────────── META INFO */
-    .meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 24px;
-      justify-content: center;
-      margin-top: 28px;
-      animation: fadeUp 1s .4s ease both;
+    .glb3 {
+      z-index: 2;
+      width: 28vw; height: 24vh;
+      background: radial-gradient(ellipse, rgba(88, 40, 168, 0.07) 0%, transparent 70%);
+      top: 28vh; left: 2%;
+      animation: glb-drift 26s ease-in-out infinite alternate;
     }
-    .meta-item {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 400;
-    }
-    .meta-icon {
-      width: 16px; height: 16px;
-      opacity: .6;
+    @keyframes glb-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(3vw, 2.5vh) scale(1.1); }
     }
 
-    /* ──────────────────────────────────────── DIVIDER */
-    .divider {
-      width: 40px;
-      height: 3px;
-      border-radius: 99px;
-      background: linear-gradient(90deg, var(--blue), var(--teal));
-      margin: 32px auto;
-      animation: fadeUp 1s .5s ease both;
-    }
-
-    /* ──────────────────────────────────────── TICKER */
-    .ticker-wrap {
+    /* ══════════════════════════════════════════ HORIZON HAZE */
+    #horizon {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(12px);
-      border-top: 1px solid #eef0f8;
-      overflow: hidden;
-      height: 38px;
+      height: 44vh;
+      background: linear-gradient(to top,
+        rgba(6, 14, 30, 0.95) 0%,
+        rgba(6, 14, 30, 0.45) 38%,
+        transparent 100%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════ SCENE WRAPPER */
+    #scene-wrap {
+      position: fixed;
+      bottom: 36px;
+      left: 0; right: 0;
+      height: 36vh;
+      z-index: 4;
+      pointer-events: none;
+    }
+    #scene-svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Wind turbine blades */
+    .t-bl {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: t-spin 11s linear infinite;
+    }
+    .t-bl-b { animation-duration: 16s; animation-direction: reverse; }
+    .t-bl-c { animation-duration: 8s; }
+    @keyframes t-spin { to { transform: rotate(360deg); } }
+
+    /* Tree sway */
+    .tree { transform-box: fill-box; transform-origin: 50% 100%; }
+    .sw-a { animation: swy 5.2s ease-in-out infinite alternate; }
+    .sw-b { animation: swy 6.8s ease-in-out infinite alternate-reverse; }
+    .sw-c { animation: swy 4.5s ease-in-out infinite alternate; }
+    @keyframes swy {
+      from { transform: rotate(-1.3deg); }
+      to   { transform: rotate( 1.3deg); }
+    }
+
+    /* ══════════════════════════════════════════ TEXT STAGE */
+    #stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 6;
+      padding-bottom: 30vh;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .t-hack {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(3rem, 7.5vw, 8.8rem);
+      letter-spacing: 0.10em;
+      color: rgba(255, 255, 255, 0.94);
+      text-shadow: 0 0 80px rgba(120, 210, 255, 0.10);
+      line-height: 1;
+      opacity: 0;
+      animation: fd-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+    }
+
+    .t-year {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 4.5vw, 5rem);
+      letter-spacing: 0.28em;
+      color: rgba(120, 210, 255, 0.62);
+      line-height: 1;
+      margin-top: 0.14em;
+      opacity: 0;
+      animation: fd-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.95s forwards;
+    }
+
+    .div-line {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(120, 210, 255, 0.32), transparent);
+      margin: 2.2em auto;
+      opacity: 0;
+      animation: fd-in 1.2s ease 1.7s forwards;
+    }
+
+    .t-soon {
+      font-family: 'Inter', sans-serif;
+      font-weight: 200;
+      font-size: clamp(0.58rem, 0.85vw, 0.78rem);
+      letter-spacing: 0.58em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.28);
+      opacity: 0;
+      animation: fd-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+    }
+
+    @keyframes fd-up {
+      from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+      to   { opacity: 1; transform: none; filter: blur(0); }
+    }
+    @keyframes fd-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ══════════════════════════════════════════ SENSOR BAR */
+    #sbar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 36px;
+      z-index: 10;
+      background: rgba(2, 7, 18, 0.90);
+      border-top: 1px solid rgba(120, 200, 255, 0.07);
       display: flex;
       align-items: center;
-      z-index: 10;
-    }
-    .ticker-inner {
-      display: flex;
+      padding: 0 18px;
       gap: 0;
+      overflow: hidden;
+      opacity: 0;
+      animation: fd-in 1s ease 3.1s forwards;
+      backdrop-filter: blur(10px);
+    }
+    .si {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 15px;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
       white-space: nowrap;
-      animation: ticker 28s linear infinite;
+      flex-shrink: 0;
     }
-    .ticker-text {
-      font-size: 11px;
-      letter-spacing: .14em;
+    .si:last-child { border-right: none; }
+    .si-dot {
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .si-dot.g { background: #22c55e; animation: pdot 2.2s ease-in-out infinite; }
+    .si-dot.y { background: #f59e0b; animation: pdot 2.8s ease-in-out infinite; }
+    .si-dot.r { background: #ef4444; animation: pdot 1.6s ease-in-out infinite; }
+    @keyframes pdot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.35; transform: scale(0.55); }
+    }
+    .si-lbl {
+      font-size: 8.5px;
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: var(--muted);
-      padding: 0 40px;
+      color: rgba(120, 200, 255, 0.38);
+      font-weight: 300;
     }
-    .ticker-sep { color: var(--teal); padding: 0 6px; }
-    @keyframes ticker {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-
-    /* ──────────────────────────────────────── FADE UP */
-    @keyframes fadeUp {
-      from { opacity:0; transform: translateY(24px); }
-      to   { opacity:1; transform: translateY(0); }
+    .si-val {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.52);
+      font-weight: 300;
     }
 
-    /* ──────────────────────────────────────── RESPONSIVE */
-    @media (max-width: 480px) {
-      .scene { height: min(360px, 85vw); }
-      .meta { gap: 8px 16px; }
+    /* ══════════════════════════════════════════ VIGNETTE */
+    #vignette {
+      position: fixed;
+      inset: 0;
+      z-index: 7;
+      background: radial-gradient(ellipse 78% 68% at 50% 42%, transparent 38%, rgba(2, 8, 18, 0.52) 100%);
+      pointer-events: none;
     }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
+      .t-hack, .t-year, .t-soon, .div-line, #sbar { opacity: 1 !important; filter: none !important; transform: none !important; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="particle-canvas"></canvas>
+<!-- Cursor -->
+<div id="cur-ring"></div>
+<div id="cur-dot"></div>
 
-<main class="page">
+<!-- Aurora blobs -->
+<div class="glb glb1"></div>
+<div class="glb glb2"></div>
+<div class="glb glb3"></div>
 
-  <!-- BADGE -->
-  <div class="badge">
-    <span class="badge-dot"></span>
-    Bangladesh · 2026
-  </div>
+<!-- Layers -->
+<canvas id="c-stars"></canvas>
+<canvas id="c-particles"></canvas>
+<div id="horizon"></div>
 
-  <!-- HEADLINE -->
-  <div class="headline-wrap">
-    <p class="tagline">AIR Hackathon 2026</p>
-    <h1 class="headline">
-      There's Something<br>in the <span class="air-word">AIR</span>
-    </h1>
-  </div>
+<!-- ══ SCENE SVG ══ -->
+<div id="scene-wrap">
+  <svg id="scene-svg" viewBox="0 0 1440 280"
+       preserveAspectRatio="xMidYMax meet"
+       xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#0c1e38"/>
+        <stop offset="100%" stop-color="#060d1e"/>
+      </linearGradient>
+      <linearGradient id="gg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#060d1e"/>
+        <stop offset="100%" stop-color="#020810"/>
+      </linearGradient>
+    </defs>
 
-  <!-- SCENE -->
-  <div class="scene">
-    <!-- Floating clouds -->
-    <div class="cloud c1"></div>
-    <div class="cloud c2"></div>
-    <div class="cloud c3"></div>
+    <!-- ── FAR HILLS ── -->
+    <path d="M0,185 Q180,115 380,155 Q580,195 720,132
+             Q880,72  1080,142 Q1260,205 1440,162 L1440,280 L0,280 Z"
+          fill="#0b1c35" opacity="0.55"/>
 
-    <!-- Coming Soon label -->
-    <div class="coming-soon-wrap">
-      <div class="coming-soon">Coming Soon</div>
-      <div class="cs-sub">June – November 2026</div>
-    </div>
+    <!-- ── BUILDINGS LEFT ── -->
+    <g fill="#070e1d">
+      <rect x="28"  y="188" width="22" height="92"/>
+      <rect x="54"  y="174" width="16" height="106"/>
+      <rect x="74"  y="198" width="26" height="82"/>
+      <rect x="104" y="170" width="20" height="110"/>
+      <rect x="128" y="186" width="14" height="94"/>
+      <rect x="146" y="198" width="24" height="82"/>
+      <!-- antennae -->
+      <rect x="105" y="162" width="2" height="8"/>
+      <rect x="56"  y="166" width="2" height="8"/>
+    </g>
+    <g fill="rgba(155,210,255,0.22)">
+      <rect x="31"  y="193" width="4" height="3"/>
+      <rect x="37"  y="193" width="4" height="3"/>
+      <rect x="31"  y="202" width="4" height="3"/>
+      <rect x="57"  y="179" width="4" height="3"/>
+      <rect x="63"  y="179" width="4" height="3"/>
+      <rect x="57"  y="188" width="4" height="3"/>
+      <rect x="106" y="175" width="4" height="3"/>
+      <rect x="112" y="175" width="4" height="3"/>
+      <rect x="106" y="184" width="4" height="3"/>
+    </g>
 
-    <!-- Arrow SVG overlay -->
-    <svg class="arrow-svg" viewBox="0 0 540 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- left character arrow -->
-      <path class="arrow-line" d="M 148 238 Q 160 150 220 80" />
-      <!-- right character arrow -->
-      <path class="arrow-line" d="M 390 235 Q 380 150 320 80" style="animation-delay:-.9s" />
-    </svg>
+    <!-- ── BUILDINGS RIGHT ── -->
+    <g fill="#070e1d">
+      <rect x="1238" y="183" width="24" height="97"/>
+      <rect x="1266" y="170" width="18" height="110"/>
+      <rect x="1288" y="190" width="28" height="90"/>
+      <rect x="1320" y="176" width="16" height="104"/>
+      <rect x="1340" y="192" width="22" height="88"/>
+      <rect x="1365" y="182" width="26" height="98"/>
+      <rect x="1395" y="200" width="20" height="80"/>
+      <rect x="1268" y="162" width="2" height="8"/>
+      <rect x="1322" y="168" width="2" height="8"/>
+    </g>
+    <g fill="rgba(155,210,255,0.22)">
+      <rect x="1241" y="188" width="4" height="3"/>
+      <rect x="1247" y="188" width="4" height="3"/>
+      <rect x="1269" y="175" width="4" height="3"/>
+      <rect x="1275" y="175" width="4" height="3"/>
+      <rect x="1290" y="195" width="4" height="3"/>
+      <rect x="1296" y="195" width="4" height="3"/>
+      <rect x="1323" y="181" width="4" height="3"/>
+    </g>
 
-    <!-- Earth + Characters SVG -->
-    <div class="earth-wrap">
-      <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" aria-label="Earth with characters">
-        <defs>
-          <!-- Earth gradient -->
-          <radialGradient id="earthGrad" cx="45%" cy="40%" r="55%">
-            <stop offset="0%"   stop-color="#6ec6f5"/>
-            <stop offset="40%"  stop-color="#4a90e2"/>
-            <stop offset="100%" stop-color="#1a5fa8"/>
-          </radialGradient>
-          <!-- Land -->
-          <radialGradient id="landGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%"   stop-color="#6ecf7b"/>
-            <stop offset="100%" stop-color="#3aaf52"/>
-          </radialGradient>
-          <!-- Earth shadow -->
-          <radialGradient id="shadowGrad" cx="72%" cy="68%" r="52%">
-            <stop offset="0%"   stop-color="rgba(0,0,80,.18)"/>
-            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
-          </radialGradient>
-          <!-- Glow under earth -->
-          <radialGradient id="glowGrad" cx="50%" cy="100%" r="55%">
-            <stop offset="0%"   stop-color="#c8e8ff" stop-opacity=".5"/>
-            <stop offset="100%" stop-color="transparent"/>
-          </radialGradient>
-          <clipPath id="earthClip">
-            <circle cx="170" cy="185" r="115"/>
-          </clipPath>
-        </defs>
+    <!-- ── AIR SENSORS ── -->
+    <!-- Sensor A -->
+    <line x1="318" y1="244" x2="318" y2="266" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
+    <rect x="312" y="238" width="12" height="8" rx="2"
+          fill="rgba(12,85,145,0.5)" stroke="rgba(90,175,215,0.28)" stroke-width="0.8"/>
+    <circle cx="318" cy="238" r="1.8" fill="rgba(72,220,175,0.9)">
+      <animate attributeName="opacity" values="1;0.25;1" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
 
-        <!-- Glow -->
-        <ellipse cx="170" cy="260" rx="130" ry="28" fill="url(#glowGrad)" />
+    <!-- Sensor B -->
+    <line x1="688" y1="240" x2="688" y2="262" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
+    <rect x="682" y="234" width="12" height="8" rx="2"
+          fill="rgba(12,85,145,0.5)" stroke="rgba(90,175,215,0.28)" stroke-width="0.8"/>
+    <circle cx="688" cy="234" r="1.8" fill="rgba(72,220,175,0.9)">
+      <animate attributeName="opacity" values="1;0.25;1" dur="3.2s" repeatCount="indefinite"/>
+    </circle>
 
-        <!-- Earth base -->
-        <circle cx="170" cy="185" r="115" fill="url(#earthGrad)" />
+    <!-- Sensor C -->
+    <line x1="1108" y1="243" x2="1108" y2="265" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
+    <rect x="1102" y="237" width="12" height="8" rx="2"
+          fill="rgba(12,85,145,0.5)" stroke="rgba(90,175,215,0.28)" stroke-width="0.8"/>
+    <circle cx="1108" cy="237" r="1.8" fill="rgba(72,220,175,0.9)">
+      <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
 
-        <!-- Ocean shimmer lines -->
-        <g clip-path="url(#earthClip)" opacity=".18">
-          <path d="M 55 170 Q 90 160 110 175 Q 130 190 160 175 Q 195 158 230 174 Q 260 188 285 172" stroke="white" stroke-width="1.2" fill="none"/>
-          <path d="M 55 195 Q 95 185 125 200 Q 155 214 185 200 Q 215 185 255 200 Q 275 208 290 198" stroke="white" stroke-width="1" fill="none"/>
-          <path d="M 58 220 Q 100 210 140 225 Q 170 235 200 222 Q 230 208 275 220" stroke="white" stroke-width="1" fill="none"/>
-        </g>
+    <!-- ── PINE TREES LEFT ── -->
+    <g class="tree sw-a">
+      <polygon points="382,264 360,208 404,208" fill="#060d1b"/>
+      <polygon points="382,238 362,186 402,186" fill="#071020"/>
+      <polygon points="382,214 365,170 399,170" fill="#081121"/>
+      <rect x="378" y="264" width="8" height="14" fill="#040b16"/>
+    </g>
+    <g class="tree sw-b">
+      <polygon points="422,268 402,218 442,218" fill="#060d1b"/>
+      <polygon points="422,244 404,198 440,198" fill="#071020"/>
+      <polygon points="422,220 406,182 438,182" fill="#081121"/>
+      <rect x="418" y="268" width="8" height="11" fill="#040b16"/>
+    </g>
+    <g class="tree sw-c">
+      <polygon points="458,266 438,218 478,218" fill="#060d1b"/>
+      <polygon points="458,242 440,196 476,196" fill="#071020"/>
+      <polygon points="458,218 442,180 474,180" fill="#081121"/>
+      <rect x="454" y="266" width="8" height="13" fill="#040b16"/>
+    </g>
 
-        <!-- Land masses -->
-        <!-- Asia / mainland -->
-        <path clip-path="url(#earthClip)" d="M 185 140 Q 210 130 240 138 Q 255 145 265 160 Q 272 175 262 188 Q 250 200 232 196 Q 214 192 205 178 Q 196 168 185 172 Q 175 175 172 168 Q 170 158 185 140 Z"
-              fill="url(#landGrad)" opacity=".88"/>
-        <!-- Europe / Africa blob -->
-        <path clip-path="url(#earthClip)" d="M 130 148 Q 145 138 158 142 Q 168 147 170 160 Q 172 172 162 178 Q 150 183 140 176 Q 128 168 128 158 Q 127 152 130 148 Z"
-              fill="url(#landGrad)" opacity=".8"/>
-        <!-- Small island -->
-        <ellipse clip-path="url(#earthClip)" cx="215" cy="215" rx="14" ry="9" fill="url(#landGrad)" opacity=".75"/>
-        <!-- Americas hint -->
-        <path clip-path="url(#earthClip)" d="M 80 180 Q 90 168 100 172 Q 110 176 112 190 Q 113 204 102 210 Q 90 216 83 206 Q 76 196 80 180 Z"
-              fill="url(#landGrad)" opacity=".7"/>
+    <!-- ── PINE TREES RIGHT ── -->
+    <g class="tree sw-b">
+      <polygon points="988,266 968,214 1008,214" fill="#060d1b"/>
+      <polygon points="988,240 968,192 1008,192" fill="#071020"/>
+      <polygon points="988,216 970,176 1006,176" fill="#081121"/>
+      <rect x="984" y="266" width="8" height="13" fill="#040b16"/>
+    </g>
+    <g class="tree sw-a">
+      <polygon points="1025,270 1006,220 1044,220" fill="#060d1b"/>
+      <polygon points="1025,246 1007,200 1043,200" fill="#071020"/>
+      <polygon points="1025,222 1008,184 1042,184" fill="#081121"/>
+      <rect x="1021" y="270" width="8" height="10" fill="#040b16"/>
+    </g>
+    <g class="tree sw-c">
+      <polygon points="1060,264 1042,216 1078,216" fill="#060d1b"/>
+      <polygon points="1060,240 1043,194 1077,194" fill="#071020"/>
+      <polygon points="1060,216 1044,178 1076,178" fill="#081121"/>
+      <rect x="1056" y="264" width="8" height="14" fill="#040b16"/>
+    </g>
 
-        <!-- Earth shadow overlay -->
-        <circle cx="170" cy="185" r="115" fill="url(#shadowGrad)" />
+    <!-- ── WIND TURBINE 1 (x=562) ── -->
+    <!-- Turbine tower + nacelle -->
+    <polygon points="558,268 562,192 568,192 572,268" fill="#07101e"/>
+    <rect x="559" y="188" width="17" height="6" rx="2" fill="#0b1c32"/>
+    <!-- Rotating blades: hub at (565, 191). Blade tip is 34px above hub = y=157 -->
+    <g class="t-bl">
+      <!-- blade 1 pointing up -->
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
+            fill="#0d2040" transform-origin="565 191" transform-box="fill-box"/>
+      <!-- blade 2: rotated 120° around hub -->
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
+            fill="#0d2040" transform="rotate(120,565,191)"/>
+      <!-- blade 3: rotated 240° around hub -->
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
+            fill="#0d2040" transform="rotate(240,565,191)"/>
+      <circle cx="565" cy="191" r="3.5" fill="#091827"/>
+    </g>
 
-        <!-- Earth shine -->
-        <ellipse cx="138" cy="148" rx="30" ry="18" fill="white" opacity=".12" transform="rotate(-30 138 148)"/>
+    <!-- ── WIND TURBINE 2 (x=820) ── -->
+    <polygon points="816,270 820,208 826,208 830,270" fill="#07101e"/>
+    <rect x="817" y="204" width="16" height="5.5" rx="2" fill="#0b1c32"/>
+    <g class="t-bl t-bl-b">
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
+            fill="#0d2040" transform="rotate(0,823,207)"/>
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
+            fill="#0d2040" transform="rotate(120,823,207)"/>
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
+            fill="#0d2040" transform="rotate(240,823,207)"/>
+      <circle cx="823" cy="207" r="3" fill="#091827"/>
+    </g>
 
-        <!-- Earth outline -->
-        <circle cx="170" cy="185" r="115" fill="none" stroke="rgba(74,144,226,.3)" stroke-width="1.5"/>
+    <!-- ── WIND TURBINE 3 (x=1258, far/small) ── -->
+    <g opacity="0.62">
+      <polygon points="1254,270 1258,225 1262,225 1266,270" fill="#07101e"/>
+      <rect x="1255" y="222" width="12" height="4.5" rx="1.5" fill="#0b1c32"/>
+      <g class="t-bl t-bl-c">
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
+              fill="#0d2040" transform="rotate(0,1259,224)"/>
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
+              fill="#0d2040" transform="rotate(120,1259,224)"/>
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
+              fill="#0d2040" transform="rotate(240,1259,224)"/>
+        <circle cx="1259" cy="224" r="2.4" fill="#091827"/>
+      </g>
+    </g>
 
-        <!-- ─── CHARACTER LEFT ─── -->
-        <g id="char-left" transform="translate(105, 155)">
-          <!-- body shadow -->
-          <ellipse cx="18" cy="74" rx="14" ry="5" fill="rgba(0,0,0,.08)"/>
-          <!-- legs -->
-          <line x1="14" y1="58" x2="10" y2="73" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="22" y1="58" x2="26" y2="73" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- shoes -->
-          <ellipse cx="9"  cy="73.5" rx="5.5" ry="3" fill="#4a90e2"/>
-          <ellipse cx="27" cy="73.5" rx="5.5" ry="3" fill="#4a90e2"/>
-          <!-- body -->
-          <rect x="9" y="33" width="18" height="27" rx="7" fill="#ff9f7b"/>
-          <!-- shirt stripe -->
-          <rect x="9" y="43" width="18" height="5" rx="2" fill="rgba(255,255,255,.35)"/>
-          <!-- arm left (raised pointing) -->
-          <line x1="9"  y1="38" x2="-4" y2="20" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- arm right (relaxed) -->
-          <line x1="27" y1="38" x2="34" y2="48" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- neck -->
-          <rect x="14" y="24" width="8" height="10" rx="4" fill="#fbbf84"/>
-          <!-- head -->
-          <circle cx="18" cy="18" r="14" fill="#fbbf84"/>
-          <!-- hair -->
-          <path d="M 5 14 Q 8 2 18 2 Q 28 2 31 14" fill="#5c3a1e" stroke="none"/>
-          <!-- eyes -->
-          <circle cx="13" cy="16" r="2.2" fill="#2d2d2d"/>
-          <circle cx="23" cy="16" r="2.2" fill="#2d2d2d"/>
-          <!-- eye shine -->
-          <circle cx="14" cy="15" r=".8" fill="white"/>
-          <circle cx="24" cy="15" r=".8" fill="white"/>
-          <!-- smile -->
-          <path d="M 13 22 Q 18 27 23 22" stroke="#c97042" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- rosy cheeks -->
-          <circle cx="10" cy="20" r="3" fill="rgba(255,100,80,.2)"/>
-          <circle cx="26" cy="20" r="3" fill="rgba(255,100,80,.2)"/>
-          <!-- pointing finger -->
-          <circle cx="-5" cy="19" r="2.5" fill="#fbbf84"/>
-        </g>
+    <!-- ── GROUND + ROAD ── -->
+    <rect x="0" y="264" width="1440" height="16" fill="#060c1a"/>
+    <rect x="0" y="267" width="1440" height="11" fill="#07101c"/>
+    <!-- road dashes -->
+    <g fill="rgba(100,180,255,0.09)">
+      <rect x="0"    y="272" width="52" height="1.5"/>
+      <rect x="72"   y="272" width="52" height="1.5"/>
+      <rect x="144"  y="272" width="52" height="1.5"/>
+      <rect x="216"  y="272" width="52" height="1.5"/>
+      <rect x="288"  y="272" width="52" height="1.5"/>
+      <rect x="360"  y="272" width="52" height="1.5"/>
+      <rect x="432"  y="272" width="52" height="1.5"/>
+      <rect x="504"  y="272" width="52" height="1.5"/>
+      <rect x="576"  y="272" width="52" height="1.5"/>
+      <rect x="648"  y="272" width="52" height="1.5"/>
+      <rect x="720"  y="272" width="52" height="1.5"/>
+      <rect x="792"  y="272" width="52" height="1.5"/>
+      <rect x="864"  y="272" width="52" height="1.5"/>
+      <rect x="936"  y="272" width="52" height="1.5"/>
+      <rect x="1008" y="272" width="52" height="1.5"/>
+      <rect x="1080" y="272" width="52" height="1.5"/>
+      <rect x="1152" y="272" width="52" height="1.5"/>
+      <rect x="1224" y="272" width="52" height="1.5"/>
+      <rect x="1296" y="272" width="52" height="1.5"/>
+      <rect x="1368" y="272" width="52" height="1.5"/>
+    </g>
 
-        <!-- ─── CHARACTER RIGHT ─── -->
-        <g id="char-right" transform="translate(197, 150)">
-          <!-- body shadow -->
-          <ellipse cx="18" cy="78" rx="14" ry="5" fill="rgba(0,0,0,.08)"/>
-          <!-- legs -->
-          <line x1="14" y1="62" x2="10" y2="77" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <line x1="22" y1="62" x2="26" y2="77" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- shoes -->
-          <ellipse cx="9"  cy="77.5" rx="5.5" ry="3" fill="#e8604c"/>
-          <ellipse cx="27" cy="77.5" rx="5.5" ry="3" fill="#e8604c"/>
-          <rect x="9" y="37" width="18" height="27" rx="7" fill="#f472b6"/>
-          <!-- body stripe -->
-          <rect x="9" y="47" width="18" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
-          <!-- arm right (raised pointing) -->
-          <line x1="27" y1="42" x2="40" y2="24" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- arm left (relaxed) -->
-          <line x1="9"  y1="42" x2="2"  y2="52" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
-          <!-- neck -->
-          <rect x="14" y="28" width="8" height="10" rx="4" fill="#fbbf84"/>
-          <!-- head -->
-          <circle cx="18" cy="22" r="14" fill="#fbbf84"/>
-          <!-- hair – pigtails -->
-          <path d="M 4 18 Q 6 4 18 4 Q 30 4 32 18" fill="#8b4513" stroke="none"/>
-          <path d="M 4 18 Q 0 8 2 4 Q 6 0 8 8 Z" fill="#8b4513"/>
-          <path d="M 32 18 Q 36 8 34 4 Q 30 0 28 8 Z" fill="#8b4513"/>
-          <!-- eyes -->
-          <circle cx="13" cy="20" r="2.2" fill="#2d2d2d"/>
-          <circle cx="23" cy="20" r="2.2" fill="#2d2d2d"/>
-          <!-- eye shine -->
-          <circle cx="14" cy="19" r=".8" fill="white"/>
-          <circle cx="24" cy="19" r=".8" fill="white"/>
-          <!-- smile -->
-          <path d="M 13 26 Q 18 31 23 26" stroke="#c97042" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- rosy cheeks -->
-          <circle cx="10" cy="24" r="3" fill="rgba(255,100,80,.2)"/>
-          <circle cx="26" cy="24" r="3" fill="rgba(255,100,80,.2)"/>
-          <!-- pointing finger -->
-          <circle cx="41" cy="23" r="2.5" fill="#fbbf84"/>
-        </g>
+    <!-- ── VEHICLES (SMIL translate) ── -->
+    <!-- Car 1 → right -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-140 0" to="1600 0" dur="24s" repeatCount="indefinite"/>
+      <rect x="0" y="260" width="46" height="15" rx="3.5" fill="#09192c"/>
+      <rect x="4" y="253" width="28" height="9" rx="2.5" fill="#0a1e35"/>
+      <rect x="7"  y="255" width="10" height="6" rx="1" fill="rgba(100,175,255,0.2)"/>
+      <rect x="19" y="255" width="10" height="6" rx="1" fill="rgba(100,175,255,0.2)"/>
+      <rect x="42" y="262" width="5"  height="3" rx="1" fill="rgba(255,210,100,0.5)"/>
+      <circle cx="9"  cy="275" r="3.2" fill="#040a14"/>
+      <circle cx="34" cy="275" r="3.2" fill="#040a14"/>
+    </g>
+    <!-- Car 2 → right (offset) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-140 0" to="1600 0" dur="30s" begin="-14s" repeatCount="indefinite"/>
+      <rect x="0" y="261" width="40" height="14" rx="3" fill="#081422"/>
+      <rect x="3" y="255" width="24" height="8" rx="2" fill="#091828"/>
+      <rect x="6"  y="257" width="9"  height="5" rx="1" fill="rgba(100,175,255,0.16)"/>
+      <rect x="17" y="257" width="9"  height="5" rx="1" fill="rgba(100,175,255,0.16)"/>
+      <rect x="37" y="263" width="4"  height="3" rx="1" fill="rgba(255,200,80,0.45)"/>
+      <circle cx="8"  cy="275" r="3"   fill="#040a14"/>
+      <circle cx="30" cy="275" r="3"   fill="#040a14"/>
+    </g>
+    <!-- Bus/truck ← left -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1590 0" to="-180 0" dur="32s" begin="-8s" repeatCount="indefinite"/>
+      <rect x="0" y="257" width="62" height="18" rx="3" fill="#080f1e"/>
+      <rect x="0" y="250" width="40" height="10" rx="2" fill="#0a1528"/>
+      <rect x="3"  y="252" width="15" height="7" rx="1" fill="rgba(100,175,255,0.13)"/>
+      <rect x="20" y="252" width="15" height="7" rx="1" fill="rgba(100,175,255,0.13)"/>
+      <rect x="0"  y="260" width="5"  height="4" rx="1" fill="rgba(255,50,50,0.4)"/>
+      <circle cx="12" cy="275" r="4"  fill="#040a14"/>
+      <circle cx="50" cy="275" r="4"  fill="#040a14"/>
+    </g>
 
-        <!-- ─── SMALL KID (center, peeking) ─── -->
-        <g id="char-center" transform="translate(157, 165)">
-          <ellipse cx="12" cy="55" rx="10" ry="4" fill="rgba(0,0,0,.07)"/>
-          <line x1="8"  y1="42" x2="5"  y2="54" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
-          <line x1="16" y1="42" x2="19" y2="54" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
-          <ellipse cx="4"  cy="54.5" rx="4.5" ry="2.5" fill="#6366f1"/>
-          <ellipse cx="20" cy="54.5" rx="4.5" ry="2.5" fill="#6366f1"/>
-          <rect x="5" y="22" width="14" height="22" rx="6" fill="#a5f3fc"/>
-          <line x1="5"  y1="26" x2="-2" y2="35" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
-          <line x1="19" y1="26" x2="26" y2="35" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
-          <rect x="9" y="13" width="6" height="9" rx="3" fill="#fbbf84"/>
-          <circle cx="12" cy="10" r="11" fill="#fbbf84"/>
-          <path d="M 2 8 Q 4 0 12 0 Q 20 0 22 8" fill="#4a3728" stroke="none"/>
-          <circle cx="8"  cy="9"  r="1.8" fill="#2d2d2d"/>
-          <circle cx="16" cy="9"  r="1.8" fill="#2d2d2d"/>
-          <circle cx="9"  cy="8"  r=".7"  fill="white"/>
-          <circle cx="17" cy="8"  r=".7"  fill="white"/>
-          <path d="M 8 15 Q 12 19 16 15" stroke="#c97042" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-        </g>
+    <!-- ── PLANES (SMIL translate) ── -->
+    <!-- Plane 1 → right, altitude 95 -->
+    <g opacity="0.82">
+      <animateTransform attributeName="transform" type="translate"
+        from="-180 95" to="1640 95" dur="30s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="28" ry="4.2" fill="#0e2245"/>
+      <polygon points="-4,-2 -4,11  14,1.5" fill="#0f2848"/>
+      <polygon points="-4, 2 -4,-11 14,-1.5" fill="#0f2848"/>
+      <polygon points="-22,-2 -28,-8 -16,-2" fill="#0e2245"/>
+      <line x1="-28" y1="0" x2="-130" y2="0"
+            stroke="rgba(190,220,255,0.055)" stroke-width="2"/>
+      <circle cx="14" cy=" 1.5" r="1.8" fill="rgba(255,75,75,0.9)">
+        <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="14" cy="-1.5" r="1.8" fill="rgba(70,215,70,0.9)">
+        <animate attributeName="opacity" values="0;1;0" dur="1.1s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Plane 2 → right, altitude 50, smaller -->
+    <g opacity="0.52">
+      <animateTransform attributeName="transform" type="translate"
+        from="-180 48" to="1640 48" dur="44s" begin="-20s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="18" ry="2.8" fill="#0d2040"/>
+      <polygon points="-2,-1.5 -2,7  9,1"   fill="#0e2545"/>
+      <polygon points="-2, 1.5 -2,-7 9,-1"  fill="#0e2545"/>
+      <polygon points="-14,-1.5 -18,-5.5 -10,-1.5" fill="#0d2040"/>
+      <line x1="-18" y1="0" x2="-90" y2="0"
+            stroke="rgba(190,220,255,0.04)" stroke-width="1.5"/>
+      <circle cx="9" cy="1" r="1.2" fill="rgba(255,75,75,0.7)">
+        <animate attributeName="opacity" values="1;0;1" dur="1.4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Plane 3 ← left, altitude 72 -->
+    <g opacity="0.70">
+      <animateTransform attributeName="transform" type="translate"
+        from="1640 72" to="-180 72" dur="38s" begin="-12s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <ellipse cx="0" cy="0" rx="23" ry="3.8" fill="#0e2245"/>
+        <polygon points="-3,-2 -3,10 12,1.5" fill="#0f2848"/>
+        <polygon points="-3, 2 -3,-10 12,-1.5" fill="#0f2848"/>
+        <polygon points="-19,-2 -24,-7 -14,-2" fill="#0e2245"/>
+        <line x1="-24" y1="0" x2="-110" y2="0"
+              stroke="rgba(190,220,255,0.045)" stroke-width="1.5"/>
+        <circle cx="12" cy="1.5" r="1.5" fill="rgba(70,215,70,0.8)">
+          <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
 
-      </svg>
-    </div>
-  </div><!-- end .scene -->
-
-  <!-- META -->
-  <div class="meta">
-    <div class="meta-item">
-      <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-      Bangladesh's Premier Innovation Event
-    </div>
-    <div class="meta-item">
-      <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-      </svg>
-      June – November 2026
-    </div>
-    <div class="meta-item">
-      <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-      National Science Museum, Dhaka
-    </div>
-  </div>
-
-  <div class="divider"></div>
-
-</main>
-
-<!-- TICKER -->
-<div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker-inner">
-    <span class="ticker-text">Aviation Pollution <span class="ticker-sep">✦</span> Urban Air Quality <span class="ticker-sep">✦</span> SAF & Engine Optimization <span class="ticker-sep">✦</span> PM2.5 Mitigation <span class="ticker-sep">✦</span> Methane Capture <span class="ticker-sep">✦</span> Atmospheric Intelligence <span class="ticker-sep">✦</span> Cleaner Skies <span class="ticker-sep">✦</span> Smarter Cities</span>
-    <span class="ticker-text" aria-hidden="true">Aviation Pollution <span class="ticker-sep">✦</span> Urban Air Quality <span class="ticker-sep">✦</span> SAF & Engine Optimization <span class="ticker-sep">✦</span> PM2.5 Mitigation <span class="ticker-sep">✦</span> Methane Capture <span class="ticker-sep">✦</span> Atmospheric Intelligence <span class="ticker-sep">✦</span> Cleaner Skies <span class="ticker-sep">✦</span> Smarter Cities</span>
-  </div>
+    <!-- foreground ground fade -->
+    <rect x="0" y="276" width="1440" height="4" fill="url(#gg)"/>
+  </svg>
 </div>
 
+<!-- ══ TEXT ══ -->
+<div id="stage">
+  <div class="t-hack">Air Hackathon</div>
+  <div class="t-year">2026</div>
+  <div class="div-line"></div>
+  <div class="t-soon">Coming Soon</div>
+</div>
+
+<!-- ══ SENSOR BAR ══ -->
+<div id="sbar">
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">42</span></div>
+  <div class="si"><div class="si-dot y"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">18.4 µg/m³</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">CO₂</span><span class="si-val" id="s-co2">412 ppm</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">NO₂</span><span class="si-val">0.04 ppm</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">O₃</span><span class="si-val">0.03 ppm</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Temp</span><span class="si-val">28.5 °C</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Humidity</span><span class="si-val">72 %</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Wind</span><span class="si-val">14 km/h NE</span></div>
+</div>
+
+<div id="vignette"></div>
+
 <script>
-(function () {
-  /* ─── PARTICLE CANVAS ─── */
-  const canvas = document.getElementById('particle-canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, particles = [];
+// ══════════════════════════════════════════════════════ CURSOR
+const cRing = document.getElementById('cur-ring');
+const cDot  = document.getElementById('cur-dot');
+let mx = innerWidth / 2, my = innerHeight / 2;
+let rx = mx, ry = my;
 
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+// Only hide native cursor once JS cursor is ready
+document.documentElement.classList.add('js-cursor');
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX;
+  my = e.clientY;
+  cDot.style.left = mx + 'px';
+  cDot.style.top  = my + 'px';
+});
+
+(function rafCursor() {
+  rx += (mx - rx) * 0.1;
+  ry += (my - ry) * 0.1;
+  cRing.style.left = rx + 'px';
+  cRing.style.top  = ry + 'px';
+  requestAnimationFrame(rafCursor);
+}());
+
+// ══════════════════════════════════════════════════════ STARS
+const sc   = document.getElementById('c-stars');
+const sctx = sc.getContext('2d');
+let stars  = [];
+
+function buildStars() {
+  sc.width  = innerWidth;
+  sc.height = innerHeight;
+  const n = Math.floor(sc.width * sc.height / 2600);
+  stars = Array.from({ length: n }, () => ({
+    x: Math.random() * sc.width,
+    y: Math.random() * sc.height * 0.60,
+    r: Math.random() * 1.1 + 0.15,
+    a: Math.random() * 0.62 + 0.1,
+    p: Math.random() * Math.PI * 2,
+    s: Math.random() * 0.45 + 0.18
+  }));
+}
+
+function rafStars(ts) {
+  const t = ts * 0.001;
+  sctx.clearRect(0, 0, sc.width, sc.height);
+  for (const s of stars) {
+    const a = s.a * (0.68 + 0.32 * Math.sin(t * s.s + s.p));
+    sctx.beginPath();
+    sctx.arc(s.x, s.y, s.r, 0, 6.2832);
+    sctx.fillStyle = `rgba(210,230,255,${a})`;
+    sctx.fill();
   }
-  window.addEventListener('resize', resize);
-  resize();
+  requestAnimationFrame(rafStars);
+}
 
-  function rand(a, b) { return a + Math.random() * (b - a); }
+buildStars();
+requestAnimationFrame(rafStars);
 
-  const COLORS = [
-    'rgba(74,144,226,PAL)',   // blue
-    'rgba(56,189,248,PAL)',   // teal
-    'rgba(168,216,234,PAL)',  // air
-    'rgba(200,232,255,PAL)',  // sky
-    'rgba(255,255,255,PAL)',  // white
-  ];
+let starResizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(starResizeTimer);
+  starResizeTimer = setTimeout(buildStars, 150);
+});
 
-  function makeParticle() {
-    const col = COLORS[Math.floor(Math.random() * COLORS.length)];
-    const alpha = rand(.15, .55);
-    return {
-      x:    rand(0, W),
-      y:    rand(0, H),
-      r:    rand(1.5, 5.5),
-      vx:   rand(-.3, .3),
-      vy:   rand(-.55, -.15),
-      a:    alpha,
-      aDir: Math.random() > .5 ? 1 : -1,
-      color: col.replace('PAL', alpha.toFixed(2)),
-    };
+// ══════════════════════════════════════════════════════ AIR PARTICLES
+const pc   = document.getElementById('c-particles');
+const pctx = pc.getContext('2d');
+const PCNT = 200;
+let parts  = [];
+
+function buildParticles() {
+  pc.width  = innerWidth;
+  pc.height = innerHeight;
+}
+
+function mkPart(rand) {
+  return {
+    x:  Math.random() * pc.width,
+    y:  rand ? Math.random() * pc.height : pc.height + 6,
+    r:  Math.random() * 1.4 + 0.2,
+    vx: (Math.random() - 0.5) * 0.32,
+    vy: -(Math.random() * 0.42 + 0.1),
+    a:  Math.random() * 0.25 + 0.04,
+    h:  [196, 200, 185, 208][Math.floor(Math.random() * 4)],
+    ph: Math.random() * 1000
+  };
+}
+
+function rafParticles() {
+  pctx.clearRect(0, 0, pc.width, pc.height);
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    p.x += p.vx + Math.sin(p.y * 0.011 + p.ph) * 0.11;
+    p.y += p.vy;
+    if (p.y < -8) { parts[i] = mkPart(false); continue; }
+    pctx.beginPath();
+    pctx.arc(p.x, p.y, p.r, 0, 6.2832);
+    pctx.fillStyle = `hsla(${p.h},52%,86%,${p.a})`;
+    pctx.fill();
   }
+  requestAnimationFrame(rafParticles);
+}
 
-  for (let i = 0; i < 110; i++) particles.push(makeParticle());
+buildParticles();
+parts = Array.from({ length: PCNT }, () => mkPart(true));
+requestAnimationFrame(rafParticles);
 
-  function animateParticles() {
-    ctx.clearRect(0, 0, W, H);
-    for (let p of particles) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
+let partResizeTimer;
+addEventListener('resize', () => {
+  clearTimeout(partResizeTimer);
+  partResizeTimer = setTimeout(buildParticles, 150);
+});
 
-      p.x += p.vx;
-      p.y += p.vy;
-      p.a += p.aDir * .003;
-      if (p.a > .55 || p.a < .1) p.aDir *= -1;
+// ══════════════════════════════════════════════════════ SENSOR FLUCTUATION
+const sDefs = [
+  { id: 's-aqi', base: 42,   range: 6,   dec: 0, unit: ''        },
+  { id: 's-pm',  base: 18.4, range: 2.5, dec: 1, unit: ' µg/m³' },
+  { id: 's-co2', base: 412,  range: 4,   dec: 0, unit: ' ppm'   }
+];
+const sEls = sDefs.map(d => ({ ...d, el: document.getElementById(d.id) }));
 
-      // respawn when off screen
-      if (p.y < -10 || p.x < -10 || p.x > W + 10) {
-        Object.assign(p, makeParticle());
-        p.y = H + 5;
-        if (p.x < -10) p.x = W + 5;
-      }
-    }
-    requestAnimationFrame(animateParticles);
+setInterval(() => {
+  for (const s of sEls) {
+    const v = s.base + (Math.random() - 0.5) * s.range;
+    s.el.textContent = v.toFixed(s.dec) + s.unit;
   }
-  animateParticles();
-
-  /* ─── CHARACTER BOB ANIMATION ─── */
-  const charLeft   = document.getElementById('char-left');
-  const charRight  = document.getElementById('char-right');
-  const charCenter = document.getElementById('char-center');
-
-  let t = 0;
-  function bobChars() {
-    t += .018;
-    const l = Math.sin(t)         * 3;
-    const r = Math.sin(t + 1.1)   * 3;
-    const c = Math.sin(t + 2.2)   * 3;
-    charLeft.style.transform   = `translate(105px, ${155 + l}px)`;
-    charRight.style.transform  = `translate(197px, ${150 + r}px)`;
-    charCenter.style.transform = `translate(157px, ${165 + c}px)`;
-    requestAnimationFrame(bobChars);
-  }
-  bobChars();
-
-  /* ─── SUBTLE PARALLAX ─── */
-  document.addEventListener('mousemove', function (e) {
-    const cx = window.innerWidth  / 2;
-    const cy = window.innerHeight / 2;
-    const dx = (e.clientX - cx) / cx;
-    const dy = (e.clientY - cy) / cy;
-    const scene = document.querySelector('.scene');
-    if (scene) {
-      scene.style.transform = `translate(${dx * 6}px, ${dy * 4}px)`;
-    }
-  });
-
-})();
+}, 3500);
 </script>
 </body>
 </html>
