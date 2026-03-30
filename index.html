@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Air Hackathon 2026 landing page.">
+  <meta name="theme-color" content="#020810">
   <title>Air Hackathon 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +16,8 @@
     html.js-cursor { cursor: none; }
 
     body {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      min-height: 100dvh;
       overflow: hidden;
       background: #020810;
       font-family: 'Inter', sans-serif;
@@ -267,6 +269,10 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
       .t-hack, .t-year, .t-soon, .div-line, #sbar { opacity: 1 !important; filter: none !important; transform: none !important; }
+    }
+    @media (pointer: coarse), (hover: none) {
+      #cur-ring, #cur-dot { display: none; }
+      html.js-cursor { cursor: auto; }
     }
   </style>
 </head>
@@ -584,12 +590,12 @@
 </div>
 
 <!-- ══ TEXT ══ -->
-<div id="stage">
+<main id="stage" aria-label="Air Hackathon landing content">
   <div class="t-hack">Air Hackathon</div>
   <div class="t-year">2026</div>
   <div class="div-line"></div>
   <div class="t-soon">Coming Soon</div>
-</div>
+</main>
 
 <!-- ══ SENSOR BAR ══ -->
 <div id="sbar">
@@ -611,37 +617,47 @@ const cRing = document.getElementById('cur-ring');
 const cDot  = document.getElementById('cur-dot');
 let mx = innerWidth / 2, my = innerHeight / 2;
 let rx = mx, ry = my;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const supportsFinePointer = window.matchMedia('(pointer: fine)').matches && window.matchMedia('(hover: hover)').matches;
+const useCustomCursor = supportsFinePointer && !prefersReducedMotion;
 
-// Only hide native cursor once JS cursor is ready
-document.documentElement.classList.add('js-cursor');
+if (useCustomCursor && cRing && cDot) {
+  // Only hide native cursor once JS cursor is ready
+  document.documentElement.classList.add('js-cursor');
 
-document.addEventListener('mousemove', e => {
-  mx = e.clientX;
-  my = e.clientY;
-  cDot.style.left = mx + 'px';
-  cDot.style.top  = my + 'px';
-});
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    cDot.style.left = mx + 'px';
+    cDot.style.top  = my + 'px';
+  });
 
-(function rafCursor() {
-  rx += (mx - rx) * 0.1;
-  ry += (my - ry) * 0.1;
-  cRing.style.left = rx + 'px';
-  cRing.style.top  = ry + 'px';
-  requestAnimationFrame(rafCursor);
-}());
+  (function rafCursor() {
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    cRing.style.left = rx + 'px';
+    cRing.style.top  = ry + 'px';
+    requestAnimationFrame(rafCursor);
+  }());
+}
 
 // ══════════════════════════════════════════════════════ STARS
 const sc   = document.getElementById('c-stars');
 const sctx = sc.getContext('2d');
 let stars  = [];
+const getRenderDpr = () => Math.max(1, Math.min(2, window.devicePixelRatio || 1));
 
 function buildStars() {
-  sc.width  = innerWidth;
-  sc.height = innerHeight;
+  const dpr = getRenderDpr();
+  sc.width  = Math.floor(innerWidth * dpr);
+  sc.height = Math.floor(innerHeight * dpr);
+  sc.style.width = `${innerWidth}px`;
+  sc.style.height = `${innerHeight}px`;
+  sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const n = Math.floor(sc.width * sc.height / 2600);
   stars = Array.from({ length: n }, () => ({
-    x: Math.random() * sc.width,
-    y: Math.random() * sc.height * 0.60,
+    x: Math.random() * innerWidth,
+    y: Math.random() * innerHeight * 0.60,
     r: Math.random() * 1.1 + 0.15,
     a: Math.random() * 0.62 + 0.1,
     p: Math.random() * Math.PI * 2,
@@ -651,7 +667,7 @@ function buildStars() {
 
 function rafStars(ts) {
   const t = ts * 0.001;
-  sctx.clearRect(0, 0, sc.width, sc.height);
+  sctx.clearRect(0, 0, innerWidth, innerHeight);
   for (const s of stars) {
     const a = s.a * (0.68 + 0.32 * Math.sin(t * s.s + s.p));
     sctx.beginPath();
@@ -678,14 +694,18 @@ const PCNT = 200;
 let parts  = [];
 
 function buildParticles() {
-  pc.width  = innerWidth;
-  pc.height = innerHeight;
+  const dpr = getRenderDpr();
+  pc.width  = Math.floor(innerWidth * dpr);
+  pc.height = Math.floor(innerHeight * dpr);
+  pc.style.width = `${innerWidth}px`;
+  pc.style.height = `${innerHeight}px`;
+  pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 function mkPart(rand) {
   return {
-    x:  Math.random() * pc.width,
-    y:  rand ? Math.random() * pc.height : pc.height + 6,
+    x:  Math.random() * innerWidth,
+    y:  rand ? Math.random() * innerHeight : innerHeight + 6,
     r:  Math.random() * 1.4 + 0.2,
     vx: (Math.random() - 0.5) * 0.32,
     vy: -(Math.random() * 0.42 + 0.1),
@@ -696,7 +716,7 @@ function mkPart(rand) {
 }
 
 function rafParticles() {
-  pctx.clearRect(0, 0, pc.width, pc.height);
+  pctx.clearRect(0, 0, innerWidth, innerHeight);
   for (let i = 0; i < parts.length; i++) {
     const p = parts[i];
     p.x += p.vx + Math.sin(p.y * 0.011 + p.ph) * 0.11;
@@ -726,14 +746,18 @@ const sDefs = [
   { id: 's-pm',  base: 18.4, range: 2.5, dec: 1, unit: ' µg/m³' },
   { id: 's-co2', base: 412,  range: 4,   dec: 0, unit: ' ppm'   }
 ];
-const sEls = sDefs.map(d => ({ ...d, el: document.getElementById(d.id) }));
+const sEls = sDefs
+  .map(d => ({ ...d, el: document.getElementById(d.id) }))
+  .filter(s => s.el);
 
-setInterval(() => {
-  for (const s of sEls) {
-    const v = s.base + (Math.random() - 0.5) * s.range;
-    s.el.textContent = v.toFixed(s.dec) + s.unit;
-  }
-}, 3500);
+if (sEls.length) {
+  setInterval(() => {
+    for (const s of sEls) {
+      const v = s.base + (Math.random() - 0.5) * s.range;
+      s.el.textContent = v.toFixed(s.dec) + s.unit;
+    }
+  }, 3500);
+}
 </script>
 </body>
 </html>
