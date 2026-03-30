@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIR Hackathon 2026 — Coming Soon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Space+Grotesk:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --white:   #ffffff;
+      --off:     #f7f8fc;
+      --soft:    #eef0f8;
+      --sky:     #d6e8ff;
+      --blue:    #4a90e2;
+      --teal:    #38bdf8;
+      --green:   #22c55e;
+      --air:     #a8d8ea;
+      --text:    #1a1a2e;
+      --muted:   #7a7a9d;
+    }
+
+    html, body {
+      height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--white);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    /* ──────────────────────────────────────── PARTICLES */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: .55;
+    }
+
+    /* ──────────────────────────────────────── LAYOUT */
+    .page {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      width: 100%;
+      padding: 40px 20px 60px;
+      gap: 0;
+    }
+
+    /* ──────────────────────────────────────── BADGE */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--soft);
+      border: 1px solid #dce0f0;
+      border-radius: 999px;
+      padding: 6px 18px;
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      margin-bottom: 36px;
+      animation: fadeUp .8s ease both;
+    }
+    .badge-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 3px rgba(34,197,94,.2);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 3px rgba(34,197,94,.2); }
+      50%      { box-shadow: 0 0 0 7px rgba(34,197,94,.05); }
+    }
+
+    /* ──────────────────────────────────────── HEADLINE */
+    .headline-wrap {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: fadeUp .9s .1s ease both;
+    }
+    .tagline {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(13px, 2vw, 16px);
+      font-weight: 300;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+    .headline {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(32px, 7vw, 76px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      color: var(--text);
+    }
+    .headline .air-word {
+      position: relative;
+      display: inline-block;
+      background: linear-gradient(135deg, #4a90e2 0%, #38bdf8 50%, #06b6d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .headline .air-word::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      filter: blur(28px);
+      opacity: .25;
+      z-index: -1;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ──────────────────────────────────────── SCENE */
+    .scene {
+      position: relative;
+      width: min(540px, 92vw);
+      height: min(400px, 70vw);
+      margin: 10px auto;
+      animation: fadeUp 1s .2s ease both;
+    }
+
+    /* CLOUDS */
+    .cloud {
+      position: absolute;
+      border-radius: 999px;
+      background: white;
+      filter: drop-shadow(0 4px 16px rgba(74,144,226,.12));
+      animation: floatCloud linear infinite;
+    }
+    .cloud::before, .cloud::after {
+      content: '';
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+    }
+    .c1 { width:90px; height:30px; top:18%; left:-4%; animation-duration:22s; animation-delay:0s; opacity:.9; }
+    .c1::before { width:40px;height:40px;top:-20px;left:14px; }
+    .c1::after  { width:28px;height:28px;top:-12px;left:42px; }
+
+    .c2 { width:70px; height:22px; top:24%; right:0%; animation-duration:28s; animation-delay:-8s; opacity:.7; }
+    .c2::before { width:30px;height:30px;top:-16px;left:10px; }
+    .c2::after  { width:22px;height:22px;top:-10px;left:32px; }
+
+    .c3 { width:50px; height:16px; top:8%;  left:22%; animation-duration:18s; animation-delay:-4s; opacity:.6; }
+    .c3::before { width:22px;height:22px;top:-12px;left:8px; }
+    .c3::after  { width:16px;height:16px;top:-8px; left:26px; }
+
+    @keyframes floatCloud {
+      0%   { transform: translateX(0); }
+      50%  { transform: translateX(18px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* EARTH SVG wrapper */
+    .earth-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(340px, 62vw);
+    }
+    .earth-wrap svg { width: 100%; height: auto; display: block; }
+
+    /* COMING SOON LABEL */
+    .coming-soon-wrap {
+      position: absolute;
+      top: 4%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      white-space: nowrap;
+    }
+    .coming-soon {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(26px, 6.5vw, 62px);
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: var(--text);
+      animation: shimmer 4s ease infinite;
+      background: linear-gradient(270deg, #1a1a2e 0%, #4a90e2 40%, #38bdf8 60%, #1a1a2e 100%);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .cs-sub {
+      font-size: clamp(10px, 1.8vw, 13px);
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* ARROW lines from characters to label */
+    .arrow-svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      overflow: visible;
+    }
+    .arrow-line {
+      stroke: var(--blue);
+      stroke-width: 1.5;
+      fill: none;
+      stroke-dasharray: 4 4;
+      opacity: .55;
+      animation: dashMove 1.8s linear infinite;
+    }
+    @keyframes dashMove {
+      to { stroke-dashoffset: -24; }
+    }
+
+    /* ──────────────────────────────────────── META INFO */
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      justify-content: center;
+      margin-top: 28px;
+      animation: fadeUp 1s .4s ease both;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+    .meta-icon {
+      width: 16px; height: 16px;
+      opacity: .6;
+    }
+
+    /* ──────────────────────────────────────── DIVIDER */
+    .divider {
+      width: 40px;
+      height: 3px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--blue), var(--teal));
+      margin: 32px auto;
+      animation: fadeUp 1s .5s ease both;
+    }
+
+    /* ──────────────────────────────────────── TICKER */
+    .ticker-wrap {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #eef0f8;
+      overflow: hidden;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+    .ticker-inner {
+      display: flex;
+      gap: 0;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-text {
+      font-size: 11px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 40px;
+    }
+    .ticker-sep { color: var(--teal); padding: 0 6px; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ──────────────────────────────────────── FADE UP */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(24px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ──────────────────────────────────────── RESPONSIVE */
+    @media (max-width: 480px) {
+      .scene { height: min(360px, 85vw); }
+      .meta { gap: 8px 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<main class="page">
+
+  <!-- BADGE -->
+  <div class="badge">
+    <span class="badge-dot"></span>
+    Bangladesh · 2026
+  </div>
+
+  <!-- HEADLINE -->
+  <div class="headline-wrap">
+    <p class="tagline">AIR Hackathon 2026</p>
+    <h1 class="headline">
+      There's Something<br>in the <span class="air-word">AIR</span>
+    </h1>
+  </div>
+
+  <!-- SCENE -->
+  <div class="scene">
+    <!-- Floating clouds -->
+    <div class="cloud c1"></div>
+    <div class="cloud c2"></div>
+    <div class="cloud c3"></div>
+
+    <!-- Coming Soon label -->
+    <div class="coming-soon-wrap">
+      <div class="coming-soon">Coming Soon</div>
+      <div class="cs-sub">June – November 2026</div>
+    </div>
+
+    <!-- Arrow SVG overlay -->
+    <svg class="arrow-svg" viewBox="0 0 540 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- left character arrow -->
+      <path class="arrow-line" d="M 148 238 Q 160 150 220 80" />
+      <!-- right character arrow -->
+      <path class="arrow-line" d="M 390 235 Q 380 150 320 80" style="animation-delay:-.9s" />
+    </svg>
+
+    <!-- Earth + Characters SVG -->
+    <div class="earth-wrap">
+      <svg viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg" aria-label="Earth with characters">
+        <defs>
+          <!-- Earth gradient -->
+          <radialGradient id="earthGrad" cx="45%" cy="40%" r="55%">
+            <stop offset="0%"   stop-color="#6ec6f5"/>
+            <stop offset="40%"  stop-color="#4a90e2"/>
+            <stop offset="100%" stop-color="#1a5fa8"/>
+          </radialGradient>
+          <!-- Land -->
+          <radialGradient id="landGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%"   stop-color="#6ecf7b"/>
+            <stop offset="100%" stop-color="#3aaf52"/>
+          </radialGradient>
+          <!-- Earth shadow -->
+          <radialGradient id="shadowGrad" cx="72%" cy="68%" r="52%">
+            <stop offset="0%"   stop-color="rgba(0,0,80,.18)"/>
+            <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+          </radialGradient>
+          <!-- Glow under earth -->
+          <radialGradient id="glowGrad" cx="50%" cy="100%" r="55%">
+            <stop offset="0%"   stop-color="#c8e8ff" stop-opacity=".5"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+          <clipPath id="earthClip">
+            <circle cx="170" cy="185" r="115"/>
+          </clipPath>
+        </defs>
+
+        <!-- Glow -->
+        <ellipse cx="170" cy="260" rx="130" ry="28" fill="url(#glowGrad)" />
+
+        <!-- Earth base -->
+        <circle cx="170" cy="185" r="115" fill="url(#earthGrad)" />
+
+        <!-- Ocean shimmer lines -->
+        <g clip-path="url(#earthClip)" opacity=".18">
+          <path d="M 55 170 Q 90 160 110 175 Q 130 190 160 175 Q 195 158 230 174 Q 260 188 285 172" stroke="white" stroke-width="1.2" fill="none"/>
+          <path d="M 55 195 Q 95 185 125 200 Q 155 214 185 200 Q 215 185 255 200 Q 275 208 290 198" stroke="white" stroke-width="1" fill="none"/>
+          <path d="M 58 220 Q 100 210 140 225 Q 170 235 200 222 Q 230 208 275 220" stroke="white" stroke-width="1" fill="none"/>
+        </g>
+
+        <!-- Land masses -->
+        <!-- Asia / mainland -->
+        <path clip-path="url(#earthClip)" d="M 185 140 Q 210 130 240 138 Q 255 145 265 160 Q 272 175 262 188 Q 250 200 232 196 Q 214 192 205 178 Q 196 168 185 172 Q 175 175 172 168 Q 170 158 185 140 Z"
+              fill="url(#landGrad)" opacity=".88"/>
+        <!-- Europe / Africa blob -->
+        <path clip-path="url(#earthClip)" d="M 130 148 Q 145 138 158 142 Q 168 147 170 160 Q 172 172 162 178 Q 150 183 140 176 Q 128 168 128 158 Q 127 152 130 148 Z"
+              fill="url(#landGrad)" opacity=".8"/>
+        <!-- Small island -->
+        <ellipse clip-path="url(#earthClip)" cx="215" cy="215" rx="14" ry="9" fill="url(#landGrad)" opacity=".75"/>
+        <!-- Americas hint -->
+        <path clip-path="url(#earthClip)" d="M 80 180 Q 90 168 100 172 Q 110 176 112 190 Q 113 204 102 210 Q 90 216 83 206 Q 76 196 80 180 Z"
+              fill="url(#landGrad)" opacity=".7"/>
+
+        <!-- Earth shadow overlay -->
+        <circle cx="170" cy="185" r="115" fill="url(#shadowGrad)" />
+
+        <!-- Earth shine -->
+        <ellipse cx="138" cy="148" rx="30" ry="18" fill="white" opacity=".12" transform="rotate(-30 138 148)"/>
+
+        <!-- Earth outline -->
+        <circle cx="170" cy="185" r="115" fill="none" stroke="rgba(74,144,226,.3)" stroke-width="1.5"/>
+
+        <!-- ─── CHARACTER LEFT ─── -->
+        <g id="char-left" transform="translate(105, 155)">
+          <!-- body shadow -->
+          <ellipse cx="18" cy="74" rx="14" ry="5" fill="rgba(0,0,0,.08)"/>
+          <!-- legs -->
+          <line x1="14" y1="58" x2="10" y2="73" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="22" y1="58" x2="26" y2="73" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- shoes -->
+          <ellipse cx="9"  cy="73.5" rx="5.5" ry="3" fill="#4a90e2"/>
+          <ellipse cx="27" cy="73.5" rx="5.5" ry="3" fill="#4a90e2"/>
+          <!-- body -->
+          <rect x="9" y="33" width="18" height="27" rx="7" fill="#ff9f7b"/>
+          <!-- shirt stripe -->
+          <rect x="9" y="43" width="18" height="5" rx="2" fill="rgba(255,255,255,.35)"/>
+          <!-- arm left (raised pointing) -->
+          <line x1="9"  y1="38" x2="-4" y2="20" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- arm right (relaxed) -->
+          <line x1="27" y1="38" x2="34" y2="48" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- neck -->
+          <rect x="14" y="24" width="8" height="10" rx="4" fill="#fbbf84"/>
+          <!-- head -->
+          <circle cx="18" cy="18" r="14" fill="#fbbf84"/>
+          <!-- hair -->
+          <path d="M 5 14 Q 8 2 18 2 Q 28 2 31 14" fill="#5c3a1e" stroke="none"/>
+          <!-- eyes -->
+          <circle cx="13" cy="16" r="2.2" fill="#2d2d2d"/>
+          <circle cx="23" cy="16" r="2.2" fill="#2d2d2d"/>
+          <!-- eye shine -->
+          <circle cx="14" cy="15" r=".8" fill="white"/>
+          <circle cx="24" cy="15" r=".8" fill="white"/>
+          <!-- smile -->
+          <path d="M 13 22 Q 18 27 23 22" stroke="#c97042" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- rosy cheeks -->
+          <circle cx="10" cy="20" r="3" fill="rgba(255,100,80,.2)"/>
+          <circle cx="26" cy="20" r="3" fill="rgba(255,100,80,.2)"/>
+          <!-- pointing finger -->
+          <circle cx="-5" cy="19" r="2.5" fill="#fbbf84"/>
+        </g>
+
+        <!-- ─── CHARACTER RIGHT ─── -->
+        <g id="char-right" transform="translate(197, 150)">
+          <!-- body shadow -->
+          <ellipse cx="18" cy="78" rx="14" ry="5" fill="rgba(0,0,0,.08)"/>
+          <!-- legs -->
+          <line x1="14" y1="62" x2="10" y2="77" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="22" y1="62" x2="26" y2="77" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- shoes -->
+          <ellipse cx="9"  cy="77.5" rx="5.5" ry="3" fill="#e8604c"/>
+          <ellipse cx="27" cy="77.5" rx="5.5" ry="3" fill="#e8604c"/>
+          <!-- body / dress -->
+          <path d="M 8 37 Q 9 64 6 78 L 30 78 Q 27 64 28 37 Z" fill="#f9a8d4" opacity=".0"/>
+          <rect x="9" y="37" width="18" height="27" rx="7" fill="#f472b6"/>
+          <!-- body stripe -->
+          <rect x="9" y="47" width="18" height="5" rx="2" fill="rgba(255,255,255,.3)"/>
+          <!-- arm right (raised pointing) -->
+          <line x1="27" y1="42" x2="40" y2="24" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- arm left (relaxed) -->
+          <line x1="9"  y1="42" x2="2"  y2="52" stroke="#fbbf84" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- neck -->
+          <rect x="14" y="28" width="8" height="10" rx="4" fill="#fbbf84"/>
+          <!-- head -->
+          <circle cx="18" cy="22" r="14" fill="#fbbf84"/>
+          <!-- hair – pigtails -->
+          <path d="M 4 18 Q 6 4 18 4 Q 30 4 32 18" fill="#8b4513" stroke="none"/>
+          <path d="M 4 18 Q 0 8 2 4 Q 6 0 8 8 Z" fill="#8b4513"/>
+          <path d="M 32 18 Q 36 8 34 4 Q 30 0 28 8 Z" fill="#8b4513"/>
+          <!-- eyes -->
+          <circle cx="13" cy="20" r="2.2" fill="#2d2d2d"/>
+          <circle cx="23" cy="20" r="2.2" fill="#2d2d2d"/>
+          <!-- eye shine -->
+          <circle cx="14" cy="19" r=".8" fill="white"/>
+          <circle cx="24" cy="19" r=".8" fill="white"/>
+          <!-- smile -->
+          <path d="M 13 26 Q 18 31 23 26" stroke="#c97042" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <!-- rosy cheeks -->
+          <circle cx="10" cy="24" r="3" fill="rgba(255,100,80,.2)"/>
+          <circle cx="26" cy="24" r="3" fill="rgba(255,100,80,.2)"/>
+          <!-- pointing finger -->
+          <circle cx="41" cy="23" r="2.5" fill="#fbbf84"/>
+        </g>
+
+        <!-- ─── SMALL KID (center, peeking) ─── -->
+        <g id="char-center" transform="translate(157, 165)">
+          <ellipse cx="12" cy="55" rx="10" ry="4" fill="rgba(0,0,0,.07)"/>
+          <line x1="8"  y1="42" x2="5"  y2="54" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
+          <line x1="16" y1="42" x2="19" y2="54" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="4"  cy="54.5" rx="4.5" ry="2.5" fill="#6366f1"/>
+          <ellipse cx="20" cy="54.5" rx="4.5" ry="2.5" fill="#6366f1"/>
+          <rect x="5" y="22" width="14" height="22" rx="6" fill="#a5f3fc"/>
+          <line x1="5"  y1="26" x2="-2" y2="35" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
+          <line x1="19" y1="26" x2="26" y2="35" stroke="#fbbf84" stroke-width="3" stroke-linecap="round"/>
+          <rect x="9" y="13" width="6" height="9" rx="3" fill="#fbbf84"/>
+          <circle cx="12" cy="10" r="11" fill="#fbbf84"/>
+          <path d="M 2 8 Q 4 0 12 0 Q 20 0 22 8" fill="#4a3728" stroke="none"/>
+          <circle cx="8"  cy="9"  r="1.8" fill="#2d2d2d"/>
+          <circle cx="16" cy="9"  r="1.8" fill="#2d2d2d"/>
+          <circle cx="9"  cy="8"  r=".7"  fill="white"/>
+          <circle cx="17" cy="8"  r=".7"  fill="white"/>
+          <path d="M 8 15 Q 12 19 16 15" stroke="#c97042" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        </g>
+
+      </svg>
+    </div>
+  </div><!-- end .scene -->
+
+  <!-- META -->
+  <div class="meta">
+    <div class="meta-item">
+      <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      Bangladesh's Premier Innovation Event
+    </div>
+    <div class="meta-item">
+      <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+        <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      June – November 2026
+    </div>
+    <div class="meta-item">
+      <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      National Science Museum, Dhaka
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+</main>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-text">Aviation Pollution <span class="ticker-sep">✦</span> Urban Air Quality <span class="ticker-sep">✦</span> SAF & Engine Optimization <span class="ticker-sep">✦</span> PM2.5 Mitigation <span class="ticker-sep">✦</span> Methane Capture <span class="ticker-sep">✦</span> Atmospheric Intelligence <span class="ticker-sep">✦</span> Cleaner Skies <span class="ticker-sep">✦</span> Smarter Cities</span>
+    <span class="ticker-text" aria-hidden="true">Aviation Pollution <span class="ticker-sep">✦</span> Urban Air Quality <span class="ticker-sep">✦</span> SAF & Engine Optimization <span class="ticker-sep">✦</span> PM2.5 Mitigation <span class="ticker-sep">✦</span> Methane Capture <span class="ticker-sep">✦</span> Atmospheric Intelligence <span class="ticker-sep">✦</span> Cleaner Skies <span class="ticker-sep">✦</span> Smarter Cities</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  /* ─── PARTICLE CANVAS ─── */
+  const canvas = document.getElementById('particle-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  const COLORS = [
+    'rgba(74,144,226,PAL)',   // blue
+    'rgba(56,189,248,PAL)',   // teal
+    'rgba(168,216,234,PAL)',  // air
+    'rgba(200,232,255,PAL)',  // sky
+    'rgba(255,255,255,PAL)',  // white
+  ];
+
+  function makeParticle() {
+    const col = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const alpha = rand(.15, .55);
+    return {
+      x:    rand(0, W),
+      y:    rand(0, H),
+      r:    rand(1.5, 5.5),
+      vx:   rand(-.3, .3),
+      vy:   rand(-.55, -.15),
+      a:    alpha,
+      aDir: Math.random() > .5 ? 1 : -1,
+      color: col.replace('PAL', alpha.toFixed(2)),
+    };
+  }
+
+  for (let i = 0; i < 110; i++) particles.push(makeParticle());
+
+  function animateParticles() {
+    ctx.clearRect(0, 0, W, H);
+    for (let p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+
+      p.x += p.vx;
+      p.y += p.vy;
+      p.a += p.aDir * .003;
+      if (p.a > .55 || p.a < .1) p.aDir *= -1;
+
+      // respawn when off screen
+      if (p.y < -10 || p.x < -10 || p.x > W + 10) {
+        Object.assign(p, makeParticle());
+        p.y = H + 5;
+        if (p.x < -10) p.x = W + 5;
+      }
+    }
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  /* ─── CHARACTER BOB ANIMATION ─── */
+  const charLeft   = document.getElementById('char-left');
+  const charRight  = document.getElementById('char-right');
+  const charCenter = document.getElementById('char-center');
+
+  let t = 0;
+  function bobChars() {
+    t += .018;
+    const l = Math.sin(t)         * 3;
+    const r = Math.sin(t + 1.1)   * 3;
+    const c = Math.sin(t + 2.2)   * 3;
+    charLeft.style.transform   = `translate(105px, ${155 + l}px)`;
+    charRight.style.transform  = `translate(197px, ${150 + r}px)`;
+    charCenter.style.transform = `translate(157px, ${165 + c}px)`;
+    requestAnimationFrame(bobChars);
+  }
+  bobChars();
+
+  /* ─── SUBTLE PARALLAX ─── */
+  document.addEventListener('mousemove', function (e) {
+    const cx = window.innerWidth  / 2;
+    const cy = window.innerHeight / 2;
+    const dx = (e.clientX - cx) / cx;
+    const dy = (e.clientY - cy) / cy;
+    const scene = document.querySelector('.scene');
+    if (scene) {
+      scene.style.transform = `translate(${dx * 6}px, ${dy * 4}px)`;
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
