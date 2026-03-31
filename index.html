@@ -407,7 +407,6 @@
       text-transform: uppercase;
       font-weight: 400;
       color: rgba(34,197,94,0.90);
-      animation: pdot 2.4s ease-in-out infinite;
     }
     .si-updated {
       font-size: 7.5px;
@@ -491,7 +490,7 @@
       transform: translate(-400px, 20vh);
     }
     #airship-svg {
-      width: 155px;
+      width: 110px;
       height: auto;
       filter: drop-shadow(0 6px 16px rgba(0,20,60,0.20));
       overflow: visible;
@@ -530,7 +529,7 @@
       .si { padding: 0 10px; }
 
       /* Scale airship down to fit smaller viewports */
-      #airship-svg { width: 120px; }
+      #airship-svg { width: 90px; }
 
       /* Reduce heavy CSS blur on mobile GPU */
       .glb { filter: blur(60px); }
@@ -538,7 +537,7 @@
 
     /* Small phone (≤ 479px) */
     @media (max-width: 479px) {
-      #airship-svg { width: 88px; }
+      #airship-svg { width: 72px; }
       .glb { filter: blur(36px); }
 
       /* Tighten letter-spacing so title fits without wrapping */
@@ -568,58 +567,6 @@
       transform-origin: 50% 100%;
     }
 
-    /* ══════════════════════════════════════════ LOGO BRAND */
-    #brand-logo {
-      position: fixed;
-      top: 14px; left: 16px;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      opacity: 0;
-      animation: fd-in 0.8s ease 3.5s forwards;
-      text-decoration: none;
-      pointer-events: auto;
-    }
-    #brand-logo img {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      object-fit: contain;
-      background: rgba(255,255,255,0.14);
-      padding: 2px;
-    }
-    #brand-logo span {
-      font-family: 'Inter', sans-serif;
-      font-size: 8.5px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-sub);
-      white-space: nowrap;
-      transition: color 0.5s;
-    }
-
-    /* ══════════════════════════════════════════ COPYRIGHT */
-    #footer-copy {
-      position: fixed;
-      bottom: 42px; right: 16px;
-      z-index: 9;
-      font-family: 'Inter', sans-serif;
-      font-size: 8px;
-      letter-spacing: 0.10em;
-      color: var(--text-sub);
-      opacity: 0;
-      animation: fd-in 1s ease 4s forwards;
-      pointer-events: auto;
-      transition: color 0.5s;
-    }
-    #footer-copy a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 0.5px;
-      opacity: 0.75;
-    }
-    #footer-copy a:hover { opacity: 1; color: var(--text-accent); }
 
     /* ══════════════════════════════════════════ SCREEN-READER ONLY */
     .sr-only {
@@ -662,6 +609,35 @@
     .sc-plane-body { fill: #0e2245; }
     :root .sc-plane-body  { fill: #7a92b0; }
     [data-theme="dark"] .sc-plane-body { fill: #0e2245; }
+    .sc-plane-wing { fill: #0d1f40; }
+    :root .sc-plane-wing { fill: #6a80a0; }
+    [data-theme="dark"] .sc-plane-wing { fill: #0d1f40; }
+    .sc-plane-eng  { fill: #0b1a35; }
+    :root .sc-plane-eng  { fill: #556a84; }
+    [data-theme="dark"] .sc-plane-eng  { fill: #0b1a35; }
+    .sc-plane-fin  { fill: #0f2348; }
+    :root .sc-plane-fin  { fill: #7a92b0; }
+    [data-theme="dark"] .sc-plane-fin  { fill: #0f2348; }
+
+    /* Hill layers */
+    .sc-hills-far { fill: #4a7e50; }
+    [data-theme="dark"] .sc-hills-far { fill: #091620; }
+    /* Mountain trees */
+    .sc-mtn-pine  { fill: #1a3a1e; }
+    [data-theme="dark"] .sc-mtn-pine { fill: #060d07; }
+    .sc-mtn-broad { fill: #235226; }
+    [data-theme="dark"] .sc-mtn-broad { fill: #071308; }
+    /* Street shops */
+    .sc-shop      { fill: #374c60; }
+    [data-theme="dark"] .sc-shop { fill: #080f1d; }
+    .sc-shop-awn  { fill: rgba(160,210,250,0.55); }
+    [data-theme="dark"] .sc-shop-awn { fill: rgba(50,110,200,0.60); }
+    /* Curtain wall glass strip */
+    .sc-cwall     { fill: rgba(190,220,255,0.14); }
+    [data-theme="dark"] .sc-cwall { fill: rgba(70,150,255,0.10); }
+    /* Person silhouette */
+    .sc-person    { fill: #2a3a4e; }
+    [data-theme="dark"] .sc-person { fill: #080e1a; }
 
     /* ══════════════════════════════════════════ MOBILE SCROLL HINT */
     /* Fade-out gradient on the right edge of the sensor bar on mobile */
@@ -687,6 +663,10 @@
         pointer-events: none;
       }
     }
+    /* Sky planes animation */
+    @keyframes sky-fly-r  { from{transform:translate(-250px,18vh)} to{transform:translate(calc(100vw + 250px),18vh)} }
+    @keyframes sky-fly-r2 { from{transform:translate(-220px,28vh)} to{transform:translate(calc(100vw + 220px),28vh)} }
+    @keyframes sky-fly-l  { from{transform:translate(calc(100vw + 200px),8vh)} to{transform:translate(-200px,8vh)} }
   </style>
 </head>
 <body>
@@ -795,13 +775,11 @@
          when moving right (flag streams backward/left); default streams right -->
     <g id="flag-dir">
       <g class="flag-cloth">
-        <rect x="44" y="-20" width="72" height="26" rx="2"
-              fill="white" opacity="0.96"
-              stroke="rgba(180,200,220,0.4)" stroke-width="0.6"/>
+        <rect x="44" y="-20" width="72" height="26" rx="2" fill="white" stroke="rgba(180,200,220,0.6)" stroke-width="0.8"/>
         <image href="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
                x="46" y="-19" width="68" height="24"
                preserveAspectRatio="xMidYMid meet"
-               opacity="0.94"/>
+               opacity="1.0"/>
       </g>
     </g>
   </svg>
@@ -822,171 +800,433 @@
       </linearGradient>
     </defs>
 
-    <!-- ── FAR HILLS ── -->
+    <!-- ── DISTANT HILLS (far layer, paler) ── -->
+    <path d="M0,196 Q170,135 370,165 Q565,200 708,148 Q868,90 1068,152 Q1252,212 1440,172 L1440,280 L0,280 Z"
+          class="sc-hills-far" opacity="0.50"/>
+    <!-- ── NEAR HILLS ── -->
     <path d="M0,185 Q180,115 380,155 Q580,195 720,132
              Q880,72  1080,142 Q1260,205 1440,162 L1440,280 L0,280 Z"
-          class="sc-hills" opacity="0.72"/>
+          class="sc-hills" opacity="0.82"/>
+    <!-- Hill base shadow band -->
+    <path d="M0,225 Q220,212 420,220 Q620,228 730,205 Q890,182 1085,210 Q1280,232 1440,218 L1440,242 L0,242 Z"
+          fill="rgba(0,0,0,0.09)"/>
 
-    <!-- ── BUILDINGS LEFT ── -->
-    <g class="sc-bld">
-      <rect x="28"  y="188" width="22" height="92"/>
-      <rect x="54"  y="174" width="16" height="106"/>
-      <rect x="74"  y="198" width="26" height="82"/>
-      <rect x="104" y="170" width="20" height="110"/>
-      <rect x="128" y="186" width="14" height="94"/>
-      <rect x="146" y="198" width="24" height="82"/>
-      <!-- antennae -->
-      <rect x="105" y="162" width="2" height="8"/>
-      <rect x="56"  y="166" width="2" height="8"/>
-      <!-- extra left buildings with varied shapes -->
-      <rect x="173" y="185" width="18" height="95"/>
-      <rect x="195" y="175" width="20" height="105"/>
-    </g>
-    <!-- pyramid rooftop on x=195 building -->
-    <polygon points="195,175 205,160 215,175" class="sc-bld-detail"/>
-    <g>
-      <rect class="sc-win" x="31"  y="193" width="4" height="3"/>
-      <rect class="sc-win" x="37"  y="193" width="4" height="3"/>
-      <rect class="sc-win" x="31"  y="202" width="4" height="3"/>
-      <rect class="sc-win" x="57"  y="179" width="4" height="3"/>
-      <rect class="sc-win" x="63"  y="179" width="4" height="3"/>
-      <rect class="sc-win" x="57"  y="188" width="4" height="3"/>
-      <rect class="sc-win" x="106" y="175" width="4" height="3"/>
-      <rect class="sc-win" x="112" y="175" width="4" height="3"/>
-      <rect class="sc-win" x="106" y="184" width="4" height="3"/>
-      <rect class="sc-win" x="31"  y="211" width="4" height="3"/>
-      <rect class="sc-win" x="37"  y="211" width="4" height="3"/>
-      <rect class="sc-win" x="57"  y="197" width="4" height="3"/>
-      <rect class="sc-win" x="63"  y="197" width="4" height="3"/>
-      <rect class="sc-win" x="76"  y="204" width="4" height="3"/>
-      <rect class="sc-win" x="82"  y="204" width="4" height="3"/>
-      <rect class="sc-win" x="76"  y="213" width="4" height="3"/>
-      <rect class="sc-win" x="106" y="193" width="4" height="3"/>
-      <rect class="sc-win" x="112" y="193" width="4" height="3"/>
-      <rect class="sc-win" x="130" y="191" width="4" height="3"/>
-      <rect class="sc-win" x="130" y="200" width="4" height="3"/>
-      <rect class="sc-win" x="175" y="190" width="4" height="3"/>
-      <rect class="sc-win" x="175" y="199" width="4" height="3"/>
-      <rect class="sc-win" x="197" y="180" width="4" height="3"/>
-      <rect class="sc-win" x="197" y="189" width="4" height="3"/>
-      <rect class="sc-win" x="197" y="198" width="4" height="3"/>
-    </g>
+    <!-- ── MOUNTAIN TREES (on hill surface, drawn before buildings so they go behind) ── -->
+    <!-- Left hill cluster: hill slopes from x=0,y=185 peaking near x=185,y=143 then x=380,y=155 -->
+    <!-- Tiny hill factory (left slope, x≈305) -->
+    <rect x="303" y="162" width="18" height="10" class="sc-bld" opacity="0.70"/>
+    <rect x="307" y="154" width="4"  height="8"  class="sc-bld" opacity="0.70"/>
+    <rect x="313" y="151" width="4"  height="11" class="sc-bld" opacity="0.70"/>
+    <!-- Left zone pines and rounds (x=290–550) -->
+    <!-- Pine cluster 1 -->
+    <polygon points="296,140 290,154 302,154" class="sc-mtn-pine" opacity="0.85"/>
+    <polygon points="296,147 288,158 304,158" class="sc-mtn-pine" opacity="0.85"/>
+    <rect x="295" y="158" width="2" height="5" class="sc-mtn-pine" opacity="0.85"/>
+    <!-- Round tree -->
+    <circle cx="312" cy="148" r="7" class="sc-mtn-broad" opacity="0.80"/>
+    <rect x="311" y="155" width="2" height="5" class="sc-mtn-pine" opacity="0.80"/>
+    <!-- Pine -->
+    <polygon points="326,141 320,157 332,157" class="sc-mtn-pine" opacity="0.80"/>
+    <polygon points="326,148 318,161 334,161" class="sc-mtn-pine" opacity="0.80"/>
+    <rect x="325" y="161" width="2" height="5" class="sc-mtn-pine" opacity="0.80"/>
+    <!-- Small shrub -->
+    <ellipse cx="340" cy="155" rx="6" ry="4" class="sc-mtn-broad" opacity="0.72"/>
+    <!-- Round tree -->
+    <circle cx="356" cy="150" r="8" class="sc-mtn-broad" opacity="0.78"/>
+    <rect x="355" y="158" width="2" height="5" class="sc-mtn-pine" opacity="0.78"/>
+    <!-- Pine cluster 2 -->
+    <polygon points="372,147 365,164 379,164" class="sc-mtn-pine" opacity="0.82"/>
+    <polygon points="372,155 363,168 381,168" class="sc-mtn-pine" opacity="0.82"/>
+    <rect x="371" y="168" width="2" height="5" class="sc-mtn-pine" opacity="0.82"/>
+    <!-- Tall pine -->
+    <polygon points="390,143 383,162 397,162" class="sc-mtn-pine" opacity="0.80"/>
+    <polygon points="390,152 381,166 399,166" class="sc-mtn-pine" opacity="0.80"/>
+    <polygon points="390,160 383,170 397,170" class="sc-mtn-pine" opacity="0.80"/>
+    <rect x="389" y="170" width="2" height="5" class="sc-mtn-pine" opacity="0.80"/>
+    <!-- Round canopy -->
+    <circle cx="407" cy="156" r="7" class="sc-mtn-broad" opacity="0.75"/>
+    <rect x="406" y="163" width="2" height="5" class="sc-mtn-pine" opacity="0.75"/>
+    <!-- Shrub -->
+    <ellipse cx="418" cy="160" rx="5" ry="4" class="sc-mtn-broad" opacity="0.68"/>
+    <!-- Pine -->
+    <polygon points="432,148 425,166 439,166" class="sc-mtn-pine" opacity="0.78"/>
+    <polygon points="432,157 423,170 441,170" class="sc-mtn-pine" opacity="0.78"/>
+    <rect x="431" y="170" width="2" height="5" class="sc-mtn-pine" opacity="0.78"/>
+    <!-- Round -->
+    <circle cx="447" cy="157" r="7" class="sc-mtn-broad" opacity="0.72"/>
+    <rect x="446" y="164" width="2" height="5" class="sc-mtn-pine" opacity="0.72"/>
+    <!-- Pine -->
+    <polygon points="462,150 455,167 469,167" class="sc-mtn-pine" opacity="0.75"/>
+    <polygon points="462,159 453,172 471,172" class="sc-mtn-pine" opacity="0.75"/>
+    <rect x="461" y="172" width="2" height="5" class="sc-mtn-pine" opacity="0.75"/>
+    <!-- Small round -->
+    <circle cx="477" cy="160" r="6" class="sc-mtn-broad" opacity="0.70"/>
+    <!-- Pine -->
+    <polygon points="491,151 484,168 498,168" class="sc-mtn-pine" opacity="0.72"/>
+    <rect x="490" y="168" width="2" height="5" class="sc-mtn-pine" opacity="0.72"/>
+    <!-- Round -->
+    <circle cx="506" cy="158" r="6" class="sc-mtn-broad" opacity="0.68"/>
+    <rect x="505" y="164" width="2" height="4" class="sc-mtn-pine" opacity="0.68"/>
+    <!-- Pine -->
+    <polygon points="520,152 513,170 527,170" class="sc-mtn-pine" opacity="0.70"/>
+    <polygon points="520,161 511,174 529,174" class="sc-mtn-pine" opacity="0.70"/>
+    <rect x="519" y="174" width="2" height="4" class="sc-mtn-pine" opacity="0.70"/>
+    <!-- Round -->
+    <circle cx="535" cy="161" r="6" class="sc-mtn-broad" opacity="0.66"/>
+    <rect x="534" y="167" width="2" height="4" class="sc-mtn-pine" opacity="0.66"/>
+    <!-- Pine -->
+    <polygon points="549,154 542,171 556,171" class="sc-mtn-pine" opacity="0.68"/>
+    <rect x="548" y="171" width="2" height="4" class="sc-mtn-pine" opacity="0.68"/>
 
-    <!-- ── BUILDINGS RIGHT ── -->
-    <g class="sc-bld">
-      <rect x="1238" y="183" width="24" height="97"/>
-      <rect x="1266" y="170" width="18" height="110"/>
-      <rect x="1288" y="190" width="28" height="90"/>
-      <rect x="1320" y="176" width="16" height="104"/>
-      <rect x="1340" y="192" width="22" height="88"/>
-      <rect x="1365" y="182" width="26" height="98"/>
-      <rect x="1395" y="200" width="20" height="80"/>
-      <rect x="1268" y="162" width="2" height="8"/>
-      <rect x="1322" y="168" width="2" height="8"/>
-    </g>
-    <g>
-      <rect class="sc-win" x="1241" y="188" width="4" height="3"/>
-      <rect class="sc-win" x="1247" y="188" width="4" height="3"/>
-      <rect class="sc-win" x="1269" y="175" width="4" height="3"/>
-      <rect class="sc-win" x="1275" y="175" width="4" height="3"/>
-      <rect class="sc-win" x="1290" y="195" width="4" height="3"/>
-      <rect class="sc-win" x="1296" y="195" width="4" height="3"/>
-      <rect class="sc-win" x="1323" y="181" width="4" height="3"/>
-      <rect class="sc-win" x="1241" y="197" width="4" height="3"/>
-      <rect class="sc-win" x="1247" y="197" width="4" height="3"/>
-      <rect class="sc-win" x="1241" y="206" width="4" height="3"/>
-      <rect class="sc-win" x="1269" y="184" width="4" height="3"/>
-      <rect class="sc-win" x="1275" y="184" width="4" height="3"/>
-      <rect class="sc-win" x="1269" y="193" width="4" height="3"/>
-      <rect class="sc-win" x="1290" y="204" width="4" height="3"/>
-      <rect class="sc-win" x="1296" y="204" width="4" height="3"/>
-      <rect class="sc-win" x="1323" y="190" width="4" height="3"/>
-      <rect class="sc-win" x="1323" y="199" width="4" height="3"/>
-      <rect class="sc-win" x="1342" y="197" width="4" height="3"/>
-      <rect class="sc-win" x="1342" y="206" width="4" height="3"/>
-      <rect class="sc-win" x="1368" y="187" width="4" height="3"/>
-      <rect class="sc-win" x="1374" y="187" width="4" height="3"/>
-    </g>
+    <!-- RIGHT hill cluster: hill peaks x≈890,y≈105, x=1080,y=142 -->
+    <!-- Tiny hill factory (right zone, x≈940) -->
+    <rect x="938" y="109" width="20" height="12" class="sc-bld" opacity="0.65"/>
+    <rect x="942" y="99"  width="4"  height="10" class="sc-bld" opacity="0.65"/>
+    <rect x="949" y="96"  width="4"  height="13" class="sc-bld" opacity="0.65"/>
+    <!-- Right zone trees (x=880–1145, hill y=72–155) -->
+    <!-- Tall pines near hill peak (very high altitude, tiny) -->
+    <polygon points="878,78  873,90  883,90"  class="sc-mtn-pine" opacity="0.72"/>
+    <polygon points="878,84  872,94  884,94"  class="sc-mtn-pine" opacity="0.72"/>
+    <rect x="877" y="94" width="2" height="4" class="sc-mtn-pine" opacity="0.72"/>
+    <circle cx="890" cy="85" r="6"  class="sc-mtn-broad" opacity="0.68"/>
+    <rect x="889" y="91" width="2" height="4" class="sc-mtn-pine" opacity="0.68"/>
+    <polygon points="903,80  897,95  909,95"  class="sc-mtn-pine" opacity="0.74"/>
+    <polygon points="903,87  895,99  911,99"  class="sc-mtn-pine" opacity="0.74"/>
+    <rect x="902" y="99" width="2" height="4" class="sc-mtn-pine" opacity="0.74"/>
+    <!-- Mid-right zone trees -->
+    <circle cx="918" cy="96" r="7"  class="sc-mtn-broad" opacity="0.72"/>
+    <rect x="917" y="103" width="2" height="5" class="sc-mtn-pine" opacity="0.72"/>
+    <polygon points="930,89  923,107 937,107" class="sc-mtn-pine" opacity="0.76"/>
+    <polygon points="930,98  921,111 939,111" class="sc-mtn-pine" opacity="0.76"/>
+    <rect x="929" y="111" width="2" height="5" class="sc-mtn-pine" opacity="0.76"/>
+    <ellipse cx="946" cy="107" rx="7" ry="5" class="sc-mtn-broad" opacity="0.70"/>
+    <polygon points="960,95  953,113 967,113" class="sc-mtn-pine" opacity="0.74"/>
+    <rect x="959" y="113" width="2" height="5" class="sc-mtn-pine" opacity="0.74"/>
+    <circle cx="974" cy="106" r="7" class="sc-mtn-broad" opacity="0.72"/>
+    <rect x="973" y="113" width="2" height="5" class="sc-mtn-pine" opacity="0.72"/>
+    <polygon points="987,100 980,118 994,118" class="sc-mtn-pine" opacity="0.76"/>
+    <polygon points="987,109 978,122 996,122" class="sc-mtn-pine" opacity="0.76"/>
+    <rect x="986" y="122" width="2" height="5" class="sc-mtn-pine" opacity="0.76"/>
+    <circle cx="1002" cy="112" r="7" class="sc-mtn-broad" opacity="0.70"/>
+    <rect x="1001" y="119" width="2" height="5" class="sc-mtn-pine" opacity="0.70"/>
+    <polygon points="1016,107 1009,126 1023,126" class="sc-mtn-pine" opacity="0.74"/>
+    <rect x="1015" y="126" width="2" height="5" class="sc-mtn-pine" opacity="0.74"/>
+    <ellipse cx="1030" cy="120" rx="7" ry="5" class="sc-mtn-broad" opacity="0.68"/>
+    <circle cx="1046" cy="124" r="7" class="sc-mtn-broad" opacity="0.72"/>
+    <rect x="1045" y="131" width="2" height="5" class="sc-mtn-pine" opacity="0.72"/>
+    <polygon points="1060,119 1053,137 1067,137" class="sc-mtn-pine" opacity="0.76"/>
+    <polygon points="1060,128 1051,141 1069,141" class="sc-mtn-pine" opacity="0.76"/>
+    <rect x="1059" y="141" width="2" height="5" class="sc-mtn-pine" opacity="0.76"/>
+    <circle cx="1075" cy="132" r="7" class="sc-mtn-broad" opacity="0.70"/>
+    <rect x="1074" y="139" width="2" height="5" class="sc-mtn-pine" opacity="0.70"/>
+    <polygon points="1090,127 1083,145 1097,145" class="sc-mtn-pine" opacity="0.74"/>
+    <rect x="1089" y="145" width="2" height="5" class="sc-mtn-pine" opacity="0.74"/>
+    <circle cx="1105" cy="138" r="6" class="sc-mtn-broad" opacity="0.68"/>
+    <polygon points="1119,133 1112,150 1126,150" class="sc-mtn-pine" opacity="0.72"/>
+    <polygon points="1119,141 1110,155 1128,155" class="sc-mtn-pine" opacity="0.72"/>
+    <rect x="1118" y="155" width="2" height="4" class="sc-mtn-pine" opacity="0.72"/>
+    <circle cx="1134" cy="148" r="6" class="sc-mtn-broad" opacity="0.67"/>
+    <rect x="1133" y="154" width="2" height="4" class="sc-mtn-pine" opacity="0.67"/>
+    <polygon points="1146,150 1139,166 1153,166" class="sc-mtn-pine" opacity="0.68"/>
+    <rect x="1145" y="166" width="2" height="4" class="sc-mtn-pine" opacity="0.68"/>
 
-    <!-- ── CENTRE CITY BUILDINGS (fills the mid-section) ── -->
-    <g class="sc-bld">
-      <!-- Tall glass tower with step wings -->
-      <rect x="562" y="172" width="44" height="108"/>
-      <rect x="570" y="152" width="28" height="128"/>
-      <!-- next tower -->
-      <rect x="612" y="165" width="22" height="115"/>
-      <!-- wide office block -->
-      <rect x="638" y="190" width="42" height="90"/>
-      <!-- narrow high-rise -->
-      <rect x="685" y="150" width="18" height="130"/>
-      <!-- stepped tower -->
-      <rect x="705" y="185" width="32" height="95"/>
-      <rect x="708" y="170" width="26" height="110"/>
-      <!-- slab building -->
-      <rect x="742" y="182" width="38" height="98"/>
-      <!-- slender tower -->
-      <rect x="785" y="160" width="16" height="120"/>
-      <!-- wide industrial block -->
-      <rect x="806" y="195" width="44" height="85"/>
-      <!-- far-mid buildings -->
-      <rect x="855" y="178" width="24" height="102"/>
-      <rect x="883" y="188" width="20" height="92"/>
-      <!-- antennae on towers -->
-      <rect x="571" y="144" width="2" height="10"/>
-      <rect x="686" y="142" width="2" height="10"/>
-      <rect x="786" y="152" width="2" height="10"/>
-    </g>
-    <!-- Pyramid tops on towers -->
-    <polygon points="570,152 584,133 598,152" class="sc-bld-detail"/>
-    <polygon points="685,150 694,136 703,150" class="sc-bld-detail"/>
-    <!-- Centre building windows -->
-    <g>
-      <rect class="sc-win" x="565" y="177" width="5" height="4"/>
-      <rect class="sc-win" x="573" y="177" width="5" height="4"/>
-      <rect class="sc-win" x="581" y="177" width="5" height="4"/>
-      <rect class="sc-win" x="573" y="158" width="5" height="4"/>
-      <rect class="sc-win" x="581" y="158" width="5" height="4"/>
-      <rect class="sc-win" x="573" y="167" width="5" height="4"/>
-      <rect class="sc-win" x="581" y="167" width="5" height="4"/>
-      <rect class="sc-win" x="565" y="186" width="5" height="4"/>
-      <rect class="sc-win" x="573" y="186" width="5" height="4"/>
-      <rect class="sc-win" x="614" y="171" width="4" height="3"/>
-      <rect class="sc-win" x="620" y="171" width="4" height="3"/>
-      <rect class="sc-win" x="614" y="180" width="4" height="3"/>
-      <rect class="sc-win" x="620" y="180" width="4" height="3"/>
-      <rect class="sc-win" x="614" y="189" width="4" height="3"/>
-      <rect class="sc-win" x="641" y="195" width="5" height="4"/>
-      <rect class="sc-win" x="649" y="195" width="5" height="4"/>
-      <rect class="sc-win" x="657" y="195" width="5" height="4"/>
-      <rect class="sc-win" x="641" y="204" width="5" height="4"/>
-      <rect class="sc-win" x="649" y="204" width="5" height="4"/>
-      <rect class="sc-win" x="687" y="156" width="4" height="3"/>
-      <rect class="sc-win" x="687" y="165" width="4" height="3"/>
-      <rect class="sc-win" x="687" y="174" width="4" height="3"/>
-      <rect class="sc-win" x="710" y="175" width="4" height="3"/>
-      <rect class="sc-win" x="716" y="175" width="4" height="3"/>
-      <rect class="sc-win" x="710" y="184" width="4" height="3"/>
-      <rect class="sc-win" x="716" y="184" width="4" height="3"/>
-      <rect class="sc-win" x="707" y="191" width="5" height="4"/>
-      <rect class="sc-win" x="714" y="191" width="5" height="4"/>
-      <rect class="sc-win" x="744" y="187" width="5" height="4"/>
-      <rect class="sc-win" x="752" y="187" width="5" height="4"/>
-      <rect class="sc-win" x="760" y="187" width="5" height="4"/>
-      <rect class="sc-win" x="744" y="196" width="5" height="4"/>
-      <rect class="sc-win" x="752" y="196" width="5" height="4"/>
-      <rect class="sc-win" x="788" y="165" width="4" height="3"/>
-      <rect class="sc-win" x="788" y="174" width="4" height="3"/>
-      <rect class="sc-win" x="788" y="183" width="4" height="3"/>
-      <rect class="sc-win" x="808" y="200" width="5" height="4"/>
-      <rect class="sc-win" x="816" y="200" width="5" height="4"/>
-      <rect class="sc-win" x="824" y="200" width="5" height="4"/>
-      <rect class="sc-win" x="832" y="200" width="5" height="4"/>
-      <rect class="sc-win" x="857" y="183" width="5" height="4"/>
-      <rect class="sc-win" x="864" y="183" width="5" height="4"/>
-      <rect class="sc-win" x="857" y="192" width="5" height="4"/>
-      <rect class="sc-win" x="885" y="193" width="4" height="3"/>
-      <rect class="sc-win" x="885" y="202" width="4" height="3"/>
-    </g>
+    <!-- ── BUILDINGS LEFT (modern Dhaka glass towers) ── -->
+    <!-- B1: Tall stepped glass tower x=28-54 -->
+    <polygon points="35,158 49,158 49,192 52,192 52,218 55,218 55,280 28,280 28,218 31,218 31,192 34,192 34,158" class="sc-bld"/>
+    <!-- B1 curtain wall glass columns -->
+    <rect x="36" y="158" width="5" height="122" class="sc-cwall"/>
+    <rect x="43" y="158" width="5" height="122" class="sc-cwall"/>
+    <!-- B1 floor spandrel bands -->
+    <rect x="34" y="165" width="18" height="1.2" class="sc-bld-detail"/>
+    <rect x="34" y="172" width="18" height="1.2" class="sc-bld-detail"/>
+    <rect x="34" y="179" width="18" height="1.2" class="sc-bld-detail"/>
+    <rect x="34" y="186" width="21" height="1.2" class="sc-bld-detail"/>
+    <rect x="31" y="198" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="28" y="210" width="27" height="1.2" class="sc-bld-detail"/>
+    <rect x="28" y="222" width="27" height="1.2" class="sc-bld-detail"/>
+    <rect x="28" y="234" width="27" height="1.2" class="sc-bld-detail"/>
+    <rect x="28" y="246" width="27" height="1.2" class="sc-bld-detail"/>
+    <rect x="28" y="258" width="27" height="1.2" class="sc-bld-detail"/>
+    <!-- B1 antenna -->
+    <rect x="41" y="148" width="2" height="10" class="sc-bld"/>
+
+    <!-- B2: Slender hi-rise x=57-70 -->
+    <rect x="57" y="168" width="14" height="112" class="sc-bld"/>
+    <rect x="59" y="168" width="4" height="112" class="sc-cwall"/>
+    <rect x="65" y="168" width="4" height="112" class="sc-cwall"/>
+    <rect x="57" y="175" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="182" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="189" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="196" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="210" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="224" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="238" width="14" height="1.2" class="sc-bld-detail"/>
+    <rect x="57" y="252" width="14" height="1.2" class="sc-bld-detail"/>
+
+    <!-- B3: Wide stepped office x=74-108 -->
+    <rect x="82" y="148" width="20" height="132" class="sc-bld"/>
+    <rect x="78" y="168" width="28" height="112" class="sc-bld"/>
+    <rect x="74" y="188" width="34" height="92"  class="sc-bld"/>
+    <rect x="84" y="148" width="6"  height="132" class="sc-cwall"/>
+    <rect x="92" y="148" width="6"  height="132" class="sc-cwall"/>
+    <rect x="82" y="156" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="82" y="163" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="78" y="176" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="78" y="183" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="74" y="196" width="34" height="1.2" class="sc-bld-detail"/>
+    <rect x="74" y="210" width="34" height="1.2" class="sc-bld-detail"/>
+    <rect x="74" y="224" width="34" height="1.2" class="sc-bld-detail"/>
+    <rect x="74" y="238" width="34" height="1.2" class="sc-bld-detail"/>
+    <rect x="74" y="252" width="34" height="1.2" class="sc-bld-detail"/>
+
+    <!-- B4: Signature glass tower x=112-136 (diamond top) -->
+    <rect x="112" y="152" width="24" height="128" class="sc-bld"/>
+    <polygon points="124,138 112,152 136,152" class="sc-bld-detail"/>
+    <rect x="114" y="152" width="6" height="128" class="sc-cwall"/>
+    <rect x="122" y="152" width="6" height="128" class="sc-cwall"/>
+    <rect x="130" y="152" width="4" height="128" class="sc-cwall"/>
+    <rect x="112" y="160" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="168" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="176" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="184" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="192" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="206" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="220" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="234" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="112" y="248" width="24" height="1.2" class="sc-bld-detail"/>
+    <!-- antenna -->
+    <rect x="123" y="130" width="2" height="8" class="sc-bld"/>
+
+    <!-- B5: Mixed-use block x=140-172 (shop base) -->
+    <rect x="144" y="172" width="26" height="92" class="sc-bld"/>
+    <rect x="140" y="192" width="32" height="72" class="sc-bld"/>
+    <rect x="146" y="172" width="6" height="92"  class="sc-cwall"/>
+    <rect x="154" y="172" width="6" height="92"  class="sc-cwall"/>
+    <rect x="162" y="172" width="6" height="92"  class="sc-cwall"/>
+    <rect x="140" y="179" width="30" height="1.2" class="sc-bld-detail"/>
+    <rect x="140" y="186" width="30" height="1.2" class="sc-bld-detail"/>
+    <rect x="140" y="198" width="32" height="1.2" class="sc-bld-detail"/>
+    <rect x="140" y="212" width="32" height="1.2" class="sc-bld-detail"/>
+    <rect x="140" y="226" width="32" height="1.2" class="sc-bld-detail"/>
+    <rect x="140" y="240" width="32" height="1.2" class="sc-bld-detail"/>
+    <rect x="140" y="254" width="32" height="1.2" class="sc-bld-detail"/>
+    <!-- shop awning at base -->
+    <rect x="140" y="254" width="32" height="5" class="sc-shop-awn" rx="1"/>
+
+    <!-- B6: Tall mid-rise x=176-206 -->
+    <polygon points="184,162 198,162 198,184 204,184 204,280 176,280 176,184 182,184 182,162" class="sc-bld"/>
+    <rect x="178" y="162" width="6" height="118" class="sc-cwall"/>
+    <rect x="186" y="162" width="6" height="118" class="sc-cwall"/>
+    <rect x="194" y="162" width="6" height="118" class="sc-cwall"/>
+    <rect x="176" y="169" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="176" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="190" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="204" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="218" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="232" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="246" width="28" height="1.2" class="sc-bld-detail"/>
+    <rect x="176" y="260" width="28" height="1.2" class="sc-bld-detail"/>
+
+    <!-- ── BUILDINGS RIGHT (modern glass towers) ── -->
+    <!-- BR1: Tall tower x=1238-1262 -->
+    <rect x="1238" y="155" width="24" height="125" class="sc-bld"/>
+    <polygon points="1250,141 1238,155 1262,155" class="sc-bld-detail"/>
+    <rect x="1240" y="155" width="6" height="125" class="sc-cwall"/>
+    <rect x="1248" y="155" width="6" height="125" class="sc-cwall"/>
+    <rect x="1256" y="155" width="4" height="125" class="sc-cwall"/>
+    <rect x="1238" y="163" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="171" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="179" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="187" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="201" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="215" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="229" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="243" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1238" y="257" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="1249" y="133" width="2" height="8" class="sc-bld"/>
+
+    <!-- BR2: Stepped tower x=1265-1288 -->
+    <polygon points="1272,160 1285,160 1285,186 1288,186 1288,280 1265,280 1265,186 1268,186 1268,160" class="sc-bld"/>
+    <rect x="1267" y="160" width="6" height="120" class="sc-cwall"/>
+    <rect x="1275" y="160" width="6" height="120" class="sc-cwall"/>
+    <rect x="1283" y="160" width="4" height="120" class="sc-cwall"/>
+    <rect x="1265" y="167" width="23" height="1.2" class="sc-bld-detail"/>
+    <rect x="1265" y="174" width="23" height="1.2" class="sc-bld-detail"/>
+    <rect x="1265" y="192" width="23" height="1.2" class="sc-bld-detail"/>
+    <rect x="1265" y="208" width="23" height="1.2" class="sc-bld-detail"/>
+    <rect x="1265" y="224" width="23" height="1.2" class="sc-bld-detail"/>
+    <rect x="1265" y="240" width="23" height="1.2" class="sc-bld-detail"/>
+    <rect x="1265" y="256" width="23" height="1.2" class="sc-bld-detail"/>
+
+    <!-- BR3: Wide office block x=1291-1326 -->
+    <rect x="1298" y="168" width="22" height="112" class="sc-bld"/>
+    <rect x="1291" y="188" width="35" height="92"  class="sc-bld"/>
+    <rect x="1300" y="168" width="6" height="112"  class="sc-cwall"/>
+    <rect x="1308" y="168" width="6" height="112"  class="sc-cwall"/>
+    <rect x="1316" y="168" width="6" height="112"  class="sc-cwall"/>
+    <rect x="1291" y="195" width="35" height="1.2" class="sc-bld-detail"/>
+    <rect x="1291" y="210" width="35" height="1.2" class="sc-bld-detail"/>
+    <rect x="1291" y="225" width="35" height="1.2" class="sc-bld-detail"/>
+    <rect x="1291" y="240" width="35" height="1.2" class="sc-bld-detail"/>
+    <rect x="1291" y="255" width="35" height="1.2" class="sc-bld-detail"/>
+
+    <!-- BR4: Slender tower x=1329-1344 -->
+    <rect x="1329" y="162" width="15" height="118" class="sc-bld"/>
+    <rect x="1331" y="162" width="5" height="118"  class="sc-cwall"/>
+    <rect x="1338" y="162" width="5" height="118"  class="sc-cwall"/>
+    <rect x="1329" y="170" width="15" height="1.2" class="sc-bld-detail"/>
+    <rect x="1329" y="178" width="15" height="1.2" class="sc-bld-detail"/>
+    <rect x="1329" y="193" width="15" height="1.2" class="sc-bld-detail"/>
+    <rect x="1329" y="208" width="15" height="1.2" class="sc-bld-detail"/>
+    <rect x="1329" y="223" width="15" height="1.2" class="sc-bld-detail"/>
+    <rect x="1329" y="238" width="15" height="1.2" class="sc-bld-detail"/>
+    <rect x="1329" y="253" width="15" height="1.2" class="sc-bld-detail"/>
+
+    <!-- BR5: Mid-rise x=1347-1380 (shop awning base) -->
+    <rect x="1350" y="178" width="28" height="102" class="sc-bld"/>
+    <rect x="1347" y="194" width="33" height="86"  class="sc-bld"/>
+    <rect x="1352" y="178" width="6" height="102"  class="sc-cwall"/>
+    <rect x="1360" y="178" width="6" height="102"  class="sc-cwall"/>
+    <rect x="1368" y="178" width="6" height="102"  class="sc-cwall"/>
+    <rect x="1347" y="200" width="33" height="1.2" class="sc-bld-detail"/>
+    <rect x="1347" y="214" width="33" height="1.2" class="sc-bld-detail"/>
+    <rect x="1347" y="228" width="33" height="1.2" class="sc-bld-detail"/>
+    <rect x="1347" y="242" width="33" height="1.2" class="sc-bld-detail"/>
+    <rect x="1347" y="256" width="33" height="1.2" class="sc-bld-detail"/>
+    <rect x="1347" y="254" width="33" height="5"   class="sc-shop-awn" rx="1"/>
+
+    <!-- BR6: Corner block x=1383-1420 -->
+    <polygon points="1391,170 1408,170 1408,190 1414,190 1414,280 1383,280 1383,190 1389,190 1389,170" class="sc-bld"/>
+    <rect x="1385" y="170" width="6" height="110" class="sc-cwall"/>
+    <rect x="1393" y="170" width="6" height="110" class="sc-cwall"/>
+    <rect x="1383" y="178" width="26" height="1.2" class="sc-bld-detail"/>
+    <rect x="1383" y="196" width="31" height="1.2" class="sc-bld-detail"/>
+    <rect x="1383" y="210" width="31" height="1.2" class="sc-bld-detail"/>
+    <rect x="1383" y="224" width="31" height="1.2" class="sc-bld-detail"/>
+    <rect x="1383" y="238" width="31" height="1.2" class="sc-bld-detail"/>
+    <rect x="1383" y="252" width="31" height="1.2" class="sc-bld-detail"/>
+
+    <!-- ── CENTRE CITY BUILDINGS (modern Dhaka skyline) ── -->
+    <!-- CC1: Flagship stepped glass tower x=562-606 (most prominent) -->
+    <rect x="572" y="133" width="24" height="147" class="sc-bld"/>
+    <rect x="566" y="154" width="36" height="126" class="sc-bld"/>
+    <rect x="562" y="176" width="44" height="104" class="sc-bld"/>
+    <polygon points="584,118 572,133 596,133" class="sc-bld-detail"/>
+    <rect x="574" y="133" width="7" height="147" class="sc-cwall"/>
+    <rect x="583" y="133" width="7" height="147" class="sc-cwall"/>
+    <rect x="591" y="133" width="7" height="147" class="sc-cwall"/>
+    <rect x="572" y="141" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="572" y="149" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="566" y="161" width="36" height="1.2" class="sc-bld-detail"/>
+    <rect x="566" y="169" width="36" height="1.2" class="sc-bld-detail"/>
+    <rect x="562" y="183" width="44" height="1.2" class="sc-bld-detail"/>
+    <rect x="562" y="197" width="44" height="1.2" class="sc-bld-detail"/>
+    <rect x="562" y="211" width="44" height="1.2" class="sc-bld-detail"/>
+    <rect x="562" y="225" width="44" height="1.2" class="sc-bld-detail"/>
+    <rect x="562" y="239" width="44" height="1.2" class="sc-bld-detail"/>
+    <rect x="562" y="253" width="44" height="1.2" class="sc-bld-detail"/>
+    <rect x="583" y="109" width="2" height="9" class="sc-bld"/>
+
+    <!-- CC2: Sleek tower x=610-632 -->
+    <rect x="610" y="158" width="22" height="122" class="sc-bld"/>
+    <polygon points="621,144 610,158 632,158" class="sc-bld-detail"/>
+    <rect x="612" y="158" width="6" height="122" class="sc-cwall"/>
+    <rect x="620" y="158" width="6" height="122" class="sc-cwall"/>
+    <rect x="628" y="158" width="3" height="122" class="sc-cwall"/>
+    <rect x="610" y="166" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="610" y="174" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="610" y="190" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="610" y="206" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="610" y="222" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="610" y="238" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="610" y="254" width="22" height="1.2" class="sc-bld-detail"/>
+
+    <!-- CC3: Wide commercial slab x=636-682 (Bashundhara-style) -->
+    <rect x="644" y="168" width="26" height="112" class="sc-bld"/>
+    <rect x="636" y="185" width="46" height="95"  class="sc-bld"/>
+    <rect x="646" y="168" width="7" height="112"  class="sc-cwall"/>
+    <rect x="655" y="168" width="7" height="112"  class="sc-cwall"/>
+    <rect x="664" y="168" width="7" height="112"  class="sc-cwall"/>
+    <rect x="636" y="193" width="46" height="1.2" class="sc-bld-detail"/>
+    <rect x="636" y="207" width="46" height="1.2" class="sc-bld-detail"/>
+    <rect x="636" y="221" width="46" height="1.2" class="sc-bld-detail"/>
+    <rect x="636" y="235" width="46" height="1.2" class="sc-bld-detail"/>
+    <rect x="636" y="249" width="46" height="1.2" class="sc-bld-detail"/>
+    <rect x="636" y="254" width="46" height="5" class="sc-shop-awn" rx="1"/>
+
+    <!-- CC4: Tall spire tower x=686-706 -->
+    <rect x="686" y="143" width="20" height="137" class="sc-bld"/>
+    <polygon points="696,128 686,143 706,143"   class="sc-bld-detail"/>
+    <rect x="688" y="143" width="6" height="137" class="sc-cwall"/>
+    <rect x="696" y="143" width="6" height="137" class="sc-cwall"/>
+    <rect x="686" y="151" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="159" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="167" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="181" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="195" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="209" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="223" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="237" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="686" y="251" width="20" height="1.2" class="sc-bld-detail"/>
+    <rect x="695" y="120" width="2" height="8" class="sc-bld"/>
+
+    <!-- CC5: Post-modern stepped tower x=710-748 -->
+    <rect x="718" y="163" width="22" height="117" class="sc-bld"/>
+    <rect x="712" y="180" width="34" height="100" class="sc-bld"/>
+    <rect x="710" y="195" width="38" height="85"  class="sc-bld"/>
+    <rect x="720" y="163" width="6" height="117"  class="sc-cwall"/>
+    <rect x="728" y="163" width="6" height="117"  class="sc-cwall"/>
+    <rect x="712" y="171" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="712" y="179" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="710" y="188" width="38" height="1.2" class="sc-bld-detail"/>
+    <rect x="710" y="203" width="38" height="1.2" class="sc-bld-detail"/>
+    <rect x="710" y="218" width="38" height="1.2" class="sc-bld-detail"/>
+    <rect x="710" y="233" width="38" height="1.2" class="sc-bld-detail"/>
+    <rect x="710" y="248" width="38" height="1.2" class="sc-bld-detail"/>
+
+    <!-- CC6: Slender marker tower x=752-768 -->
+    <rect x="752" y="152" width="16" height="128" class="sc-bld"/>
+    <polygon points="760,140 752,152 768,152" class="sc-bld-detail"/>
+    <rect x="754" y="152" width="5" height="128" class="sc-cwall"/>
+    <rect x="761" y="152" width="5" height="128" class="sc-cwall"/>
+    <rect x="752" y="160" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="752" y="168" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="752" y="184" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="752" y="200" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="752" y="216" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="752" y="232" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="752" y="248" width="16" height="1.2" class="sc-bld-detail"/>
+    <rect x="759" y="134" width="2" height="6" class="sc-bld"/>
+
+    <!-- CC7: Wide industrial-office x=772-854 -->
+    <rect x="786" y="175" width="22" height="105" class="sc-bld"/>
+    <rect x="772" y="190" width="82" height="90"  class="sc-bld"/>
+    <rect x="788" y="175" width="6" height="105"  class="sc-cwall"/>
+    <rect x="796" y="175" width="6" height="105"  class="sc-cwall"/>
+    <rect x="772" y="198" width="82" height="1.2" class="sc-bld-detail"/>
+    <rect x="772" y="212" width="82" height="1.2" class="sc-bld-detail"/>
+    <rect x="772" y="226" width="82" height="1.2" class="sc-bld-detail"/>
+    <rect x="772" y="240" width="82" height="1.2" class="sc-bld-detail"/>
+    <rect x="772" y="254" width="82" height="1.2" class="sc-bld-detail"/>
+    <rect x="786" y="167" width="2" height="8" class="sc-bld"/>
+
+    <!-- CC8: Far-mid towers x=858-910 -->
+    <rect x="860" y="174" width="24" height="106" class="sc-bld"/>
+    <rect x="888" y="182" width="22" height="98"  class="sc-bld"/>
+    <rect x="862" y="174" width="6" height="106"  class="sc-cwall"/>
+    <rect x="890" y="182" width="6" height="98"   class="sc-cwall"/>
+    <rect x="898" y="182" width="6" height="98"   class="sc-cwall"/>
+    <rect x="860" y="181" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="860" y="196" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="860" y="211" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="860" y="226" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="860" y="241" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="860" y="256" width="24" height="1.2" class="sc-bld-detail"/>
+    <rect x="888" y="189" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="888" y="204" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="888" y="219" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="888" y="234" width="22" height="1.2" class="sc-bld-detail"/>
+    <rect x="888" y="249" width="22" height="1.2" class="sc-bld-detail"/>
 
     <!-- ── FACTORY LEFT (x≈222–285) ── -->
     <g class="sc-bld">
@@ -1074,7 +1314,7 @@
       <animate attributeName="r"       values="5;17"          dur="4.8s"  begin="-0.9s" repeatCount="indefinite"/>
       <animate attributeName="opacity" values="0.36;0"        dur="4.8s"  begin="-0.9s" repeatCount="indefinite"/>
       <animate attributeName="cx"      values="1194;1198"     dur="4.8s"  begin="-0.9s" repeatCount="indefinite"/>
-    </circle> -->
+    </circle>
     <!-- Sensor A -->
     <line x1="318" y1="244" x2="318" y2="266" stroke="rgba(90,175,215,0.32)" stroke-width="1.2"/>
     <rect x="312" y="238" width="12" height="8" rx="2"
@@ -1099,93 +1339,78 @@
       <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
     </circle>
 
-    <!-- ── PINE TREES LEFT (corrected: apex up, base at ground) ── -->
+    <!-- ── FOREGROUND ACCENT TREES (sparse, mixed styles) ── -->
+    <!-- Round canopy tree, left zone x=295 -->
     <g class="tree sw-a">
-      <polygon points="382,220 354,264 410,264" fill="#060d1b"/>
-      <polygon points="382,192 360,244 404,244" fill="#071020"/>
-      <polygon points="382,168 366,218 398,218" fill="#081121"/>
-      <rect x="378" y="254" width="8" height="10" fill="#040b16"/>
+      <circle cx="295" cy="251" r="10" class="sc-mtn-broad"/>
+      <circle cx="290" cy="255" r="7"  fill="#1e4a22"/>
+      <circle cx="301" cy="254" r="7"  fill="#1e4a22"/>
+      <rect x="294" y="259" width="3" height="6" fill="#1a3a1e"/>
     </g>
+    <!-- Slim pine, left zone x=365 -->
     <g class="tree sw-b">
-      <polygon points="422,224 400,264 444,264" fill="#060d1b"/>
-      <polygon points="422,198 404,250 440,250" fill="#071020"/>
-      <polygon points="422,175 408,223 436,223" fill="#081121"/>
-      <rect x="418" y="256" width="8" height="8" fill="#040b16"/>
+      <polygon points="365,232 358,252 372,252" class="sc-mtn-pine"/>
+      <polygon points="365,241 356,258 374,258" class="sc-mtn-pine"/>
+      <polygon points="365,250 354,264 376,264" class="sc-mtn-pine"/>
+      <rect x="363" y="258" width="3" height="6" fill="#1a3a1e"/>
     </g>
+    <!-- Palm-style accent tree, left x=470 -->
     <g class="tree sw-c">
-      <polygon points="458,222 436,266 480,266" fill="#060d1b"/>
-      <polygon points="458,196 440,248 476,248" fill="#071020"/>
-      <polygon points="458,173 444,220 472,220" fill="#081121"/>
-      <rect x="454" y="256" width="8" height="8" fill="#040b16"/>
+      <rect x="470" y="244" width="3" height="20" rx="1" fill="#1a3020"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#225028" transform="rotate(-30,470,246)"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#1e4a24" transform="rotate(25,470,246)"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#225028" transform="rotate(75,470,246)"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#1e4a24" transform="rotate(-80,470,246)"/>
+      <circle  cx="470" cy="246" r="4" fill="#1c3c22"/>
     </g>
-    <!-- extra small background trees left area -->
-    <g class="tree sw-a" opacity="0.55">
-      <polygon points="295,238 281,264 309,264" fill="#060d1b"/>
-      <polygon points="295,222 283,252 307,252" fill="#071020"/>
-      <rect x="292" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
-    <g class="tree sw-c" opacity="0.5">
-      <polygon points="340,236 326,264 354,264" fill="#060d1b"/>
-      <polygon points="340,220 328,250 352,250" fill="#071020"/>
-      <rect x="337" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
-    <!-- extra trees between left group and centre -->
-    <g class="tree sw-b">
-      <polygon points="502,230 484,268 520,268" fill="#060d1b"/>
-      <polygon points="502,208 486,254 518,254" fill="#071020"/>
-      <polygon points="502,188 490,228 514,228" fill="#081121"/>
-      <rect x="498" y="260" width="8" height="8" fill="#040b16"/>
-    </g>
+    <!-- Round canopy tree, right zone x=1095 -->
     <g class="tree sw-a">
-      <polygon points="532,228 515,266 549,266" fill="#060d1b"/>
-      <polygon points="532,206 517,252 547,252" fill="#071020"/>
-      <polygon points="532,186 520,226 544,226" fill="#081121"/>
-      <rect x="528" y="258" width="8" height="8" fill="#040b16"/>
+      <circle cx="1095" cy="251" r="10" class="sc-mtn-broad"/>
+      <circle cx="1090" cy="255" r="7"  fill="#1e4a22"/>
+      <circle cx="1101" cy="254" r="7"  fill="#1e4a22"/>
+      <rect x="1094" y="259" width="3" height="6" fill="#1a3a1e"/>
+    </g>
+    <!-- Slim pine, right zone x=1150 -->
+    <g class="tree sw-b">
+      <polygon points="1150,232 1143,252 1157,252" class="sc-mtn-pine"/>
+      <polygon points="1150,241 1141,258 1159,258" class="sc-mtn-pine"/>
+      <polygon points="1150,250 1139,264 1161,264" class="sc-mtn-pine"/>
+      <rect x="1148" y="258" width="3" height="6" fill="#1a3a1e"/>
     </g>
 
-    <!-- ── PINE TREES RIGHT (corrected) ── -->
-    <g class="tree sw-b">
-      <polygon points="988,222 966,266 1010,266" fill="#060d1b"/>
-      <polygon points="988,196 968,248 1008,248" fill="#071020"/>
-      <polygon points="988,173 972,220 1004,220" fill="#081121"/>
-      <rect x="984" y="256" width="8" height="8" fill="#040b16"/>
-    </g>
-    <g class="tree sw-a">
-      <polygon points="1025,226 1004,270 1046,270" fill="#060d1b"/>
-      <polygon points="1025,200 1007,252 1043,252" fill="#071020"/>
-      <polygon points="1025,177 1009,225 1041,225" fill="#081121"/>
-      <rect x="1021" y="258" width="8" height="8" fill="#040b16"/>
-    </g>
-    <g class="tree sw-c">
-      <polygon points="1060,220 1040,264 1080,264" fill="#060d1b"/>
-      <polygon points="1060,195 1042,246 1078,246" fill="#071020"/>
-      <polygon points="1060,172 1044,218 1076,218" fill="#081121"/>
-      <rect x="1056" y="256" width="8" height="8" fill="#040b16"/>
-    </g>
-    <!-- extra trees between centre and right group -->
-    <g class="tree sw-c">
-      <polygon points="912,228 894,266 930,266" fill="#060d1b"/>
-      <polygon points="912,206 896,252 928,252" fill="#071020"/>
-      <polygon points="912,186 900,226 924,226" fill="#081121"/>
-      <rect x="908" y="258" width="8" height="8" fill="#040b16"/>
-    </g>
-    <g class="tree sw-b">
-      <polygon points="948,226 930,264 966,264" fill="#060d1b"/>
-      <polygon points="948,202 932,250 964,250" fill="#071020"/>
-      <polygon points="948,180 936,220 960,220" fill="#081121"/>
-      <rect x="944" y="256" width="8" height="8" fill="#040b16"/>
-    </g>
-    <!-- small background trees right -->
-    <g class="tree sw-a" opacity="0.55">
-      <polygon points="1098,238 1084,264 1112,264" fill="#060d1b"/>
-      <polygon points="1098,222 1086,252 1110,252" fill="#071020"/>
-      <rect x="1095" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
-    <g class="tree sw-b" opacity="0.50">
-      <polygon points="1145,236 1131,264 1159,264" fill="#060d1b"/>
-      <polygon points="1145,220 1133,250 1157,250" fill="#071020"/>
-      <rect x="1142" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
+    <!-- ── STREET-LEVEL SHOPS (x=325, 475, 840, 998) ── -->
+    <!-- Shop A -->
+    <rect x="325" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="325" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="328" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <rect x="339" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <!-- Shop B -->
+    <rect x="474" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="474" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="477" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <rect x="488" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <!-- Shop C -->
+    <rect x="838" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="838" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="841" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <rect x="852" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <!-- Shop D -->
+    <rect x="998" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="998" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="1001" y="254" width="8" height="7"  class="sc-win" rx="1"/>
+    <rect x="1012" y="254" width="8" height="7"  class="sc-win" rx="1"/>
+
+    <!-- ── PEOPLE SILHOUETTES ── -->
+    <rect x="396" y="252" width="4" height="12" rx="2" class="sc-person" opacity="0.78"/>
+    <circle cx="398" cy="250" r="3" class="sc-person" opacity="0.78"/>
+    <rect x="430" y="253" width="3" height="11" rx="1.5" class="sc-person" opacity="0.72"/>
+    <circle cx="431" cy="251" r="2.5" class="sc-person" opacity="0.72"/>
+    <rect x="553" y="252" width="4" height="12" rx="2" class="sc-person" opacity="0.75"/>
+    <circle cx="555" cy="250" r="3" class="sc-person" opacity="0.75"/>
+    <rect x="920" y="253" width="3" height="11" rx="1.5" class="sc-person" opacity="0.72"/>
+    <circle cx="921" cy="251" r="2.5" class="sc-person" opacity="0.72"/>
+    <rect x="960" y="252" width="4" height="12" rx="2" class="sc-person" opacity="0.76"/>
+    <circle cx="962" cy="250" r="3" class="sc-person" opacity="0.76"/>
 
     <!-- ── WIND TURBINE 1 (hub at 565,191) ── -->
     <polygon points="558,268 562,192 568,192 572,268" fill="#07101e"/>
@@ -1399,57 +1624,224 @@
       </circle>
     </g>
 
+    <!-- Truck 2 → right (large lorry) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-165 0" to="1625 0" dur="36s" begin="-18s" repeatCount="indefinite"/>
+      <rect x="0"  y="255" width="62" height="20" rx="2" fill="#0a1525"/>
+      <rect x="52" y="250" width="20" height="25" rx="3" fill="#0c1e30"/>
+      <rect x="55" y="252" width="14" height="9"  rx="1.5" fill="rgba(140,200,255,0.22)"/>
+      <rect class="sc-headlight" x="69" y="257" width="6" height="4" rx="1"/>
+      <rect class="sc-taillight" x="0"  y="257" width="4" height="4" rx="1"/>
+      <circle cx="12" cy="275" r="4" fill="#040a14"/>
+      <circle cx="28" cy="275" r="4" fill="#040a14"/>
+      <circle cx="52" cy="275" r="4" fill="#040a14"/>
+      <circle cx="68" cy="275" r="4" fill="#040a14"/>
+      <circle cx="-3" cy="263" r="3.5" fill="rgba(110,110,110,0.30)">
+        <animate attributeName="cx"      values="-3;-22"  dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+        <animate attributeName="cy"      values="263;252" dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+        <animate attributeName="r"       values="3.5;11"  dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.30;0"  dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Truck 3 ← left -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1625 0" to="-165 0" dur="42s" begin="-28s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <rect x="0"  y="255" width="62" height="20" rx="2" fill="#091422"/>
+        <rect x="52" y="249" width="22" height="26" rx="3" fill="#0b1c2e"/>
+        <rect x="55" y="252" width="15" height="9"  rx="1.5" fill="rgba(140,200,255,0.20)"/>
+        <rect class="sc-headlight" x="70" y="257" width="6" height="4" rx="1"/>
+        <rect class="sc-taillight" x="0"  y="257" width="4" height="4" rx="1"/>
+        <circle cx="12" cy="275" r="4" fill="#040a14"/>
+        <circle cx="28" cy="275" r="4" fill="#040a14"/>
+        <circle cx="52" cy="275" r="4" fill="#040a14"/>
+        <circle cx="68" cy="275" r="4" fill="#040a14"/>
+        <circle cx="73" cy="263" r="3.5" fill="rgba(110,110,110,0.28)">
+          <animate attributeName="cx"      values="73;92"   dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+          <animate attributeName="cy"      values="263;252" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+          <animate attributeName="r"       values="3.5;11"  dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.28;0"  dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+    <!-- CNG Auto-Rickshaw → right (Dhaka tuk-tuk, green) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-100 0" to="1560 0" dur="18s" begin="-7s" repeatCount="indefinite"/>
+      <rect x="0"  y="259" width="36" height="14" rx="3" fill="#0a6030"/>
+      <rect x="2"  y="254" width="28" height="7"  rx="2" fill="#0c7038"/>
+      <rect x="18" y="256" width="10" height="5"  rx="1" fill="rgba(160,220,180,0.30)"/>
+      <rect x="4"  y="256" width="11" height="5"  rx="1" fill="rgba(160,220,180,0.25)"/>
+      <rect class="sc-headlight" x="33" y="261" width="4" height="3" rx="1"/>
+      <rect class="sc-taillight" x="0"  y="261" width="3" height="3" rx="1"/>
+      <circle cx="30" cy="273" r="3.2" fill="#040a14"/>
+      <circle cx="8"  cy="273" r="3.2" fill="#040a14"/>
+      <circle cx="18" cy="273" r="3.2" fill="#040a14"/>
+      <rect x="0" y="262" width="36" height="2" fill="rgba(220,200,0,0.40)"/>
+    </g>
+    <!-- CNG Auto-Rickshaw ← left -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1560 0" to="-100 0" dur="22s" begin="-15s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <rect x="0"  y="259" width="36" height="14" rx="3" fill="#085228"/>
+        <rect x="2"  y="254" width="28" height="7"  rx="2" fill="#0a6030"/>
+        <rect x="18" y="256" width="10" height="5"  rx="1" fill="rgba(160,220,180,0.28)"/>
+        <rect x="4"  y="256" width="11" height="5"  rx="1" fill="rgba(160,220,180,0.22)"/>
+        <rect class="sc-headlight" x="33" y="261" width="4" height="3" rx="1"/>
+        <rect class="sc-taillight" x="0"  y="261" width="3" height="3" rx="1"/>
+        <circle cx="30" cy="273" r="3.2" fill="#040a14"/>
+        <circle cx="8"  cy="273" r="3.2" fill="#040a14"/>
+        <circle cx="18" cy="273" r="3.2" fill="#040a14"/>
+        <rect x="0" y="262" width="36" height="2" fill="rgba(220,200,0,0.38)"/>
+      </g>
+    </g>
+    <!-- Cycle-rickshaw → right (passenger hood) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-80 0" to="1540 0" dur="55s" begin="-24s" repeatCount="indefinite"/>
+      <rect x="0"  y="260" width="24" height="12" rx="2" fill="#0e2240"/>
+      <path d="M1,260 Q12,251 23,260" fill="#102848"/>
+      <rect x="2"  y="264" width="16" height="4"  rx="1" fill="#0c1c38"/>
+      <circle cx="5"  cy="272" r="3.5" fill="#040a14"/>
+      <circle cx="19" cy="272" r="3.5" fill="#040a14"/>
+      <line x1="24" y1="264" x2="32" y2="263" stroke="#0e2240" stroke-width="1.5"/>
+      <line x1="32" y1="257" x2="44" y2="263" stroke="#1a3050" stroke-width="1.5"/>
+      <line x1="38" y1="258" x2="44" y2="263" stroke="#1a3050" stroke-width="1.5"/>
+      <line x1="38" y1="258" x2="32" y2="263" stroke="#1a3050" stroke-width="1.5"/>
+      <rect x="34" y="252" width="4" height="7" rx="2" class="sc-person" opacity="0.85"/>
+      <circle cx="36" cy="250" r="3" class="sc-person" opacity="0.85"/>
+      <circle cx="44" cy="269" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+      <circle cx="32" cy="269" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+    </g>
+    <!-- Bicycle ← left (solo cyclist) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1520 0" to="-80 0" dur="40s" begin="-32s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <line x1="4"  y1="260" x2="16" y2="266" stroke="#1a3050" stroke-width="1.5"/>
+        <line x1="10" y1="261" x2="16" y2="266" stroke="#1a3050" stroke-width="1.5"/>
+        <line x1="10" y1="261" x2="4"  y2="266" stroke="#1a3050" stroke-width="1.5"/>
+        <rect x="6" y="255" width="4" height="7" rx="2" class="sc-person" opacity="0.80"/>
+        <circle cx="8" cy="253" r="2.8" class="sc-person" opacity="0.80"/>
+        <circle cx="16" cy="272" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+        <circle cx="4"  cy="272" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+      </g>
+    </g>
+
     <!-- ── PLANES (SMIL translate) ── -->
-    <!-- Plane 1 → right, mid-altitude (y=85 in scene) -->
+    <!-- Plane 1 → right, mid-altitude (y=88) – wide-body airliner top-down -->
     <g opacity="0.82">
       <animateTransform attributeName="transform" type="translate"
-        from="-200 85" to="1660 85" dur="30s" repeatCount="indefinite"/>
+        from="-240 88" to="1680 88" dur="30s" repeatCount="indefinite"/>
       <!-- fuselage -->
-      <ellipse cx="0" cy="0" rx="32" ry="5" fill="#0e2245"/>
-      <!-- wings (swept back) -->
-      <polygon points="-2,-3 -2,14  16,2"  fill="#0f2848"/>
-      <polygon points="-2, 3 -2,-14 16,-2" fill="#0f2848"/>
-      <!-- tailfin -->
-      <polygon points="-24,-3 -32,-11 -18,-3" fill="#0e2245"/>
+      <ellipse cx="0" cy="0" rx="30" ry="3.8" class="sc-plane-body"/>
+      <!-- nose cone -->
+      <ellipse cx="28" cy="0" rx="6" ry="2.8" class="sc-plane-body"/>
+      <!-- swept main wings (top-down view, roots at x≈4, tips at x≈-10) -->
+      <polygon points="6,-3  -10,-26 -16,-23 -4,-3" class="sc-plane-wing"/>
+      <polygon points="6, 3  -10, 26 -16, 23 -4, 3" class="sc-plane-wing"/>
+      <!-- engine pods under wings -->
+      <ellipse cx="-8" cy="-16" rx="5.5" ry="2"   class="sc-plane-eng"/>
+      <ellipse cx="-8" cy=" 16" rx="5.5" ry="2"   class="sc-plane-eng"/>
+      <!-- horizontal tail stabilizers -->
+      <polygon points="-24,-2  -31, -9  -28,-2"  class="sc-plane-wing"/>
+      <polygon points="-24, 2  -31,  9  -28, 2"  class="sc-plane-wing"/>
+      <!-- vertical fin -->
+      <polygon points="-24,0  -30,-5  -27,0"     class="sc-plane-fin" opacity="0.7"/>
       <!-- contrail -->
-      <line x1="-32" y1="0" x2="-150" y2="0"
-            stroke="rgba(200,230,255,0.07)" stroke-width="3"/>
-      <!-- nav lights -->
-      <circle cx="16" cy=" 2" r="2" fill="rgba(255,75,75,0.9)">
+      <line x1="-30" y1="0" x2="-170" y2="0"
+            stroke="rgba(200,230,255,0.08)" stroke-width="3.5"/>
+      <!-- nav lights on wingtips -->
+      <circle cx="-10" cy="-26" r="2" fill="rgba(255,75,75,0.9)">
         <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
       </circle>
-      <circle cx="16" cy="-2" r="2" fill="rgba(70,215,70,0.9)">
+      <circle cx="-10" cy=" 26" r="2" fill="rgba(70,215,70,0.9)">
         <animate attributeName="opacity" values="0;1;0" dur="1.1s" repeatCount="indefinite"/>
       </circle>
     </g>
-    <!-- Plane 2 → right, high altitude (y=45), smaller / farther -->
-    <g opacity="0.50">
+    <!-- Plane 2 → right, high altitude (y=48), smaller / farther -->
+    <g opacity="0.52">
       <animateTransform attributeName="transform" type="translate"
-        from="-200 45" to="1660 45" dur="48s" begin="-22s" repeatCount="indefinite"/>
-      <ellipse cx="0" cy="0" rx="22" ry="3.2" fill="#0d2040"/>
-      <polygon points="-2,-2 -2,8.5 10,1.2" fill="#0e2545"/>
-      <polygon points="-2, 2 -2,-8.5 10,-1.2" fill="#0e2545"/>
-      <polygon points="-16,-1.8 -20,-6 -12,-1.8" fill="#0d2040"/>
-      <line x1="-20" y1="0" x2="-100" y2="0"
-            stroke="rgba(200,230,255,0.05)" stroke-width="2"/>
-      <circle cx="10" cy="1.2" r="1.4" fill="rgba(255,75,75,0.75)">
+        from="-200 48" to="1660 48" dur="48s" begin="-22s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="20" ry="2.6" class="sc-plane-body"/>
+      <ellipse cx="18" cy="0" rx="4"  ry="1.9" class="sc-plane-body"/>
+      <polygon points="4,-2  -6,-16 -10,-14 -2,-2"   class="sc-plane-wing"/>
+      <polygon points="4, 2  -6, 16 -10, 14 -2, 2"   class="sc-plane-wing"/>
+      <ellipse cx="-5" cy="-9.5" rx="3.5" ry="1.4"   class="sc-plane-eng"/>
+      <ellipse cx="-5" cy=" 9.5" rx="3.5" ry="1.4"   class="sc-plane-eng"/>
+      <polygon points="-16,-1.5 -21, -6  -19,-1.5"   class="sc-plane-wing"/>
+      <polygon points="-16, 1.5 -21,  6  -19, 1.5"   class="sc-plane-wing"/>
+      <polygon points="-16,0   -20,-4  -18, 0"        class="sc-plane-fin" opacity="0.7"/>
+      <line x1="-20" y1="0" x2="-110" y2="0"
+            stroke="rgba(200,230,255,0.06)" stroke-width="2.5"/>
+      <circle cx="-6" cy="-16" r="1.5" fill="rgba(255,75,75,0.78)">
         <animate attributeName="opacity" values="1;0;1" dur="1.4s" repeatCount="indefinite"/>
       </circle>
     </g>
-    <!-- Plane 3 ← left, mid-altitude (y=68) -->
-    <g opacity="0.72">
+    <!-- Plane 3 ← left, mid-altitude (y=70) -->
+    <g opacity="0.74">
       <animateTransform attributeName="transform" type="translate"
-        from="1660 68" to="-200 68" dur="38s" begin="-12s" repeatCount="indefinite"/>
+        from="1660 70" to="-200 70" dur="38s" begin="-12s" repeatCount="indefinite"/>
       <g transform="scale(-1,1)">
-        <ellipse cx="0" cy="0" rx="28" ry="4.5" fill="#0e2245"/>
-        <polygon points="-3,-2.5 -3,12 14,1.8" fill="#0f2848"/>
-        <polygon points="-3, 2.5 -3,-12 14,-1.8" fill="#0f2848"/>
-        <polygon points="-22,-2.5 -28,-9 -16,-2.5" fill="#0e2245"/>
-        <line x1="-28" y1="0" x2="-120" y2="0"
-              stroke="rgba(200,230,255,0.055)" stroke-width="2.5"/>
-        <circle cx="14" cy="1.8" r="1.8" fill="rgba(70,215,70,0.85)">
+        <ellipse cx="0" cy="0" rx="26" ry="3.4" class="sc-plane-body"/>
+        <ellipse cx="24" cy="0" rx="5.5" ry="2.5" class="sc-plane-body"/>
+        <polygon points="5,-2.5  -9,-22 -14,-20 -3,-2.5" class="sc-plane-wing"/>
+        <polygon points="5, 2.5  -9, 22 -14, 20 -3, 2.5" class="sc-plane-wing"/>
+        <ellipse cx="-7" cy="-14" rx="4.8" ry="1.8" class="sc-plane-eng"/>
+        <ellipse cx="-7" cy=" 14" rx="4.8" ry="1.8" class="sc-plane-eng"/>
+        <polygon points="-21,-2  -27, -8  -25,-2"   class="sc-plane-wing"/>
+        <polygon points="-21, 2  -27,  8  -25, 2"   class="sc-plane-wing"/>
+        <polygon points="-21, 0  -26, -4  -23, 0"   class="sc-plane-fin" opacity="0.7"/>
+        <line x1="-27" y1="0" x2="-150" y2="0"
+              stroke="rgba(200,230,255,0.07)" stroke-width="3"/>
+        <circle cx="-9" cy="-22" r="1.8" fill="rgba(255,75,75,0.88)">
           <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
         </circle>
+        <circle cx="-9" cy=" 22" r="1.8" fill="rgba(70,215,70,0.88)">
+          <animate attributeName="opacity" values="0;1;0" dur="1.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+    <!-- Plane 4 → right, low approach (y=108), close / larger -->
+    <g opacity="0.68">
+      <animateTransform attributeName="transform" type="translate"
+        from="-260 108" to="1700 108" dur="22s" begin="-6s" repeatCount="indefinite"/>
+      <ellipse cx="0" cy="0" rx="34" ry="4.5" class="sc-plane-body"/>
+      <ellipse cx="32" cy="0" rx="6.5" ry="3.2" class="sc-plane-body"/>
+      <polygon points="8,-3.5  -12,-30 -19,-27 -5,-3.5" class="sc-plane-wing"/>
+      <polygon points="8, 3.5  -12, 30 -19, 27 -5, 3.5" class="sc-plane-wing"/>
+      <ellipse cx="-10" cy="-19" rx="6.5" ry="2.2" class="sc-plane-eng"/>
+      <ellipse cx="-10" cy=" 19" rx="6.5" ry="2.2" class="sc-plane-eng"/>
+      <polygon points="-27,-2.5  -36,-11  -32,-2.5"  class="sc-plane-wing"/>
+      <polygon points="-27, 2.5  -36, 11  -32, 2.5"  class="sc-plane-wing"/>
+      <polygon points="-27, 0   -34, -6  -30, 0"     class="sc-plane-fin" opacity="0.7"/>
+      <line x1="-34" y1="0" x2="-200" y2="0"
+            stroke="rgba(200,230,255,0.09)" stroke-width="4.5"/>
+      <circle cx="-12" cy="-30" r="2.2" fill="rgba(255,75,75,0.9)">
+        <animate attributeName="opacity" values="1;0;1" dur="0.9s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="-12" cy=" 30" r="2.2" fill="rgba(70,215,70,0.9)">
+        <animate attributeName="opacity" values="0;1;0" dur="0.9s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Plane 5 ← left, high altitude (y=38), tiny / distant -->
+    <g opacity="0.40">
+      <animateTransform attributeName="transform" type="translate"
+        from="1660 38" to="-200 38" dur="60s" begin="-32s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <ellipse cx="0" cy="0" rx="14" ry="2"   class="sc-plane-body"/>
+        <ellipse cx="13" cy="0" rx="3"  ry="1.5" class="sc-plane-body"/>
+        <polygon points="3,-1.5  -4,-11  -7,-9.5 -1,-1.5" class="sc-plane-wing"/>
+        <polygon points="3, 1.5  -4, 11  -7, 9.5 -1, 1.5" class="sc-plane-wing"/>
+        <ellipse cx="-3" cy="-7" rx="2.5" ry="1"  class="sc-plane-eng"/>
+        <ellipse cx="-3" cy=" 7" rx="2.5" ry="1"  class="sc-plane-eng"/>
+        <polygon points="-11,-1  -15,-4.5 -13,-1"  class="sc-plane-wing"/>
+        <polygon points="-11, 1  -15, 4.5 -13, 1"  class="sc-plane-wing"/>
+        <line x1="-15" y1="0" x2="-85" y2="0"
+              stroke="rgba(200,230,255,0.05)" stroke-width="1.5"/>
       </g>
     </g>
 
@@ -1458,6 +1850,54 @@
   </svg>
 </div>
 
+<!-- ══ SKY PLANES (fixed overlay, z-index 5 – above scene, below text) ══ -->
+<div id="sky-planes" style="position:fixed;inset:0;z-index:5;pointer-events:none;overflow:hidden;">
+  <svg style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sky plane A → right, ~18vh from top -->
+    <g style="animation:sky-fly-r 38s linear -10s infinite;">
+      <ellipse cx="0" cy="0" rx="22" ry="2.8" fill="#7a92b0" opacity="0.52"/>
+      <ellipse cx="20" cy="0" rx="4.5" ry="2"  fill="#7a92b0" opacity="0.52"/>
+      <polygon points="4,-2  -8,-18 -12,-16 -3,-2"  fill="#6a80a0" opacity="0.52"/>
+      <polygon points="4, 2  -8, 18 -12, 16 -3, 2"  fill="#6a80a0" opacity="0.52"/>
+      <ellipse cx="-6" cy="-11" rx="3.8" ry="1.4"  fill="#556a84" opacity="0.52"/>
+      <ellipse cx="-6" cy=" 11" rx="3.8" ry="1.4"  fill="#556a84" opacity="0.52"/>
+      <polygon points="-18,-1.5 -23,-7  -21,-1.5"   fill="#7a92b0" opacity="0.52"/>
+      <polygon points="-18, 1.5 -23, 7  -21, 1.5"   fill="#7a92b0" opacity="0.52"/>
+      <polygon points="-18, 0  -22,-4  -20, 0"      fill="#8aa0b8" opacity="0.38"/>
+      <line x1="-22" y1="0" x2="-150" y2="0" stroke="rgba(200,230,255,0.07)" stroke-width="2.5"/>
+      <circle cx="-8" cy="-18" r="1.5" fill="rgba(255,75,75,0.80)">
+        <animate attributeName="opacity" values="1;0;1" dur="1.2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Sky plane B ← left, ~8vh from top (tiny, very high) -->
+    <g style="animation:sky-fly-l 58s linear -28s infinite;">
+      <g transform="scale(-1,1)">
+        <ellipse cx="0" cy="0" rx="13" ry="1.8"  fill="#8aa0b8" opacity="0.36"/>
+        <ellipse cx="12" cy="0" rx="2.8" ry="1.3" fill="#8aa0b8" opacity="0.36"/>
+        <polygon points="2,-1.4  -4,-11  -7,-9.5 -1.5,-1.4" fill="#7a8ea8" opacity="0.36"/>
+        <polygon points="2, 1.4  -4, 11  -7, 9.5 -1.5, 1.4" fill="#7a8ea8" opacity="0.36"/>
+        <ellipse cx="-3" cy="-7" rx="2.5" ry="1"  fill="#6a7e98" opacity="0.36"/>
+        <ellipse cx="-3" cy=" 7" rx="2.5" ry="1"  fill="#6a7e98" opacity="0.36"/>
+        <polygon points="-10,-1  -14,-4  -12,-1"   fill="#8aa0b8" opacity="0.36"/>
+        <polygon points="-10, 1  -14, 4  -12, 1"   fill="#8aa0b8" opacity="0.36"/>
+        <line x1="-14" y1="0" x2="-85" y2="0" stroke="rgba(200,230,255,0.05)" stroke-width="1.5"/>
+      </g>
+    </g>
+    <!-- Sky plane C → right, ~28vh from top -->
+    <g style="animation:sky-fly-r2 44s linear -20s infinite;">
+      <ellipse cx="0" cy="0" rx="18" ry="2.4"  fill="#8098b4" opacity="0.46"/>
+      <ellipse cx="16" cy="0" rx="3.8" ry="1.7" fill="#8098b4" opacity="0.46"/>
+      <polygon points="3,-1.8  -6,-15 -10,-13 -2,-1.8" fill="#7088a4" opacity="0.46"/>
+      <polygon points="3, 1.8  -6, 15 -10, 13 -2, 1.8" fill="#7088a4" opacity="0.46"/>
+      <ellipse cx="-5" cy="-9"  rx="3.2" ry="1.3" fill="#607898" opacity="0.46"/>
+      <ellipse cx="-5" cy=" 9"  rx="3.2" ry="1.3" fill="#607898" opacity="0.46"/>
+      <polygon points="-14,-1.2 -19,-5.5 -17,-1.2"  fill="#8098b4" opacity="0.46"/>
+      <polygon points="-14, 1.2 -19, 5.5 -17, 1.2"  fill="#8098b4" opacity="0.46"/>
+      <polygon points="-14, 0  -18,-3.5 -16, 0"     fill="#9ab0c8" opacity="0.36"/>
+      <line x1="-19" y1="0" x2="-120" y2="0" stroke="rgba(200,230,255,0.06)" stroke-width="2"/>
+    </g>
+  </svg>
+</div>
 
 <!-- ══ TEXT ══ -->
 <main id="stage" aria-label="Air Hackathon landing content">
@@ -1470,6 +1910,10 @@
 <!-- ══ SENSOR BAR ══ -->
 <div id="sbar-wrap">
 <div id="sbar">
+  <div class="si si-cedar">
+    <img src="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0" width="14" height="14" style="border-radius:50%;opacity:0.85;flex-shrink:0;" alt="Cedar"/>
+    <a href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer" style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sbar-lbl);text-decoration:none;white-space:nowrap;">cedar-initiative.org</a>
+  </div>
   <div class="si si-loc"><span class="si-city">⬤ DHAKA</span><span class="si-updated" id="s-updated">—</span></div>
   <div class="si"><div class="si-dot g" id="d-aqi"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">—</span></div>
   <div class="si"><div class="si-dot g" id="d-pm"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">—</span></div>
@@ -1483,16 +1927,6 @@
 </div>
 
 <div id="vignette"></div>
-
-<!-- Brand logo (top-left) -->
-<a id="brand-logo" href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer" aria-label="Cedar Initiative">
-  <img src="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
-       alt="Cedar Initiative logo" width="26" height="26" loading="lazy"/>
-  <span>Cedar Initiative</span>
-</a>
-
-<!-- Copyright -->
-<div id="footer-copy">© Cedar Initiative · <a href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer">cedar-initiative.org</a></div>
 
 <script>
 // ══════════════════════════════════════════════════════ THEME
@@ -1780,7 +2214,7 @@ addEventListener('resize', () => {
   if (!wrap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const airSvg = document.getElementById('airship-svg');
-  const DEFAULT_AW = 155; // fallback when element hasn't rendered yet
+  const DEFAULT_AW = 110; // fallback when element hasn't rendered yet
   function getAW() { return (airSvg && airSvg.offsetWidth > 0) ? airSvg.offsetWidth : DEFAULT_AW; }
 
   let phase        = 'idle';
@@ -1812,7 +2246,7 @@ addEventListener('resize', () => {
 
       const sx  = -(AW + 40);
       const ex  = window.innerWidth  * 0.50 - AW * 0.5; // centered horizontally
-      const by  = window.innerHeight * 0.54;             // below "Coming Soon"
+      const by  = window.innerHeight * 0.70;             // below "Coming Soon"
       const cx  = sx + (ex - sx) * e;
       const cy  = by - Math.sin(t * Math.PI) * 28;      // gentle arc upward then settles
       const tilt = (1 - e) * -4;                        // nose-up during fly-in
@@ -1830,7 +2264,7 @@ addEventListener('resize', () => {
       const s  = elapsed * 0.001;
       // Home position re-computed each frame so resize is handled
       const hx = window.innerWidth  * 0.50 - AW * 0.5;
-      const hy = window.innerHeight * 0.54;
+      const hy = window.innerHeight * 0.70;
       // Multi-frequency drift gives organic, physics-like floating
       const x  = hx + Math.sin(s * 0.18) * 72 + Math.sin(s * 0.11) * 28 + Math.sin(s * 0.31) * 12;
       const y  = hy + Math.sin(s * 0.26) * 20 + Math.sin(s * 0.15) * 9;
