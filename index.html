@@ -19,14 +19,14 @@
       --sky-b:       #c8e8f5;
       --hz1:         rgba(175,218,238,0.92);
       --hz2:         rgba(175,218,238,0.40);
-      --text-main:   rgba(4,22,62,0.92);
-      --text-accent: rgba(8,52,128,0.68);
-      --text-sub:    rgba(8,44,108,0.42);
-      --divline:     rgba(8,52,128,0.20);
+      --text-main:   rgba(4,22,62,0.94);
+      --text-accent: rgba(8,52,148,0.80);
+      --text-sub:    rgba(8,44,108,0.65);
+      --divline:     rgba(8,52,128,0.28);
       --sbar-bg:     rgba(218,240,252,0.94);
       --sbar-bdr:    rgba(8,60,138,0.10);
       --sbar-lbl:    rgba(8,58,132,0.60);
-      --sbar-val:    rgba(4,18,56,0.72);
+      --sbar-val:    rgba(4,18,56,0.80);
       --vig:         rgba(188,224,244,0.35);
       --cur-ring:    rgba(8,72,156,0.40);
       --cur-dot:     rgba(8,72,156,0.90);
@@ -42,14 +42,14 @@
       --sky-b:       #020810;
       --hz1:         rgba(6,14,30,0.95);
       --hz2:         rgba(6,14,30,0.45);
-      --text-main:   rgba(255,255,255,0.94);
-      --text-accent: rgba(120,210,255,0.62);
-      --text-sub:    rgba(255,255,255,0.28);
-      --divline:     rgba(120,210,255,0.32);
+      --text-main:   rgba(255,255,255,0.96);
+      --text-accent: rgba(140,220,255,0.78);
+      --text-sub:    rgba(180,220,255,0.58);
+      --divline:     rgba(120,210,255,0.38);
       --sbar-bg:     rgba(2,7,18,0.90);
       --sbar-bdr:    rgba(120,200,255,0.07);
       --sbar-lbl:    rgba(120,200,255,0.38);
-      --sbar-val:    rgba(255,255,255,0.52);
+      --sbar-val:    rgba(255,255,255,0.60);
       --vig:         rgba(2,8,18,0.52);
       --cur-ring:    rgba(148,218,255,0.45);
       --cur-dot:     rgba(148,218,255,0.95);
@@ -170,15 +170,71 @@
       height: 100%;
     }
 
-    /* Wind turbine blades */
+    /* Wind turbine blades — transform-origin set per-element via style attr */
     .t-bl {
-      transform-box: fill-box;
-      transform-origin: 50% 50%;
       animation: t-spin 11s linear infinite;
     }
     .t-bl-b { animation-duration: 16s; animation-direction: reverse; }
     .t-bl-c { animation-duration: 8s; }
     @keyframes t-spin { to { transform: rotate(360deg); } }
+
+    /* Flag wave */
+    .flag-cloth {
+      transform-box: fill-box;
+      transform-origin: 0% 50%;
+      animation: flag-wave 3.2s ease-in-out infinite;
+    }
+    @keyframes flag-wave {
+      0%   { transform: skewX(-5deg) scaleX(0.97); }
+      30%  { transform: skewX(2deg)  scaleX(1.01); }
+      60%  { transform: skewX(5deg)  scaleX(1.03); }
+      100% { transform: skewX(-5deg) scaleX(0.97); }
+    }
+
+    /* ══════════════════════════════════════════ SCENE THEME CLASSES */
+    /* Hills */
+    .sc-hills { fill: #2e5e30; }
+    [data-theme="dark"] .sc-hills { fill: #0b1c35; }
+
+    /* Buildings */
+    .sc-bld { fill: #3d4d5e; }
+    [data-theme="dark"] .sc-bld { fill: #070e1d; }
+    .sc-bld-detail { fill: #2e3d4e; }
+    [data-theme="dark"] .sc-bld-detail { fill: #050b16; }
+
+    /* Building windows */
+    .sc-win { fill: rgba(200,225,255,0.25); }
+    [data-theme="dark"] .sc-win { fill: rgba(255,240,160,0.88); }
+
+    /* Ground / grass strip */
+    .sc-gnd { fill: #3e6030; }
+    [data-theme="dark"] .sc-gnd { fill: #060c1a; }
+
+    /* Road surface */
+    .sc-rd { fill: #505a68; }
+    [data-theme="dark"] .sc-rd { fill: #07101c; }
+
+    /* Road dashes */
+    .sc-rd-dashes rect { fill: rgba(240,240,240,0.65); }
+    [data-theme="dark"] .sc-rd-dashes rect { fill: rgba(100,180,255,0.09); }
+
+    /* Lamppost pole / arm */
+    .sc-lamp-pole { stroke: #2a3a50; }
+    [data-theme="dark"] .sc-lamp-pole { stroke: #0e1d32; }
+
+    /* Lamppost bulb */
+    .sc-lamp-bulb { fill: rgba(200,180,140,0.5); }
+    [data-theme="dark"] .sc-lamp-bulb { fill: rgba(255,230,110,1.0); }
+
+    /* Lamppost halo glow (only visible in dark mode) */
+    .sc-lamp-glow { fill: rgba(255,230,100,0); }
+    [data-theme="dark"] .sc-lamp-glow { fill: rgba(255,225,80,0.30); }
+
+    /* Vehicle headlights / taillights */
+    .sc-headlight { fill: rgba(255,235,160,0.18); }
+    [data-theme="dark"] .sc-headlight { fill: rgba(255,245,180,1.0); }
+    .sc-taillight { fill: rgba(220,60,60,0.18); }
+    [data-theme="dark"] .sc-taillight { fill: rgba(255,50,50,0.90); }
 
     /* Tree sway */
     .tree { transform-box: fill-box; transform-origin: 50% 100%; }
@@ -232,8 +288,8 @@
     }
 
     .div-line {
-      width: 48px;
-      height: 1px;
+      width: 64px;
+      height: 1.5px;
       background: linear-gradient(90deg, transparent, var(--divline), transparent);
       margin: 2.2em auto;
       opacity: 0;
@@ -242,9 +298,9 @@
 
     .t-soon {
       font-family: 'Inter', sans-serif;
-      font-weight: 200;
-      font-size: clamp(0.58rem, 0.85vw, 0.78rem);
-      letter-spacing: 0.58em;
+      font-weight: 400;
+      font-size: clamp(0.92rem, 1.35vw, 1.28rem);
+      letter-spacing: 0.44em;
       text-transform: uppercase;
       color: var(--text-sub);
       opacity: 0;
@@ -374,7 +430,7 @@
     #airship-wrap {
       position: fixed;
       top: 0; left: 0;
-      z-index: 5;
+      z-index: 8;
       pointer-events: none;
       will-change: transform;
       transform: translate(-400px, 20vh);
@@ -440,7 +496,7 @@
 <div id="horizon"></div>
 
 <!-- ══ AIRSHIP ══ -->
-<div id="airship-wrap" role="img" aria-label="Air Hackathon airship carrying the logo">
+<div id="airship-wrap" role="img" aria-label="Air Hackathon airship carrying the Cedar Initiative flag">
   <svg id="airship-svg" viewBox="0 0 280 115" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1">
@@ -452,9 +508,6 @@
         <stop offset="0%"   stop-color="#2c4060"/>
         <stop offset="100%" stop-color="#1a2840"/>
       </linearGradient>
-      <clipPath id="ag-clip">
-        <ellipse cx="142" cy="46" rx="116" ry="41"/>
-      </clipPath>
     </defs>
 
     <!-- Rear stabiliser fins -->
@@ -490,13 +543,6 @@
     <!-- Main envelope -->
     <ellipse cx="142" cy="46" rx="116" ry="41" fill="url(#ag-env)"/>
 
-    <!-- Logo image on envelope -->
-    <image href="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
-           x="76" y="14" width="132" height="64"
-           clip-path="url(#ag-clip)"
-           preserveAspectRatio="xMidYMid meet"
-           opacity="0.92"/>
-
     <!-- Envelope highlight / sheen -->
     <ellipse cx="118" cy="31" rx="58" ry="15" fill="rgba(255,255,255,0.11)" opacity="0.55"/>
     <!-- Envelope outline -->
@@ -512,9 +558,23 @@
     <circle cx="258" cy="49" r="2.2" fill="rgba(70,240,70,0.95)">
       <animate attributeName="opacity" values="0.1;1;0.1" dur="1.1s" repeatCount="indefinite"/>
     </circle>
+
+    <!-- Flag pole (extends above envelope — intentional, SVG overflow:visible lets it render above viewBox) -->
+    <line x1="142" y1="5" x2="142" y2="-36"
+          stroke="rgba(200,210,230,0.75)" stroke-width="1.6" stroke-linecap="round"/>
+
+    <!-- Flag: white cloth with Cedar Initiative logo (waves from pole) -->
+    <g class="flag-cloth">
+      <rect x="143" y="-36" width="84" height="32" rx="2"
+            fill="white" opacity="0.96"
+            stroke="rgba(180,200,220,0.4)" stroke-width="0.6"/>
+      <image href="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
+             x="146" y="-34" width="78" height="28"
+             preserveAspectRatio="xMidYMid meet"
+             opacity="0.94"/>
+    </g>
   </svg>
 </div>
-
 <!-- ══ SCENE SVG ══ -->
 <div id="scene-wrap">
   <svg id="scene-svg" viewBox="0 0 1440 280"
@@ -534,10 +594,10 @@
     <!-- ── FAR HILLS ── -->
     <path d="M0,185 Q180,115 380,155 Q580,195 720,132
              Q880,72  1080,142 Q1260,205 1440,162 L1440,280 L0,280 Z"
-          fill="#0b1c35" opacity="0.55"/>
+          class="sc-hills" opacity="0.72"/>
 
     <!-- ── BUILDINGS LEFT ── -->
-    <g fill="#070e1d">
+    <g class="sc-bld">
       <rect x="28"  y="188" width="22" height="92"/>
       <rect x="54"  y="174" width="16" height="106"/>
       <rect x="74"  y="198" width="26" height="82"/>
@@ -548,20 +608,31 @@
       <rect x="105" y="162" width="2" height="8"/>
       <rect x="56"  y="166" width="2" height="8"/>
     </g>
-    <g fill="rgba(155,210,255,0.22)">
-      <rect x="31"  y="193" width="4" height="3"/>
-      <rect x="37"  y="193" width="4" height="3"/>
-      <rect x="31"  y="202" width="4" height="3"/>
-      <rect x="57"  y="179" width="4" height="3"/>
-      <rect x="63"  y="179" width="4" height="3"/>
-      <rect x="57"  y="188" width="4" height="3"/>
-      <rect x="106" y="175" width="4" height="3"/>
-      <rect x="112" y="175" width="4" height="3"/>
-      <rect x="106" y="184" width="4" height="3"/>
+    <g>
+      <rect class="sc-win" x="31"  y="193" width="4" height="3"/>
+      <rect class="sc-win" x="37"  y="193" width="4" height="3"/>
+      <rect class="sc-win" x="31"  y="202" width="4" height="3"/>
+      <rect class="sc-win" x="57"  y="179" width="4" height="3"/>
+      <rect class="sc-win" x="63"  y="179" width="4" height="3"/>
+      <rect class="sc-win" x="57"  y="188" width="4" height="3"/>
+      <rect class="sc-win" x="106" y="175" width="4" height="3"/>
+      <rect class="sc-win" x="112" y="175" width="4" height="3"/>
+      <rect class="sc-win" x="106" y="184" width="4" height="3"/>
+      <rect class="sc-win" x="31"  y="211" width="4" height="3"/>
+      <rect class="sc-win" x="37"  y="211" width="4" height="3"/>
+      <rect class="sc-win" x="57"  y="197" width="4" height="3"/>
+      <rect class="sc-win" x="63"  y="197" width="4" height="3"/>
+      <rect class="sc-win" x="76"  y="204" width="4" height="3"/>
+      <rect class="sc-win" x="82"  y="204" width="4" height="3"/>
+      <rect class="sc-win" x="76"  y="213" width="4" height="3"/>
+      <rect class="sc-win" x="106" y="193" width="4" height="3"/>
+      <rect class="sc-win" x="112" y="193" width="4" height="3"/>
+      <rect class="sc-win" x="130" y="191" width="4" height="3"/>
+      <rect class="sc-win" x="130" y="200" width="4" height="3"/>
     </g>
 
     <!-- ── BUILDINGS RIGHT ── -->
-    <g fill="#070e1d">
+    <g class="sc-bld">
       <rect x="1238" y="183" width="24" height="97"/>
       <rect x="1266" y="170" width="18" height="110"/>
       <rect x="1288" y="190" width="28" height="90"/>
@@ -572,14 +643,28 @@
       <rect x="1268" y="162" width="2" height="8"/>
       <rect x="1322" y="168" width="2" height="8"/>
     </g>
-    <g fill="rgba(155,210,255,0.22)">
-      <rect x="1241" y="188" width="4" height="3"/>
-      <rect x="1247" y="188" width="4" height="3"/>
-      <rect x="1269" y="175" width="4" height="3"/>
-      <rect x="1275" y="175" width="4" height="3"/>
-      <rect x="1290" y="195" width="4" height="3"/>
-      <rect x="1296" y="195" width="4" height="3"/>
-      <rect x="1323" y="181" width="4" height="3"/>
+    <g>
+      <rect class="sc-win" x="1241" y="188" width="4" height="3"/>
+      <rect class="sc-win" x="1247" y="188" width="4" height="3"/>
+      <rect class="sc-win" x="1269" y="175" width="4" height="3"/>
+      <rect class="sc-win" x="1275" y="175" width="4" height="3"/>
+      <rect class="sc-win" x="1290" y="195" width="4" height="3"/>
+      <rect class="sc-win" x="1296" y="195" width="4" height="3"/>
+      <rect class="sc-win" x="1323" y="181" width="4" height="3"/>
+      <rect class="sc-win" x="1241" y="197" width="4" height="3"/>
+      <rect class="sc-win" x="1247" y="197" width="4" height="3"/>
+      <rect class="sc-win" x="1241" y="206" width="4" height="3"/>
+      <rect class="sc-win" x="1269" y="184" width="4" height="3"/>
+      <rect class="sc-win" x="1275" y="184" width="4" height="3"/>
+      <rect class="sc-win" x="1269" y="193" width="4" height="3"/>
+      <rect class="sc-win" x="1290" y="204" width="4" height="3"/>
+      <rect class="sc-win" x="1296" y="204" width="4" height="3"/>
+      <rect class="sc-win" x="1323" y="190" width="4" height="3"/>
+      <rect class="sc-win" x="1323" y="199" width="4" height="3"/>
+      <rect class="sc-win" x="1342" y="197" width="4" height="3"/>
+      <rect class="sc-win" x="1342" y="206" width="4" height="3"/>
+      <rect class="sc-win" x="1368" y="187" width="4" height="3"/>
+      <rect class="sc-win" x="1374" y="187" width="4" height="3"/>
     </g>
 
     <!-- ── AIR SENSORS ── -->
@@ -607,97 +692,110 @@
       <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
     </circle>
 
-    <!-- ── PINE TREES LEFT ── -->
+    <!-- ── PINE TREES LEFT (corrected: apex up, base at ground) ── -->
     <g class="tree sw-a">
-      <polygon points="382,264 360,208 404,208" fill="#060d1b"/>
-      <polygon points="382,238 362,186 402,186" fill="#071020"/>
-      <polygon points="382,214 365,170 399,170" fill="#081121"/>
-      <rect x="378" y="264" width="8" height="14" fill="#040b16"/>
+      <polygon points="382,220 354,264 410,264" fill="#060d1b"/>
+      <polygon points="382,192 360,244 404,244" fill="#071020"/>
+      <polygon points="382,168 366,218 398,218" fill="#081121"/>
+      <rect x="378" y="254" width="8" height="10" fill="#040b16"/>
     </g>
     <g class="tree sw-b">
-      <polygon points="422,268 402,218 442,218" fill="#060d1b"/>
-      <polygon points="422,244 404,198 440,198" fill="#071020"/>
-      <polygon points="422,220 406,182 438,182" fill="#081121"/>
-      <rect x="418" y="268" width="8" height="11" fill="#040b16"/>
+      <polygon points="422,224 400,264 444,264" fill="#060d1b"/>
+      <polygon points="422,198 404,250 440,250" fill="#071020"/>
+      <polygon points="422,175 408,223 436,223" fill="#081121"/>
+      <rect x="418" y="256" width="8" height="8" fill="#040b16"/>
     </g>
     <g class="tree sw-c">
-      <polygon points="458,266 438,218 478,218" fill="#060d1b"/>
-      <polygon points="458,242 440,196 476,196" fill="#071020"/>
-      <polygon points="458,218 442,180 474,180" fill="#081121"/>
-      <rect x="454" y="266" width="8" height="13" fill="#040b16"/>
+      <polygon points="458,222 436,266 480,266" fill="#060d1b"/>
+      <polygon points="458,196 440,248 476,248" fill="#071020"/>
+      <polygon points="458,173 444,220 472,220" fill="#081121"/>
+      <rect x="454" y="256" width="8" height="8" fill="#040b16"/>
     </g>
 
-    <!-- ── PINE TREES RIGHT ── -->
+    <!-- ── PINE TREES RIGHT (corrected) ── -->
     <g class="tree sw-b">
-      <polygon points="988,266 968,214 1008,214" fill="#060d1b"/>
-      <polygon points="988,240 968,192 1008,192" fill="#071020"/>
-      <polygon points="988,216 970,176 1006,176" fill="#081121"/>
-      <rect x="984" y="266" width="8" height="13" fill="#040b16"/>
+      <polygon points="988,222 966,266 1010,266" fill="#060d1b"/>
+      <polygon points="988,196 968,248 1008,248" fill="#071020"/>
+      <polygon points="988,173 972,220 1004,220" fill="#081121"/>
+      <rect x="984" y="256" width="8" height="8" fill="#040b16"/>
     </g>
     <g class="tree sw-a">
-      <polygon points="1025,270 1006,220 1044,220" fill="#060d1b"/>
-      <polygon points="1025,246 1007,200 1043,200" fill="#071020"/>
-      <polygon points="1025,222 1008,184 1042,184" fill="#081121"/>
-      <rect x="1021" y="270" width="8" height="10" fill="#040b16"/>
+      <polygon points="1025,226 1004,270 1046,270" fill="#060d1b"/>
+      <polygon points="1025,200 1007,252 1043,252" fill="#071020"/>
+      <polygon points="1025,177 1009,225 1041,225" fill="#081121"/>
+      <rect x="1021" y="258" width="8" height="8" fill="#040b16"/>
     </g>
     <g class="tree sw-c">
-      <polygon points="1060,264 1042,216 1078,216" fill="#060d1b"/>
-      <polygon points="1060,240 1043,194 1077,194" fill="#071020"/>
-      <polygon points="1060,216 1044,178 1076,178" fill="#081121"/>
-      <rect x="1056" y="264" width="8" height="14" fill="#040b16"/>
+      <polygon points="1060,220 1040,264 1080,264" fill="#060d1b"/>
+      <polygon points="1060,195 1042,246 1078,246" fill="#071020"/>
+      <polygon points="1060,172 1044,218 1076,218" fill="#081121"/>
+      <rect x="1056" y="256" width="8" height="8" fill="#040b16"/>
     </g>
 
-    <!-- ── WIND TURBINE 1 (x=562) ── -->
-    <!-- Turbine tower + nacelle -->
+    <!-- ── WIND TURBINE 1 (hub at 565,191) ── -->
     <polygon points="558,268 562,192 568,192 572,268" fill="#07101e"/>
     <rect x="559" y="188" width="17" height="6" rx="2" fill="#0b1c32"/>
-    <!-- Rotating blades: hub at (565, 191). Blade tip is 34px above hub = y=157 -->
-    <g class="t-bl">
-      <!-- blade 1 pointing up -->
-      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
-            fill="#0d2040" transform-origin="565 191" transform-box="fill-box"/>
-      <!-- blade 2: rotated 120° around hub -->
-      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
-            fill="#0d2040" transform="rotate(120,565,191)"/>
-      <!-- blade 3: rotated 240° around hub -->
-      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z"
-            fill="#0d2040" transform="rotate(240,565,191)"/>
+    <g class="t-bl" style="transform-box:view-box;transform-origin:565px 191px">
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z" fill="#0d2040"/>
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z" fill="#0d2040" transform="rotate(120,565,191)"/>
+      <path d="M563,191 Q562,168 564,157 Q566,157 568,168 Q567,191 565,191 Z" fill="#0d2040" transform="rotate(240,565,191)"/>
       <circle cx="565" cy="191" r="3.5" fill="#091827"/>
     </g>
 
-    <!-- ── WIND TURBINE 2 (x=820) ── -->
+    <!-- ── WIND TURBINE 2 (hub at 823,207) ── -->
     <polygon points="816,270 820,208 826,208 830,270" fill="#07101e"/>
     <rect x="817" y="204" width="16" height="5.5" rx="2" fill="#0b1c32"/>
-    <g class="t-bl t-bl-b">
-      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
-            fill="#0d2040" transform="rotate(0,823,207)"/>
-      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
-            fill="#0d2040" transform="rotate(120,823,207)"/>
-      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z"
-            fill="#0d2040" transform="rotate(240,823,207)"/>
+    <g class="t-bl t-bl-b" style="transform-box:view-box;transform-origin:823px 207px">
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z" fill="#0d2040"/>
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z" fill="#0d2040" transform="rotate(120,823,207)"/>
+      <path d="M821,207 Q820,186 822,177 Q824,177 826,186 Q825,207 823,207 Z" fill="#0d2040" transform="rotate(240,823,207)"/>
       <circle cx="823" cy="207" r="3" fill="#091827"/>
     </g>
 
-    <!-- ── WIND TURBINE 3 (x=1258, far/small) ── -->
+    <!-- ── WIND TURBINE 3 (hub at 1259,224, far/small) ── -->
     <g opacity="0.62">
       <polygon points="1254,270 1258,225 1262,225 1266,270" fill="#07101e"/>
       <rect x="1255" y="222" width="12" height="4.5" rx="1.5" fill="#0b1c32"/>
-      <g class="t-bl t-bl-c">
-        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
-              fill="#0d2040" transform="rotate(0,1259,224)"/>
-        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
-              fill="#0d2040" transform="rotate(120,1259,224)"/>
-        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z"
-              fill="#0d2040" transform="rotate(240,1259,224)"/>
+      <g class="t-bl t-bl-c" style="transform-box:view-box;transform-origin:1259px 224px">
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z" fill="#0d2040"/>
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z" fill="#0d2040" transform="rotate(120,1259,224)"/>
+        <path d="M1257,224 Q1256,209 1258,202 Q1260,202 1261,209 Q1260,224 1258,224 Z" fill="#0d2040" transform="rotate(240,1259,224)"/>
         <circle cx="1259" cy="224" r="2.4" fill="#091827"/>
       </g>
     </g>
 
+    <!-- ── LAMPPOSTS ── -->
+    <!-- Lamp at x=232 -->
+    <line x1="232" y1="264" x2="232" y2="244" class="sc-lamp-pole" stroke-width="1.4"/>
+    <line x1="232" y1="244" x2="243" y2="239" class="sc-lamp-pole" stroke-width="1"/>
+    <circle cx="244" cy="238" r="6" class="sc-lamp-glow"/>
+    <circle cx="244" cy="238" r="2.5" class="sc-lamp-bulb"/>
+    <!-- Lamp at x=510 -->
+    <line x1="510" y1="264" x2="510" y2="243" class="sc-lamp-pole" stroke-width="1.4"/>
+    <line x1="510" y1="243" x2="521" y2="238" class="sc-lamp-pole" stroke-width="1"/>
+    <circle cx="522" cy="237" r="6" class="sc-lamp-glow"/>
+    <circle cx="522" cy="237" r="2.5" class="sc-lamp-bulb"/>
+    <!-- Lamp at x=720 (centre) -->
+    <line x1="720" y1="264" x2="720" y2="243" class="sc-lamp-pole" stroke-width="1.4"/>
+    <line x1="720" y1="243" x2="731" y2="238" class="sc-lamp-pole" stroke-width="1"/>
+    <circle cx="732" cy="237" r="6" class="sc-lamp-glow"/>
+    <circle cx="732" cy="237" r="2.5" class="sc-lamp-bulb"/>
+    <!-- Lamp at x=900 -->
+    <line x1="900" y1="264" x2="900" y2="243" class="sc-lamp-pole" stroke-width="1.4"/>
+    <line x1="900" y1="243" x2="911" y2="238" class="sc-lamp-pole" stroke-width="1"/>
+    <circle cx="912" cy="237" r="6" class="sc-lamp-glow"/>
+    <circle cx="912" cy="237" r="2.5" class="sc-lamp-bulb"/>
+    <!-- Lamp at x=1170 -->
+    <line x1="1170" y1="264" x2="1170" y2="244" class="sc-lamp-pole" stroke-width="1.4"/>
+    <line x1="1170" y1="244" x2="1181" y2="239" class="sc-lamp-pole" stroke-width="1"/>
+    <circle cx="1182" cy="238" r="6" class="sc-lamp-glow"/>
+    <circle cx="1182" cy="238" r="2.5" class="sc-lamp-bulb"/>
+
     <!-- ── GROUND + ROAD ── -->
-    <rect x="0" y="264" width="1440" height="16" fill="#060c1a"/>
-    <rect x="0" y="267" width="1440" height="11" fill="#07101c"/>
+    <rect x="0" y="264" width="1440" height="16" class="sc-gnd"/>
+    <rect x="0" y="267" width="1440" height="11" class="sc-rd"/>
     <!-- road dashes -->
-    <g fill="rgba(100,180,255,0.09)">
+    <g class="sc-rd-dashes">
       <rect x="0"    y="272" width="52" height="1.5"/>
       <rect x="72"   y="272" width="52" height="1.5"/>
       <rect x="144"  y="272" width="52" height="1.5"/>
@@ -729,7 +827,7 @@
       <rect x="4" y="253" width="28" height="9" rx="2.5" fill="#0a1e35"/>
       <rect x="7"  y="255" width="10" height="6" rx="1" fill="rgba(100,175,255,0.2)"/>
       <rect x="19" y="255" width="10" height="6" rx="1" fill="rgba(100,175,255,0.2)"/>
-      <rect x="42" y="262" width="5"  height="3" rx="1" fill="rgba(255,210,100,0.5)"/>
+      <rect class="sc-headlight" x="42" y="262" width="5"  height="3" rx="1"/>
       <circle cx="9"  cy="275" r="3.2" fill="#040a14"/>
       <circle cx="34" cy="275" r="3.2" fill="#040a14"/>
     </g>
@@ -741,7 +839,7 @@
       <rect x="3" y="255" width="24" height="8" rx="2" fill="#091828"/>
       <rect x="6"  y="257" width="9"  height="5" rx="1" fill="rgba(100,175,255,0.16)"/>
       <rect x="17" y="257" width="9"  height="5" rx="1" fill="rgba(100,175,255,0.16)"/>
-      <rect x="37" y="263" width="4"  height="3" rx="1" fill="rgba(255,200,80,0.45)"/>
+      <rect class="sc-headlight" x="37" y="263" width="4"  height="3" rx="1"/>
       <circle cx="8"  cy="275" r="3"   fill="#040a14"/>
       <circle cx="30" cy="275" r="3"   fill="#040a14"/>
     </g>
@@ -753,7 +851,7 @@
       <rect x="0" y="250" width="40" height="10" rx="2" fill="#0a1528"/>
       <rect x="3"  y="252" width="15" height="7" rx="1" fill="rgba(100,175,255,0.13)"/>
       <rect x="20" y="252" width="15" height="7" rx="1" fill="rgba(100,175,255,0.13)"/>
-      <rect x="0"  y="260" width="5"  height="4" rx="1" fill="rgba(255,50,50,0.4)"/>
+      <rect class="sc-taillight" x="0"  y="260" width="5"  height="4" rx="1"/>
       <circle cx="12" cy="275" r="4"  fill="#040a14"/>
       <circle cx="50" cy="275" r="4"  fill="#040a14"/>
     </g>
@@ -1135,11 +1233,11 @@ addEventListener('resize', () => {
       const e   = 1 - Math.pow(1 - t, 3); // cubic ease-out
 
       const sx  = -(AW + 40);
-      const ex  = window.innerWidth  * 0.40;
-      const by  = window.innerHeight * 0.14;
+      const ex  = window.innerWidth  * 0.50 - AW * 0.5; // centered horizontally
+      const by  = window.innerHeight * 0.54;             // below "Coming Soon"
       const cx  = sx + (ex - sx) * e;
-      const cy  = by + Math.sin(t * Math.PI) * 30; // gentle arc up-then-down
-      const tilt = (1 - e) * -4;                    // nose-up during fly-in
+      const cy  = by - Math.sin(t * Math.PI) * 28;      // gentle arc upward then settles
+      const tilt = (1 - e) * -4;                        // nose-up during fly-in
 
       wrap.style.transform = 'translate(' + cx + 'px,' + cy + 'px) rotate(' + tilt + 'deg)';
 
@@ -1153,14 +1251,14 @@ addEventListener('resize', () => {
     } else if (phase === 'float') {
       const s  = elapsed * 0.001;
       // Home position re-computed each frame so resize is handled
-      const hx = window.innerWidth  * 0.40;
-      const hy = window.innerHeight * 0.14;
+      const hx = window.innerWidth  * 0.50 - AW * 0.5;
+      const hy = window.innerHeight * 0.54;
       // Multi-frequency drift gives organic, physics-like floating
-      const x  = hx + Math.sin(s * 0.18) * 88 + Math.sin(s * 0.11) * 36 + Math.sin(s * 0.31) * 16;
-      const y  = hy + Math.sin(s * 0.26) * 24 + Math.sin(s * 0.15) * 11;
+      const x  = hx + Math.sin(s * 0.18) * 72 + Math.sin(s * 0.11) * 28 + Math.sin(s * 0.31) * 12;
+      const y  = hy + Math.sin(s * 0.26) * 20 + Math.sin(s * 0.15) * 9;
       // Tilt proportional to instantaneous horizontal velocity
-      const dt = 0.016; // ≈ one frame at 60 fps, used as a finite-difference step
-      const px = hx + Math.sin((s - dt) * 0.18) * 88 + Math.sin((s - dt) * 0.11) * 36 + Math.sin((s - dt) * 0.31) * 16;
+      const dt = 0.016;
+      const px = hx + Math.sin((s - dt) * 0.18) * 72 + Math.sin((s - dt) * 0.11) * 28 + Math.sin((s - dt) * 0.31) * 12;
       const vx = (x - px) / dt;
       const tilt = Math.max(-8, Math.min(8, vx * 0.042));
 
