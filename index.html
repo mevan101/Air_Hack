@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Air Hackathon 2026 landing page.">
-  <meta name="theme-color" content="#020810">
+  <meta id="m-tc" name="theme-color" content="#c8e8f5">
   <title>Air Hackathon 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,38 +12,90 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { background: #020810; }
+    /* ══════════════════════════════════════════ THEME VARIABLES */
+    :root {
+      --bg:          #c8e8f5;
+      --sky-t:       #5baed6;
+      --sky-b:       #c8e8f5;
+      --hz1:         rgba(175,218,238,0.92);
+      --hz2:         rgba(175,218,238,0.40);
+      --text-main:   rgba(4,22,62,0.92);
+      --text-accent: rgba(8,52,128,0.68);
+      --text-sub:    rgba(8,44,108,0.42);
+      --divline:     rgba(8,52,128,0.20);
+      --sbar-bg:     rgba(218,240,252,0.94);
+      --sbar-bdr:    rgba(8,60,138,0.10);
+      --sbar-lbl:    rgba(8,58,132,0.60);
+      --sbar-val:    rgba(4,18,56,0.72);
+      --vig:         rgba(188,224,244,0.35);
+      --cur-ring:    rgba(8,72,156,0.40);
+      --cur-dot:     rgba(8,72,156,0.90);
+      --glb1:        rgba(75,158,218,0.18);
+      --glb2:        rgba(55,188,168,0.10);
+      --glb3:        rgba(115,78,198,0.08);
+      --blend:       multiply;
+      --star-vis:    0;
+    }
+    [data-theme="dark"] {
+      --bg:          #020810;
+      --sky-t:       #020810;
+      --sky-b:       #020810;
+      --hz1:         rgba(6,14,30,0.95);
+      --hz2:         rgba(6,14,30,0.45);
+      --text-main:   rgba(255,255,255,0.94);
+      --text-accent: rgba(120,210,255,0.62);
+      --text-sub:    rgba(255,255,255,0.28);
+      --divline:     rgba(120,210,255,0.32);
+      --sbar-bg:     rgba(2,7,18,0.90);
+      --sbar-bdr:    rgba(120,200,255,0.07);
+      --sbar-lbl:    rgba(120,200,255,0.38);
+      --sbar-val:    rgba(255,255,255,0.52);
+      --vig:         rgba(2,8,18,0.52);
+      --cur-ring:    rgba(148,218,255,0.45);
+      --cur-dot:     rgba(148,218,255,0.95);
+      --glb1:        rgba(22,110,205,0.13);
+      --glb2:        rgba(14,165,148,0.09);
+      --glb3:        rgba(88,40,168,0.07);
+      --blend:       screen;
+      --star-vis:    1;
+    }
+
+    html {
+      background: var(--bg);
+      transition: background 0.5s;
+    }
     html.js-cursor { cursor: none; }
 
     body {
       width: 100%;
       min-height: 100dvh;
       overflow: hidden;
-      background: #020810;
+      background: linear-gradient(to bottom, var(--sky-t) 0%, var(--sky-b) 100%);
       font-family: 'Inter', sans-serif;
+      transition: background 0.5s;
     }
 
     /* ══════════════════════════════════════════ CURSOR */
     #cur-ring {
       position: fixed;
       width: 36px; height: 36px;
-      border: 1px solid rgba(148, 218, 255, 0.45);
+      border: 1px solid var(--cur-ring);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
+      mix-blend-mode: var(--blend);
       transition: width .35s ease, height .35s ease, border-color .3s ease;
     }
     #cur-dot {
       position: fixed;
       width: 4px; height: 4px;
-      background: rgba(148, 218, 255, 0.95);
+      background: var(--cur-dot);
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
+      mix-blend-mode: var(--blend);
     }
 
     /* ══════════════════════════════════════════ CANVAS */
@@ -52,7 +104,11 @@
       inset: 0;
       pointer-events: none;
     }
-    #c-stars     { z-index: 1; }
+    #c-stars {
+      z-index: 1;
+      opacity: var(--star-vis);
+      transition: opacity 0.5s;
+    }
     #c-particles { z-index: 3; }
 
     /* ══════════════════════════════════════════ AURORA BLOBS */
@@ -61,26 +117,26 @@
       border-radius: 50%;
       filter: blur(100px);
       pointer-events: none;
-      mix-blend-mode: screen;
+      mix-blend-mode: var(--blend);
     }
     .glb1 {
       z-index: 2;
       width: 58vw; height: 42vh;
-      background: radial-gradient(ellipse, rgba(22, 110, 205, 0.13) 0%, transparent 70%);
+      background: radial-gradient(ellipse, var(--glb1) 0%, transparent 70%);
       top: -12vh; left: 14%;
       animation: glb-drift 16s ease-in-out infinite alternate;
     }
     .glb2 {
       z-index: 2;
       width: 42vw; height: 36vh;
-      background: radial-gradient(ellipse, rgba(14, 165, 148, 0.09) 0%, transparent 70%);
+      background: radial-gradient(ellipse, var(--glb2) 0%, transparent 70%);
       top: 4vh; right: 4%;
       animation: glb-drift 21s ease-in-out infinite alternate-reverse;
     }
     .glb3 {
       z-index: 2;
       width: 28vw; height: 24vh;
-      background: radial-gradient(ellipse, rgba(88, 40, 168, 0.07) 0%, transparent 70%);
+      background: radial-gradient(ellipse, var(--glb3) 0%, transparent 70%);
       top: 28vh; left: 2%;
       animation: glb-drift 26s ease-in-out infinite alternate;
     }
@@ -94,12 +150,10 @@
       position: fixed;
       bottom: 0; left: 0; right: 0;
       height: 44vh;
-      background: linear-gradient(to top,
-        rgba(6, 14, 30, 0.95) 0%,
-        rgba(6, 14, 30, 0.45) 38%,
-        transparent 100%);
+      background: linear-gradient(to top, var(--hz1) 0%, var(--hz2) 38%, transparent 100%);
       z-index: 3;
       pointer-events: none;
+      transition: background 0.5s;
     }
 
     /* ══════════════════════════════════════════ SCENE WRAPPER */
@@ -156,11 +210,12 @@
       font-style: italic;
       font-size: clamp(3rem, 7.5vw, 8.8rem);
       letter-spacing: 0.10em;
-      color: rgba(255, 255, 255, 0.94);
-      text-shadow: 0 0 80px rgba(120, 210, 255, 0.10);
+      color: var(--text-main);
+      text-shadow: 0 2px 40px rgba(0,0,0,0.08);
       line-height: 1;
       opacity: 0;
       animation: fd-up 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+      transition: color 0.5s;
     }
 
     .t-year {
@@ -168,17 +223,18 @@
       font-weight: 300;
       font-size: clamp(1.8rem, 4.5vw, 5rem);
       letter-spacing: 0.28em;
-      color: rgba(120, 210, 255, 0.62);
+      color: var(--text-accent);
       line-height: 1;
       margin-top: 0.14em;
       opacity: 0;
       animation: fd-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.95s forwards;
+      transition: color 0.5s;
     }
 
     .div-line {
       width: 48px;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(120, 210, 255, 0.32), transparent);
+      background: linear-gradient(90deg, transparent, var(--divline), transparent);
       margin: 2.2em auto;
       opacity: 0;
       animation: fd-in 1.2s ease 1.7s forwards;
@@ -190,9 +246,10 @@
       font-size: clamp(0.58rem, 0.85vw, 0.78rem);
       letter-spacing: 0.58em;
       text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.28);
+      color: var(--text-sub);
       opacity: 0;
       animation: fd-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+      transition: color 0.5s;
     }
 
     @keyframes fd-up {
@@ -210,8 +267,8 @@
       bottom: 0; left: 0; right: 0;
       height: 36px;
       z-index: 10;
-      background: rgba(2, 7, 18, 0.90);
-      border-top: 1px solid rgba(120, 200, 255, 0.07);
+      background: var(--sbar-bg);
+      border-top: 1px solid var(--sbar-bdr);
       display: flex;
       align-items: center;
       padding: 0 18px;
@@ -220,13 +277,14 @@
       opacity: 0;
       animation: fd-in 1s ease 3.1s forwards;
       backdrop-filter: blur(10px);
+      transition: background 0.5s, border-color 0.5s;
     }
     .si {
       display: flex;
       align-items: center;
       gap: 6px;
       padding: 0 15px;
-      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      border-right: 1px solid rgba(128,128,128,0.08);
       white-space: nowrap;
       flex-shrink: 0;
     }
@@ -247,14 +305,16 @@
       font-size: 8.5px;
       letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: rgba(120, 200, 255, 0.38);
+      color: var(--sbar-lbl);
       font-weight: 300;
+      transition: color 0.5s;
     }
     .si-val {
       font-size: 10px;
       letter-spacing: 0.04em;
-      color: rgba(255, 255, 255, 0.52);
+      color: var(--sbar-val);
       font-weight: 300;
+      transition: color 0.5s;
     }
 
     /* ══════════════════════════════════════════ VIGNETTE */
@@ -262,13 +322,67 @@
       position: fixed;
       inset: 0;
       z-index: 7;
-      background: radial-gradient(ellipse 78% 68% at 50% 42%, transparent 38%, rgba(2, 8, 18, 0.52) 100%);
+      background: radial-gradient(ellipse 78% 68% at 50% 42%, transparent 38%, var(--vig) 100%);
       pointer-events: none;
+      transition: background 0.5s;
     }
 
+    /* ══════════════════════════════════════════ THEME TOGGLE */
+    #theme-toggle {
+      position: fixed;
+      top: 16px; right: 16px;
+      z-index: 20;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--sbar-bdr);
+      background: var(--sbar-bg);
+      color: var(--sbar-lbl);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(14px);
+      transition: transform 0.25s, border-color 0.3s, background 0.5s, color 0.5s;
+      opacity: 0;
+      animation: fd-in 0.8s ease 3.5s forwards;
+      outline: none;
+      padding: 0;
+    }
+    #theme-toggle:hover { transform: scale(1.12) rotate(18deg); }
+    #theme-toggle:focus-visible { outline: 2px solid var(--text-accent); outline-offset: 3px; }
+    #theme-toggle svg { width: 16px; height: 16px; pointer-events: none; }
+    .icon-moon { display: none; }
+    [data-theme="dark"] .icon-sun  { display: none; }
+    [data-theme="dark"] .icon-moon { display: block; }
+
+    /* ══════════════════════════════════════════ AIRSHIP */
+    #airship-wrap {
+      position: fixed;
+      top: 0; left: 0;
+      z-index: 5;
+      pointer-events: none;
+      will-change: transform;
+      transform: translate(-400px, 20vh);
+    }
+    #airship-svg {
+      width: 220px;
+      height: auto;
+      filter: drop-shadow(0 6px 16px rgba(0,20,60,0.20));
+      overflow: visible;
+    }
+    .airship-prop {
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      animation: prop-spin 0.32s linear infinite;
+    }
+    @keyframes prop-spin { to { transform: rotate(360deg); } }
+
+    /* ══════════════════════════════════════════ REDUCED MOTION */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
-      .t-hack, .t-year, .t-soon, .div-line, #sbar { opacity: 1 !important; filter: none !important; transform: none !important; }
+      .t-hack, .t-year, .t-soon, .div-line, #sbar, #theme-toggle {
+        opacity: 1 !important; filter: none !important; transform: none !important;
+      }
     }
     @media (pointer: coarse), (hover: none) {
       #cur-ring, #cur-dot { display: none; }
@@ -282,6 +396,24 @@
 <div id="cur-ring"></div>
 <div id="cur-dot"></div>
 
+<!-- Theme Toggle -->
+<button id="theme-toggle" aria-label="Toggle light/dark theme">
+  <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="5"/>
+    <line x1="12" y1="1"     x2="12" y2="3"/>
+    <line x1="12" y1="21"    x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22"   x2="5.64" y2="5.64"/>
+    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1"  y1="12"    x2="3"  y2="12"/>
+    <line x1="21" y1="12"    x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78"  x2="5.64" y2="18.36"/>
+    <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+  </svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
 <!-- Aurora blobs -->
 <div class="glb glb1"></div>
 <div class="glb glb2"></div>
@@ -291,6 +423,82 @@
 <canvas id="c-stars"></canvas>
 <canvas id="c-particles"></canvas>
 <div id="horizon"></div>
+
+<!-- ══ AIRSHIP ══ -->
+<div id="airship-wrap" role="img" aria-label="Air Hackathon airship carrying the logo">
+  <svg id="airship-svg" viewBox="0 0 280 115" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#4a7ab8"/>
+        <stop offset="55%"  stop-color="#2d5a8c"/>
+        <stop offset="100%" stop-color="#1a3a62"/>
+      </linearGradient>
+      <linearGradient id="ag-gon" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#2c4060"/>
+        <stop offset="100%" stop-color="#1a2840"/>
+      </linearGradient>
+      <clipPath id="ag-clip">
+        <ellipse cx="142" cy="46" rx="116" ry="41"/>
+      </clipPath>
+    </defs>
+
+    <!-- Rear stabiliser fins -->
+    <polygon points="26,46 45,24 45,68" fill="#1e3050" opacity="0.85"/>
+    <!-- Dorsal fin -->
+    <polygon points="42,28 58,6 64,28"  fill="#1e3050" opacity="0.72"/>
+    <!-- Ventral fin -->
+    <polygon points="42,64 58,86 64,64" fill="#1e3050" opacity="0.72"/>
+
+    <!-- Suspension ropes -->
+    <line x1="94"  y1="87" x2="100" y2="73" stroke="rgba(60,90,130,0.50)" stroke-width="0.8"/>
+    <line x1="142" y1="88" x2="142" y2="73" stroke="rgba(60,90,130,0.50)" stroke-width="0.8"/>
+    <line x1="190" y1="87" x2="184" y2="73" stroke="rgba(60,90,130,0.50)" stroke-width="0.8"/>
+
+    <!-- Gondola body -->
+    <rect x="82" y="73" width="120" height="26" rx="7" fill="url(#ag-gon)"/>
+    <!-- Gondola windows -->
+    <rect x="92"  y="79" width="16" height="12" rx="2.5" fill="rgba(160,220,255,0.38)" stroke="rgba(120,180,255,0.28)" stroke-width="0.6"/>
+    <rect x="114" y="79" width="16" height="12" rx="2.5" fill="rgba(160,220,255,0.38)" stroke="rgba(120,180,255,0.28)" stroke-width="0.6"/>
+    <rect x="136" y="79" width="16" height="12" rx="2.5" fill="rgba(160,220,255,0.38)" stroke="rgba(120,180,255,0.28)" stroke-width="0.6"/>
+    <rect x="158" y="79" width="16" height="12" rx="2.5" fill="rgba(160,220,255,0.38)" stroke="rgba(120,180,255,0.28)" stroke-width="0.6"/>
+    <!-- Gondola detail stripe -->
+    <line x1="82" y1="81" x2="202" y2="81" stroke="rgba(120,180,255,0.14)" stroke-width="0.8"/>
+    <!-- Engine nacelle -->
+    <rect x="196" y="80" width="16" height="5" rx="2.5" fill="#1a2840"/>
+    <!-- Propeller -->
+    <g class="airship-prop">
+      <ellipse cx="214" cy="82.5" rx="2.2" ry="9"   fill="#1e3a5c"/>
+      <ellipse cx="214" cy="82.5" rx="9"   ry="2.2" fill="#1e3a5c"/>
+      <circle  cx="214" cy="82.5" r="2.8"  fill="#2e4a6e"/>
+    </g>
+
+    <!-- Main envelope -->
+    <ellipse cx="142" cy="46" rx="116" ry="41" fill="url(#ag-env)"/>
+
+    <!-- Logo image on envelope -->
+    <image href="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
+           x="76" y="14" width="132" height="64"
+           clip-path="url(#ag-clip)"
+           preserveAspectRatio="xMidYMid meet"
+           opacity="0.92"/>
+
+    <!-- Envelope highlight / sheen -->
+    <ellipse cx="118" cy="31" rx="58" ry="15" fill="rgba(255,255,255,0.11)" opacity="0.55"/>
+    <!-- Envelope outline -->
+    <ellipse cx="142" cy="46" rx="116" ry="41" fill="none" stroke="rgba(140,190,255,0.22)" stroke-width="1.2"/>
+
+    <!-- Nose cone -->
+    <ellipse cx="258" cy="46" rx="6" ry="5" fill="#1a2e50"/>
+
+    <!-- Navigation lights -->
+    <circle cx="258" cy="43" r="2.2" fill="rgba(255,70,70,0.95)">
+      <animate attributeName="opacity" values="1;0.1;1" dur="1.1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="258" cy="49" r="2.2" fill="rgba(70,240,70,0.95)">
+      <animate attributeName="opacity" values="0.1;1;0.1" dur="1.1s" repeatCount="indefinite"/>
+    </circle>
+  </svg>
+</div>
 
 <!-- ══ SCENE SVG ══ -->
 <div id="scene-wrap">
@@ -589,6 +797,7 @@
   </svg>
 </div>
 
+
 <!-- ══ TEXT ══ -->
 <main id="stage" aria-label="Air Hackathon landing content">
   <div class="t-hack">Air Hackathon</div>
@@ -612,26 +821,48 @@
 <div id="vignette"></div>
 
 <script>
+// ══════════════════════════════════════════════════════ THEME
+(function () {
+  var html  = document.documentElement;
+  var btn   = document.getElementById('theme-toggle');
+  var metaTC = document.getElementById('m-tc');
+
+  // Apply saved preference (default is light)
+  var saved = localStorage.getItem('airhack-theme');
+  if (saved === 'dark') {
+    html.dataset.theme = 'dark';
+    if (metaTC) metaTC.content = '#020810';
+  }
+
+  if (btn) {
+    btn.addEventListener('click', function () {
+      var isDark = html.dataset.theme === 'dark';
+      var next   = isDark ? 'light' : 'dark';
+      html.dataset.theme = next;
+      localStorage.setItem('airhack-theme', next);
+      if (metaTC) metaTC.content = next === 'dark' ? '#020810' : '#c8e8f5';
+      // Regenerate particles for new theme colours (both vars are in script scope)
+      parts = Array.from({ length: PCNT }, function () { return mkPart(true); });
+    });
+  }
+}());
+
 // ══════════════════════════════════════════════════════ CURSOR
 const cRing = document.getElementById('cur-ring');
 const cDot  = document.getElementById('cur-dot');
 let mx = innerWidth / 2, my = innerHeight / 2;
 let rx = mx, ry = my;
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const supportsFinePointer = window.matchMedia('(pointer: fine)').matches && window.matchMedia('(hover: hover)').matches;
+const supportsFinePointer  = window.matchMedia('(pointer: fine)').matches && window.matchMedia('(hover: hover)').matches;
 const useCustomCursor = supportsFinePointer && !prefersReducedMotion;
 
 if (useCustomCursor && cRing && cDot) {
-  // Only hide native cursor once JS cursor is ready
   document.documentElement.classList.add('js-cursor');
-
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
+  document.addEventListener('mousemove', function (e) {
+    mx = e.clientX; my = e.clientY;
     cDot.style.left = mx + 'px';
     cDot.style.top  = my + 'px';
   });
-
   (function rafCursor() {
     rx += (mx - rx) * 0.1;
     ry += (my - ry) * 0.1;
@@ -649,10 +880,10 @@ const getRenderDpr = () => Math.max(1, Math.min(2, window.devicePixelRatio || 1)
 
 function buildStars() {
   const dpr = getRenderDpr();
-  sc.width  = Math.floor(innerWidth * dpr);
+  sc.width  = Math.floor(innerWidth  * dpr);
   sc.height = Math.floor(innerHeight * dpr);
-  sc.style.width = `${innerWidth}px`;
-  sc.style.height = `${innerHeight}px`;
+  sc.style.width  = innerWidth  + 'px';
+  sc.style.height = innerHeight + 'px';
   sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   const n = Math.floor(sc.width * sc.height / 2600);
   stars = Array.from({ length: n }, () => ({
@@ -672,7 +903,7 @@ function rafStars(ts) {
     const a = s.a * (0.68 + 0.32 * Math.sin(t * s.s + s.p));
     sctx.beginPath();
     sctx.arc(s.x, s.y, s.r, 0, 6.2832);
-    sctx.fillStyle = `rgba(210,230,255,${a})`;
+    sctx.fillStyle = 'rgba(210,230,255,' + a + ')';
     sctx.fill();
   }
   requestAnimationFrame(rafStars);
@@ -695,27 +926,33 @@ let parts  = [];
 
 function buildParticles() {
   const dpr = getRenderDpr();
-  pc.width  = Math.floor(innerWidth * dpr);
+  pc.width  = Math.floor(innerWidth  * dpr);
   pc.height = Math.floor(innerHeight * dpr);
-  pc.style.width = `${innerWidth}px`;
-  pc.style.height = `${innerHeight}px`;
+  pc.style.width  = innerWidth  + 'px';
+  pc.style.height = innerHeight + 'px';
   pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 function mkPart(rand) {
+  const dark  = document.documentElement.dataset.theme === 'dark';
+  const hues  = dark ? [196, 200, 185, 208] : [38, 46, 52, 200];
+  const alpha = dark ? Math.random() * 0.25 + 0.04 : Math.random() * 0.20 + 0.06;
   return {
     x:  Math.random() * innerWidth,
     y:  rand ? Math.random() * innerHeight : innerHeight + 6,
     r:  Math.random() * 1.4 + 0.2,
     vx: (Math.random() - 0.5) * 0.32,
     vy: -(Math.random() * 0.42 + 0.1),
-    a:  Math.random() * 0.25 + 0.04,
-    h:  [196, 200, 185, 208][Math.floor(Math.random() * 4)],
+    a:  alpha,
+    h:  hues[Math.floor(Math.random() * hues.length)],
     ph: Math.random() * 1000
   };
 }
 
 function rafParticles() {
+  const dark = document.documentElement.dataset.theme === 'dark';
+  const pSat = dark ? '52%' : '60%';
+  const pLit = dark ? '86%' : '58%';
   pctx.clearRect(0, 0, innerWidth, innerHeight);
   for (let i = 0; i < parts.length; i++) {
     const p = parts[i];
@@ -724,7 +961,7 @@ function rafParticles() {
     if (p.y < -8) { parts[i] = mkPart(false); continue; }
     pctx.beginPath();
     pctx.arc(p.x, p.y, p.r, 0, 6.2832);
-    pctx.fillStyle = `hsla(${p.h},52%,86%,${p.a})`;
+    pctx.fillStyle = 'hsla(' + p.h + ',' + pSat + ',' + pLit + ',' + p.a + ')';
     pctx.fill();
   }
   requestAnimationFrame(rafParticles);
@@ -758,6 +995,69 @@ if (sEls.length) {
     }
   }, 3500);
 }
+
+// ══════════════════════════════════════════════════════ AIRSHIP PHYSICS
+(function () {
+  const wrap = document.getElementById('airship-wrap');
+  if (!wrap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const AW = 220; // airship display width (matches CSS)
+  let phase   = 'idle';
+  let startTs = 0;
+  let floatBX = 0, floatBY = 0;
+
+  function raf(ts) {
+    if (startTs === 0) startTs = ts;
+    const elapsed = ts - startTs;
+
+    if (phase === 'fly-in') {
+      const DUR = 5500;
+      const t   = Math.min(elapsed / DUR, 1.0);
+      const e   = 1 - Math.pow(1 - t, 3); // cubic ease-out
+
+      const sx  = -(AW + 40);
+      const ex  = window.innerWidth  * 0.40;
+      const by  = window.innerHeight * 0.14;
+      const cx  = sx + (ex - sx) * e;
+      const cy  = by + Math.sin(t * Math.PI) * 30; // gentle arc up-then-down
+      const tilt = (1 - e) * -4;                    // nose-up during fly-in
+
+      wrap.style.transform = 'translate(' + cx + 'px,' + cy + 'px) rotate(' + tilt + 'deg)';
+
+      if (t >= 1.0) {
+        phase   = 'float';
+        floatBX = ex;
+        floatBY = by;
+        startTs = 0; // reset for float timer
+      }
+
+    } else if (phase === 'float') {
+      const s  = elapsed * 0.001;
+      // Home position re-computed each frame so resize is handled
+      const hx = window.innerWidth  * 0.40;
+      const hy = window.innerHeight * 0.14;
+      // Multi-frequency drift gives organic, physics-like floating
+      const x  = hx + Math.sin(s * 0.18) * 88 + Math.sin(s * 0.11) * 36 + Math.sin(s * 0.31) * 16;
+      const y  = hy + Math.sin(s * 0.26) * 24 + Math.sin(s * 0.15) * 11;
+      // Tilt proportional to instantaneous horizontal velocity
+      const dt = 0.016; // ≈ one frame at 60 fps, used as a finite-difference step
+      const px = hx + Math.sin((s - dt) * 0.18) * 88 + Math.sin((s - dt) * 0.11) * 36 + Math.sin((s - dt) * 0.31) * 16;
+      const vx = (x - px) / dt;
+      const tilt = Math.max(-8, Math.min(8, vx * 0.042));
+
+      wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + tilt + 'deg)';
+    }
+
+    requestAnimationFrame(raf);
+  }
+
+  // Start fly-in exactly when 'Coming Soon' text fades in (~2.2 s)
+  setTimeout(function () {
+    phase   = 'fly-in';
+    startTs = 0;
+    requestAnimationFrame(raf);
+  }, 2200);
+}());
 </script>
 </body>
 </html>
