@@ -1339,93 +1339,78 @@
       <animate attributeName="opacity" values="1;0.25;1" dur="2.8s" repeatCount="indefinite"/>
     </circle>
 
-    <!-- ── PINE TREES LEFT (corrected: apex up, base at ground) ── -->
+    <!-- ── FOREGROUND ACCENT TREES (sparse, mixed styles) ── -->
+    <!-- Round canopy tree, left zone x=295 -->
     <g class="tree sw-a">
-      <polygon points="382,220 354,264 410,264" fill="#060d1b"/>
-      <polygon points="382,192 360,244 404,244" fill="#071020"/>
-      <polygon points="382,168 366,218 398,218" fill="#081121"/>
-      <rect x="378" y="254" width="8" height="10" fill="#040b16"/>
+      <circle cx="295" cy="251" r="10" class="sc-mtn-broad"/>
+      <circle cx="290" cy="255" r="7"  fill="#1e4a22"/>
+      <circle cx="301" cy="254" r="7"  fill="#1e4a22"/>
+      <rect x="294" y="259" width="3" height="6" fill="#1a3a1e"/>
     </g>
+    <!-- Slim pine, left zone x=365 -->
     <g class="tree sw-b">
-      <polygon points="422,224 400,264 444,264" fill="#060d1b"/>
-      <polygon points="422,198 404,250 440,250" fill="#071020"/>
-      <polygon points="422,175 408,223 436,223" fill="#081121"/>
-      <rect x="418" y="256" width="8" height="8" fill="#040b16"/>
+      <polygon points="365,232 358,252 372,252" class="sc-mtn-pine"/>
+      <polygon points="365,241 356,258 374,258" class="sc-mtn-pine"/>
+      <polygon points="365,250 354,264 376,264" class="sc-mtn-pine"/>
+      <rect x="363" y="258" width="3" height="6" fill="#1a3a1e"/>
     </g>
+    <!-- Palm-style accent tree, left x=470 -->
     <g class="tree sw-c">
-      <polygon points="458,222 436,266 480,266" fill="#060d1b"/>
-      <polygon points="458,196 440,248 476,248" fill="#071020"/>
-      <polygon points="458,173 444,220 472,220" fill="#081121"/>
-      <rect x="454" y="256" width="8" height="8" fill="#040b16"/>
+      <rect x="470" y="244" width="3" height="20" rx="1" fill="#1a3020"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#225028" transform="rotate(-30,470,246)"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#1e4a24" transform="rotate(25,470,246)"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#225028" transform="rotate(75,470,246)"/>
+      <ellipse cx="470" cy="246" rx="6" ry="2" fill="#1e4a24" transform="rotate(-80,470,246)"/>
+      <circle  cx="470" cy="246" r="4" fill="#1c3c22"/>
     </g>
-    <!-- extra small background trees left area -->
-    <g class="tree sw-a" opacity="0.55">
-      <polygon points="295,238 281,264 309,264" fill="#060d1b"/>
-      <polygon points="295,222 283,252 307,252" fill="#071020"/>
-      <rect x="292" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
-    <g class="tree sw-c" opacity="0.5">
-      <polygon points="340,236 326,264 354,264" fill="#060d1b"/>
-      <polygon points="340,220 328,250 352,250" fill="#071020"/>
-      <rect x="337" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
-    <!-- extra trees between left group and centre -->
-    <g class="tree sw-b">
-      <polygon points="502,230 484,268 520,268" fill="#060d1b"/>
-      <polygon points="502,208 486,254 518,254" fill="#071020"/>
-      <polygon points="502,188 490,228 514,228" fill="#081121"/>
-      <rect x="498" y="260" width="8" height="8" fill="#040b16"/>
-    </g>
+    <!-- Round canopy tree, right zone x=1095 -->
     <g class="tree sw-a">
-      <polygon points="532,228 515,266 549,266" fill="#060d1b"/>
-      <polygon points="532,206 517,252 547,252" fill="#071020"/>
-      <polygon points="532,186 520,226 544,226" fill="#081121"/>
-      <rect x="528" y="258" width="8" height="8" fill="#040b16"/>
+      <circle cx="1095" cy="251" r="10" class="sc-mtn-broad"/>
+      <circle cx="1090" cy="255" r="7"  fill="#1e4a22"/>
+      <circle cx="1101" cy="254" r="7"  fill="#1e4a22"/>
+      <rect x="1094" y="259" width="3" height="6" fill="#1a3a1e"/>
+    </g>
+    <!-- Slim pine, right zone x=1150 -->
+    <g class="tree sw-b">
+      <polygon points="1150,232 1143,252 1157,252" class="sc-mtn-pine"/>
+      <polygon points="1150,241 1141,258 1159,258" class="sc-mtn-pine"/>
+      <polygon points="1150,250 1139,264 1161,264" class="sc-mtn-pine"/>
+      <rect x="1148" y="258" width="3" height="6" fill="#1a3a1e"/>
     </g>
 
-    <!-- ── PINE TREES RIGHT (corrected) ── -->
-    <g class="tree sw-b">
-      <polygon points="988,222 966,266 1010,266" fill="#060d1b"/>
-      <polygon points="988,196 968,248 1008,248" fill="#071020"/>
-      <polygon points="988,173 972,220 1004,220" fill="#081121"/>
-      <rect x="984" y="256" width="8" height="8" fill="#040b16"/>
-    </g>
-    <g class="tree sw-a">
-      <polygon points="1025,226 1004,270 1046,270" fill="#060d1b"/>
-      <polygon points="1025,200 1007,252 1043,252" fill="#071020"/>
-      <polygon points="1025,177 1009,225 1041,225" fill="#081121"/>
-      <rect x="1021" y="258" width="8" height="8" fill="#040b16"/>
-    </g>
-    <g class="tree sw-c">
-      <polygon points="1060,220 1040,264 1080,264" fill="#060d1b"/>
-      <polygon points="1060,195 1042,246 1078,246" fill="#071020"/>
-      <polygon points="1060,172 1044,218 1076,218" fill="#081121"/>
-      <rect x="1056" y="256" width="8" height="8" fill="#040b16"/>
-    </g>
-    <!-- extra trees between centre and right group -->
-    <g class="tree sw-c">
-      <polygon points="912,228 894,266 930,266" fill="#060d1b"/>
-      <polygon points="912,206 896,252 928,252" fill="#071020"/>
-      <polygon points="912,186 900,226 924,226" fill="#081121"/>
-      <rect x="908" y="258" width="8" height="8" fill="#040b16"/>
-    </g>
-    <g class="tree sw-b">
-      <polygon points="948,226 930,264 966,264" fill="#060d1b"/>
-      <polygon points="948,202 932,250 964,250" fill="#071020"/>
-      <polygon points="948,180 936,220 960,220" fill="#081121"/>
-      <rect x="944" y="256" width="8" height="8" fill="#040b16"/>
-    </g>
-    <!-- small background trees right -->
-    <g class="tree sw-a" opacity="0.55">
-      <polygon points="1098,238 1084,264 1112,264" fill="#060d1b"/>
-      <polygon points="1098,222 1086,252 1110,252" fill="#071020"/>
-      <rect x="1095" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
-    <g class="tree sw-b" opacity="0.50">
-      <polygon points="1145,236 1131,264 1159,264" fill="#060d1b"/>
-      <polygon points="1145,220 1133,250 1157,250" fill="#071020"/>
-      <rect x="1142" y="257" width="6" height="7" fill="#040b16"/>
-    </g>
+    <!-- ── STREET-LEVEL SHOPS (x=325, 475, 840, 998) ── -->
+    <!-- Shop A -->
+    <rect x="325" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="325" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="328" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <rect x="339" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <!-- Shop B -->
+    <rect x="474" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="474" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="477" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <rect x="488" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <!-- Shop C -->
+    <rect x="838" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="838" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="841" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <rect x="852" y="254" width="8"  height="7"  class="sc-win" rx="1"/>
+    <!-- Shop D -->
+    <rect x="998" y="248" width="30" height="16" class="sc-shop" rx="1"/>
+    <rect x="998" y="248" width="30" height="4"  class="sc-shop-awn" rx="1"/>
+    <rect x="1001" y="254" width="8" height="7"  class="sc-win" rx="1"/>
+    <rect x="1012" y="254" width="8" height="7"  class="sc-win" rx="1"/>
+
+    <!-- ── PEOPLE SILHOUETTES ── -->
+    <rect x="396" y="252" width="4" height="12" rx="2" class="sc-person" opacity="0.78"/>
+    <circle cx="398" cy="250" r="3" class="sc-person" opacity="0.78"/>
+    <rect x="430" y="253" width="3" height="11" rx="1.5" class="sc-person" opacity="0.72"/>
+    <circle cx="431" cy="251" r="2.5" class="sc-person" opacity="0.72"/>
+    <rect x="553" y="252" width="4" height="12" rx="2" class="sc-person" opacity="0.75"/>
+    <circle cx="555" cy="250" r="3" class="sc-person" opacity="0.75"/>
+    <rect x="920" y="253" width="3" height="11" rx="1.5" class="sc-person" opacity="0.72"/>
+    <circle cx="921" cy="251" r="2.5" class="sc-person" opacity="0.72"/>
+    <rect x="960" y="252" width="4" height="12" rx="2" class="sc-person" opacity="0.76"/>
+    <circle cx="962" cy="250" r="3" class="sc-person" opacity="0.76"/>
 
     <!-- ── WIND TURBINE 1 (hub at 565,191) ── -->
     <polygon points="558,268 562,192 568,192 572,268" fill="#07101e"/>
@@ -1639,6 +1624,113 @@
       </circle>
     </g>
 
+    <!-- Truck 2 → right (large lorry) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-165 0" to="1625 0" dur="36s" begin="-18s" repeatCount="indefinite"/>
+      <rect x="0"  y="255" width="62" height="20" rx="2" fill="#0a1525"/>
+      <rect x="52" y="250" width="20" height="25" rx="3" fill="#0c1e30"/>
+      <rect x="55" y="252" width="14" height="9"  rx="1.5" fill="rgba(140,200,255,0.22)"/>
+      <rect class="sc-headlight" x="69" y="257" width="6" height="4" rx="1"/>
+      <rect class="sc-taillight" x="0"  y="257" width="4" height="4" rx="1"/>
+      <circle cx="12" cy="275" r="4" fill="#040a14"/>
+      <circle cx="28" cy="275" r="4" fill="#040a14"/>
+      <circle cx="52" cy="275" r="4" fill="#040a14"/>
+      <circle cx="68" cy="275" r="4" fill="#040a14"/>
+      <circle cx="-3" cy="263" r="3.5" fill="rgba(110,110,110,0.30)">
+        <animate attributeName="cx"      values="-3;-22"  dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+        <animate attributeName="cy"      values="263;252" dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+        <animate attributeName="r"       values="3.5;11"  dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.30;0"  dur="2.6s" begin="-0.3s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <!-- Truck 3 ← left -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1625 0" to="-165 0" dur="42s" begin="-28s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <rect x="0"  y="255" width="62" height="20" rx="2" fill="#091422"/>
+        <rect x="52" y="249" width="22" height="26" rx="3" fill="#0b1c2e"/>
+        <rect x="55" y="252" width="15" height="9"  rx="1.5" fill="rgba(140,200,255,0.20)"/>
+        <rect class="sc-headlight" x="70" y="257" width="6" height="4" rx="1"/>
+        <rect class="sc-taillight" x="0"  y="257" width="4" height="4" rx="1"/>
+        <circle cx="12" cy="275" r="4" fill="#040a14"/>
+        <circle cx="28" cy="275" r="4" fill="#040a14"/>
+        <circle cx="52" cy="275" r="4" fill="#040a14"/>
+        <circle cx="68" cy="275" r="4" fill="#040a14"/>
+        <circle cx="73" cy="263" r="3.5" fill="rgba(110,110,110,0.28)">
+          <animate attributeName="cx"      values="73;92"   dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+          <animate attributeName="cy"      values="263;252" dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+          <animate attributeName="r"       values="3.5;11"  dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.28;0"  dur="2.8s" begin="-1.2s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+    </g>
+    <!-- CNG Auto-Rickshaw → right (Dhaka tuk-tuk, green) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-100 0" to="1560 0" dur="18s" begin="-7s" repeatCount="indefinite"/>
+      <rect x="0"  y="259" width="36" height="14" rx="3" fill="#0a6030"/>
+      <rect x="2"  y="254" width="28" height="7"  rx="2" fill="#0c7038"/>
+      <rect x="18" y="256" width="10" height="5"  rx="1" fill="rgba(160,220,180,0.30)"/>
+      <rect x="4"  y="256" width="11" height="5"  rx="1" fill="rgba(160,220,180,0.25)"/>
+      <rect class="sc-headlight" x="33" y="261" width="4" height="3" rx="1"/>
+      <rect class="sc-taillight" x="0"  y="261" width="3" height="3" rx="1"/>
+      <circle cx="30" cy="273" r="3.2" fill="#040a14"/>
+      <circle cx="8"  cy="273" r="3.2" fill="#040a14"/>
+      <circle cx="18" cy="273" r="3.2" fill="#040a14"/>
+      <rect x="0" y="262" width="36" height="2" fill="rgba(220,200,0,0.40)"/>
+    </g>
+    <!-- CNG Auto-Rickshaw ← left -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1560 0" to="-100 0" dur="22s" begin="-15s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <rect x="0"  y="259" width="36" height="14" rx="3" fill="#085228"/>
+        <rect x="2"  y="254" width="28" height="7"  rx="2" fill="#0a6030"/>
+        <rect x="18" y="256" width="10" height="5"  rx="1" fill="rgba(160,220,180,0.28)"/>
+        <rect x="4"  y="256" width="11" height="5"  rx="1" fill="rgba(160,220,180,0.22)"/>
+        <rect class="sc-headlight" x="33" y="261" width="4" height="3" rx="1"/>
+        <rect class="sc-taillight" x="0"  y="261" width="3" height="3" rx="1"/>
+        <circle cx="30" cy="273" r="3.2" fill="#040a14"/>
+        <circle cx="8"  cy="273" r="3.2" fill="#040a14"/>
+        <circle cx="18" cy="273" r="3.2" fill="#040a14"/>
+        <rect x="0" y="262" width="36" height="2" fill="rgba(220,200,0,0.38)"/>
+      </g>
+    </g>
+    <!-- Cycle-rickshaw → right (passenger hood) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="-80 0" to="1540 0" dur="55s" begin="-24s" repeatCount="indefinite"/>
+      <rect x="0"  y="260" width="24" height="12" rx="2" fill="#0e2240"/>
+      <path d="M1,260 Q12,251 23,260" fill="#102848"/>
+      <rect x="2"  y="264" width="16" height="4"  rx="1" fill="#0c1c38"/>
+      <circle cx="5"  cy="272" r="3.5" fill="#040a14"/>
+      <circle cx="19" cy="272" r="3.5" fill="#040a14"/>
+      <line x1="24" y1="264" x2="32" y2="263" stroke="#0e2240" stroke-width="1.5"/>
+      <line x1="32" y1="257" x2="44" y2="263" stroke="#1a3050" stroke-width="1.5"/>
+      <line x1="38" y1="258" x2="44" y2="263" stroke="#1a3050" stroke-width="1.5"/>
+      <line x1="38" y1="258" x2="32" y2="263" stroke="#1a3050" stroke-width="1.5"/>
+      <rect x="34" y="252" width="4" height="7" rx="2" class="sc-person" opacity="0.85"/>
+      <circle cx="36" cy="250" r="3" class="sc-person" opacity="0.85"/>
+      <circle cx="44" cy="269" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+      <circle cx="32" cy="269" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+    </g>
+    <!-- Bicycle ← left (solo cyclist) -->
+    <g>
+      <animateTransform attributeName="transform" type="translate"
+        from="1520 0" to="-80 0" dur="40s" begin="-32s" repeatCount="indefinite"/>
+      <g transform="scale(-1,1)">
+        <line x1="4"  y1="260" x2="16" y2="266" stroke="#1a3050" stroke-width="1.5"/>
+        <line x1="10" y1="261" x2="16" y2="266" stroke="#1a3050" stroke-width="1.5"/>
+        <line x1="10" y1="261" x2="4"  y2="266" stroke="#1a3050" stroke-width="1.5"/>
+        <rect x="6" y="255" width="4" height="7" rx="2" class="sc-person" opacity="0.80"/>
+        <circle cx="8" cy="253" r="2.8" class="sc-person" opacity="0.80"/>
+        <circle cx="16" cy="272" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+        <circle cx="4"  cy="272" r="4" fill="none" stroke="#1a3050" stroke-width="1.5"/>
+      </g>
+    </g>
+
     <!-- ── PLANES (SMIL translate) ── -->
     <!-- Plane 1 → right, mid-altitude (y=88) – wide-body airliner top-down -->
     <g opacity="0.82">
@@ -1649,16 +1741,16 @@
       <!-- nose cone -->
       <ellipse cx="28" cy="0" rx="6" ry="2.8" class="sc-plane-body"/>
       <!-- swept main wings (top-down view, roots at x≈4, tips at x≈-10) -->
-      <polygon points="6,-3  -10,-26 -16,-23 -4,-3" fill="#6a80a0"/>
-      <polygon points="6, 3  -10, 26 -16, 23 -4, 3" fill="#6a80a0"/>
+      <polygon points="6,-3  -10,-26 -16,-23 -4,-3" class="sc-plane-wing"/>
+      <polygon points="6, 3  -10, 26 -16, 23 -4, 3" class="sc-plane-wing"/>
       <!-- engine pods under wings -->
-      <ellipse cx="-8" cy="-16" rx="5.5" ry="2"   fill="#556a84"/>
-      <ellipse cx="-8" cy=" 16" rx="5.5" ry="2"   fill="#556a84"/>
+      <ellipse cx="-8" cy="-16" rx="5.5" ry="2"   class="sc-plane-eng"/>
+      <ellipse cx="-8" cy=" 16" rx="5.5" ry="2"   class="sc-plane-eng"/>
       <!-- horizontal tail stabilizers -->
-      <polygon points="-24,-2  -31, -9  -28,-2"  fill="#6a80a0"/>
-      <polygon points="-24, 2  -31,  9  -28, 2"  fill="#6a80a0"/>
+      <polygon points="-24,-2  -31, -9  -28,-2"  class="sc-plane-wing"/>
+      <polygon points="-24, 2  -31,  9  -28, 2"  class="sc-plane-wing"/>
       <!-- vertical fin -->
-      <polygon points="-24,0  -30,-5  -27,0"     fill="#7a92b0" opacity="0.7"/>
+      <polygon points="-24,0  -30,-5  -27,0"     class="sc-plane-fin" opacity="0.7"/>
       <!-- contrail -->
       <line x1="-30" y1="0" x2="-170" y2="0"
             stroke="rgba(200,230,255,0.08)" stroke-width="3.5"/>
@@ -1676,13 +1768,13 @@
         from="-200 48" to="1660 48" dur="48s" begin="-22s" repeatCount="indefinite"/>
       <ellipse cx="0" cy="0" rx="20" ry="2.6" class="sc-plane-body"/>
       <ellipse cx="18" cy="0" rx="4"  ry="1.9" class="sc-plane-body"/>
-      <polygon points="4,-2  -6,-16 -10,-14 -2,-2"   fill="#6a80a0"/>
-      <polygon points="4, 2  -6, 16 -10, 14 -2, 2"   fill="#6a80a0"/>
-      <ellipse cx="-5" cy="-9.5" rx="3.5" ry="1.4"   fill="#556a84"/>
-      <ellipse cx="-5" cy=" 9.5" rx="3.5" ry="1.4"   fill="#556a84"/>
-      <polygon points="-16,-1.5 -21, -6  -19,-1.5"   fill="#6a80a0"/>
-      <polygon points="-16, 1.5 -21,  6  -19, 1.5"   fill="#6a80a0"/>
-      <polygon points="-16,0   -20,-4  -18, 0"        fill="#7a92b0" opacity="0.7"/>
+      <polygon points="4,-2  -6,-16 -10,-14 -2,-2"   class="sc-plane-wing"/>
+      <polygon points="4, 2  -6, 16 -10, 14 -2, 2"   class="sc-plane-wing"/>
+      <ellipse cx="-5" cy="-9.5" rx="3.5" ry="1.4"   class="sc-plane-eng"/>
+      <ellipse cx="-5" cy=" 9.5" rx="3.5" ry="1.4"   class="sc-plane-eng"/>
+      <polygon points="-16,-1.5 -21, -6  -19,-1.5"   class="sc-plane-wing"/>
+      <polygon points="-16, 1.5 -21,  6  -19, 1.5"   class="sc-plane-wing"/>
+      <polygon points="-16,0   -20,-4  -18, 0"        class="sc-plane-fin" opacity="0.7"/>
       <line x1="-20" y1="0" x2="-110" y2="0"
             stroke="rgba(200,230,255,0.06)" stroke-width="2.5"/>
       <circle cx="-6" cy="-16" r="1.5" fill="rgba(255,75,75,0.78)">
@@ -1696,13 +1788,13 @@
       <g transform="scale(-1,1)">
         <ellipse cx="0" cy="0" rx="26" ry="3.4" class="sc-plane-body"/>
         <ellipse cx="24" cy="0" rx="5.5" ry="2.5" class="sc-plane-body"/>
-        <polygon points="5,-2.5  -9,-22 -14,-20 -3,-2.5" fill="#6a80a0"/>
-        <polygon points="5, 2.5  -9, 22 -14, 20 -3, 2.5" fill="#6a80a0"/>
-        <ellipse cx="-7" cy="-14" rx="4.8" ry="1.8" fill="#556a84"/>
-        <ellipse cx="-7" cy=" 14" rx="4.8" ry="1.8" fill="#556a84"/>
-        <polygon points="-21,-2  -27, -8  -25,-2"   fill="#6a80a0"/>
-        <polygon points="-21, 2  -27,  8  -25, 2"   fill="#6a80a0"/>
-        <polygon points="-21, 0  -26, -4  -23, 0"   fill="#7a92b0" opacity="0.7"/>
+        <polygon points="5,-2.5  -9,-22 -14,-20 -3,-2.5" class="sc-plane-wing"/>
+        <polygon points="5, 2.5  -9, 22 -14, 20 -3, 2.5" class="sc-plane-wing"/>
+        <ellipse cx="-7" cy="-14" rx="4.8" ry="1.8" class="sc-plane-eng"/>
+        <ellipse cx="-7" cy=" 14" rx="4.8" ry="1.8" class="sc-plane-eng"/>
+        <polygon points="-21,-2  -27, -8  -25,-2"   class="sc-plane-wing"/>
+        <polygon points="-21, 2  -27,  8  -25, 2"   class="sc-plane-wing"/>
+        <polygon points="-21, 0  -26, -4  -23, 0"   class="sc-plane-fin" opacity="0.7"/>
         <line x1="-27" y1="0" x2="-150" y2="0"
               stroke="rgba(200,230,255,0.07)" stroke-width="3"/>
         <circle cx="-9" cy="-22" r="1.8" fill="rgba(255,75,75,0.88)">
@@ -1719,13 +1811,13 @@
         from="-260 108" to="1700 108" dur="22s" begin="-6s" repeatCount="indefinite"/>
       <ellipse cx="0" cy="0" rx="34" ry="4.5" class="sc-plane-body"/>
       <ellipse cx="32" cy="0" rx="6.5" ry="3.2" class="sc-plane-body"/>
-      <polygon points="8,-3.5  -12,-30 -19,-27 -5,-3.5" fill="#6a80a0"/>
-      <polygon points="8, 3.5  -12, 30 -19, 27 -5, 3.5" fill="#6a80a0"/>
-      <ellipse cx="-10" cy="-19" rx="6.5" ry="2.2" fill="#556a84"/>
-      <ellipse cx="-10" cy=" 19" rx="6.5" ry="2.2" fill="#556a84"/>
-      <polygon points="-27,-2.5  -36,-11  -32,-2.5"  fill="#6a80a0"/>
-      <polygon points="-27, 2.5  -36, 11  -32, 2.5"  fill="#6a80a0"/>
-      <polygon points="-27, 0   -34, -6  -30, 0"     fill="#7a92b0" opacity="0.7"/>
+      <polygon points="8,-3.5  -12,-30 -19,-27 -5,-3.5" class="sc-plane-wing"/>
+      <polygon points="8, 3.5  -12, 30 -19, 27 -5, 3.5" class="sc-plane-wing"/>
+      <ellipse cx="-10" cy="-19" rx="6.5" ry="2.2" class="sc-plane-eng"/>
+      <ellipse cx="-10" cy=" 19" rx="6.5" ry="2.2" class="sc-plane-eng"/>
+      <polygon points="-27,-2.5  -36,-11  -32,-2.5"  class="sc-plane-wing"/>
+      <polygon points="-27, 2.5  -36, 11  -32, 2.5"  class="sc-plane-wing"/>
+      <polygon points="-27, 0   -34, -6  -30, 0"     class="sc-plane-fin" opacity="0.7"/>
       <line x1="-34" y1="0" x2="-200" y2="0"
             stroke="rgba(200,230,255,0.09)" stroke-width="4.5"/>
       <circle cx="-12" cy="-30" r="2.2" fill="rgba(255,75,75,0.9)">
@@ -1742,12 +1834,12 @@
       <g transform="scale(-1,1)">
         <ellipse cx="0" cy="0" rx="14" ry="2"   class="sc-plane-body"/>
         <ellipse cx="13" cy="0" rx="3"  ry="1.5" class="sc-plane-body"/>
-        <polygon points="3,-1.5  -4,-11  -7,-9.5 -1,-1.5" fill="#6a80a0"/>
-        <polygon points="3, 1.5  -4, 11  -7, 9.5 -1, 1.5" fill="#6a80a0"/>
-        <ellipse cx="-3" cy="-7" rx="2.5" ry="1"  fill="#556a84"/>
-        <ellipse cx="-3" cy=" 7" rx="2.5" ry="1"  fill="#556a84"/>
-        <polygon points="-11,-1  -15,-4.5 -13,-1"  fill="#6a80a0"/>
-        <polygon points="-11, 1  -15, 4.5 -13, 1"  fill="#6a80a0"/>
+        <polygon points="3,-1.5  -4,-11  -7,-9.5 -1,-1.5" class="sc-plane-wing"/>
+        <polygon points="3, 1.5  -4, 11  -7, 9.5 -1, 1.5" class="sc-plane-wing"/>
+        <ellipse cx="-3" cy="-7" rx="2.5" ry="1"  class="sc-plane-eng"/>
+        <ellipse cx="-3" cy=" 7" rx="2.5" ry="1"  class="sc-plane-eng"/>
+        <polygon points="-11,-1  -15,-4.5 -13,-1"  class="sc-plane-wing"/>
+        <polygon points="-11, 1  -15, 4.5 -13, 1"  class="sc-plane-wing"/>
         <line x1="-15" y1="0" x2="-85" y2="0"
               stroke="rgba(200,230,255,0.05)" stroke-width="1.5"/>
       </g>
