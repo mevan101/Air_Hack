@@ -2,10 +2,32 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
+  <!-- ─── HTTPS ENFORCEMENT ──────────────────────────────────────────────────
+       This script runs synchronously before anything else renders.
+       It immediately redirects any plain-HTTP visitor to the HTTPS equivalent.
+       This is a client-side safety net while GitHub Pages provisions its
+       Let's Encrypt certificate. Once GitHub enables "Enforce HTTPS" in the
+       repository Pages settings this redirect becomes redundant but harmless.  -->
+  <script>
+    if (location.protocol !== 'https:' &&
+        location.hostname !== 'localhost' &&
+        location.hostname !== '127.0.0.1') {
+      location.replace('https:' + location.href.substring(location.protocol.length));
+    }
+  </script>
+  <!-- Tells browsers to auto-upgrade any accidental HTTP sub-resource to HTTPS -->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Air Hackathon 2026 landing page.">
+  <meta name="description" content="Air Hackathon 2026 – Dhaka's premier air-quality hackathon. Coming Soon.">
+  <meta name="robots" content="index, follow">
+  <!-- Open Graph / social preview -->
+  <meta property="og:title"       content="Air Hackathon 2026">
+  <meta property="og:description" content="Dhaka's premier air-quality hackathon. Coming Soon.">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://airhackathon.com">
   <meta id="m-tc" name="theme-color" content="#c8e8f5">
   <title>Air Hackathon 2026</title>
+  <link rel="canonical" href="https://airhackathon.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
