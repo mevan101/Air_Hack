@@ -25,9 +25,42 @@
   <meta property="og:description" content="Dhaka's premier air-quality hackathon. Coming Soon.">
   <meta property="og:type"        content="website">
   <meta property="og:url"         content="https://airhackathon.com">
+  <meta property="og:image"       content="https://airhackathon.com/og.png">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <!-- Twitter / X card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Air Hackathon 2026">
+  <meta name="twitter:description" content="Dhaka's premier air-quality hackathon. Coming Soon.">
+  <meta name="twitter:image"       content="https://airhackathon.com/og.png">
   <meta id="m-tc" name="theme-color" content="#c8e8f5">
   <title>Air Hackathon 2026</title>
   <link rel="canonical" href="https://airhackathon.com">
+  <!-- Structured data: Event -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Air Hackathon 2026",
+    "description": "Dhaka's premier open-innovation challenge on air quality",
+    "url": "https://airhackathon.com",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "location": {
+      "@type": "Place",
+      "name": "Dhaka, Bangladesh",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dhaka",
+        "addressCountry": "BD"
+      }
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": "Cedar Initiative",
+      "url": "https://airhackathon.com"
+    }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
@@ -277,9 +310,9 @@
       align-items: center;
       justify-content: center;
       z-index: 6;
-      padding-bottom: 30vh;
+      padding: 0 20px 28vh;
       pointer-events: none;
-      user-select: none;
+      text-align: center;
     }
 
     .t-hack {
@@ -521,6 +554,120 @@
       #stage { padding-bottom: 16vh; }
       .div-line { margin: 1.2em auto; }
       #scene-wrap { height: 28vh; bottom: 36px; }
+    }
+
+    /* ══════════════════════════════════════════ TAGLINE + CTA */
+    .t-tagline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.78rem, 1.1vw, 0.96rem);
+      letter-spacing: 0.06em;
+      color: var(--text-sub);
+      margin-top: 1.2em;
+      max-width: 42ch;
+      line-height: 1.55;
+      opacity: 0;
+      animation: fd-up 1.2s cubic-bezier(0.16,1,0.3,1) 2.7s forwards;
+      transition: color 0.5s;
+    }
+    .t-cta {
+      margin-top: 2em;
+      opacity: 0;
+      animation: fd-up 1.0s cubic-bezier(0.16,1,0.3,1) 3.15s forwards;
+      pointer-events: auto;
+    }
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55em;
+      padding: 0.62em 1.7em;
+      border: 1px solid var(--divline);
+      border-radius: 2em;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.72rem, 0.95vw, 0.84rem);
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-accent);
+      text-decoration: none;
+      background: transparent;
+      transition: background 0.22s, border-color 0.22s, color 0.22s, transform 0.18s;
+    }
+    .cta-btn:hover {
+      background: var(--divline);
+      transform: translateY(-1px);
+    }
+    .cta-btn:focus-visible {
+      outline: 2px solid var(--text-accent);
+      outline-offset: 4px;
+    }
+    .cta-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════════ SCREEN-READER ONLY */
+    .sr-only {
+      position: absolute;
+      width: 1px; height: 1px;
+      padding: 0; margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ══════════════════════════════════════════ SCENE — LIGHT MODE OVERRIDES */
+    /* Wind turbine elements */
+    .sc-turb-tower   { fill: #07101e; }
+    .sc-turb-nacelle { fill: #0b1c32; }
+    .sc-turb-blade   { fill: #0d2040; }
+    .sc-turb-hub     { fill: #091827; }
+    :root .sc-turb-tower   { fill: #607d96; }
+    :root .sc-turb-nacelle { fill: #4e6880; }
+    :root .sc-turb-blade   { fill: #6e8fa8; }
+    :root .sc-turb-hub     { fill: #405f75; }
+    [data-theme="dark"] .sc-turb-tower   { fill: #07101e; }
+    [data-theme="dark"] .sc-turb-nacelle { fill: #0b1c32; }
+    [data-theme="dark"] .sc-turb-blade   { fill: #0d2040; }
+    [data-theme="dark"] .sc-turb-hub     { fill: #091827; }
+
+    /* Vehicle elements */
+    .sc-veh-body  { fill: #09192c; }
+    .sc-veh-cab   { fill: #0a1e35; }
+    .sc-veh-wheel { fill: #040a14; }
+    :root .sc-veh-body  { fill: #3e5268; }
+    :root .sc-veh-cab   { fill: #4a6070; }
+    :root .sc-veh-wheel { fill: #1e2d3a; }
+    [data-theme="dark"] .sc-veh-body  { fill: #09192c; }
+    [data-theme="dark"] .sc-veh-cab   { fill: #0a1e35; }
+    [data-theme="dark"] .sc-veh-wheel { fill: #040a14; }
+
+    /* Plane elements */
+    .sc-plane-body { fill: #0e2245; }
+    :root .sc-plane-body  { fill: #7a92b0; }
+    [data-theme="dark"] .sc-plane-body { fill: #0e2245; }
+
+    /* ══════════════════════════════════════════ MOBILE SCROLL HINT */
+    /* Fade-out gradient on the right edge of the sensor bar on mobile */
+    @media (max-width: 767px) {
+      #sbar-wrap {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        z-index: 10;
+        opacity: 0;
+        animation: fd-in 1s ease 3.1s forwards;
+      }
+      #sbar {
+        position: static;
+        opacity: 1;
+        animation: none;
+      }
+      #sbar-wrap::after {
+        content: '';
+        position: absolute;
+        right: 0; top: 0; bottom: 0;
+        width: 48px;
+        background: linear-gradient(to left, var(--sbar-bg), transparent);
+        pointer-events: none;
+      }
     }
   </style>
 </head>
