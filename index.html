@@ -289,6 +289,21 @@
       flex-shrink: 0;
     }
     .si:last-child { border-right: none; }
+    .si-loc { gap: 8px; }
+    .si-city {
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: rgba(34,197,94,0.90);
+      animation: pdot 2.4s ease-in-out infinite;
+    }
+    .si-updated {
+      font-size: 7.5px;
+      letter-spacing: 0.06em;
+      color: var(--sbar-lbl);
+      opacity: 0.70;
+    }
     .si-dot {
       width: 4px; height: 4px;
       border-radius: 50%;
@@ -808,14 +823,15 @@
 
 <!-- ══ SENSOR BAR ══ -->
 <div id="sbar">
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">42</span></div>
-  <div class="si"><div class="si-dot y"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">18.4 µg/m³</span></div>
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">CO₂</span><span class="si-val" id="s-co2">412 ppm</span></div>
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">NO₂</span><span class="si-val">0.04 ppm</span></div>
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">O₃</span><span class="si-val">0.03 ppm</span></div>
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Temp</span><span class="si-val">28.5 °C</span></div>
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Humidity</span><span class="si-val">72 %</span></div>
-  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Wind</span><span class="si-val">14 km/h NE</span></div>
+  <div class="si si-loc"><span class="si-city">⬤ DHAKA</span><span class="si-updated" id="s-updated">—</span></div>
+  <div class="si"><div class="si-dot g" id="d-aqi"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">—</span></div>
+  <div class="si"><div class="si-dot g" id="d-pm"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">—</span></div>
+  <div class="si"><div class="si-dot g" id="d-co2"></div><span class="si-lbl">CO₂</span><span class="si-val" id="s-co2">—</span></div>
+  <div class="si"><div class="si-dot g" id="d-no2"></div><span class="si-lbl">NO₂</span><span class="si-val" id="s-no2">—</span></div>
+  <div class="si"><div class="si-dot g" id="d-o3"></div><span class="si-lbl">O₃</span><span class="si-val" id="s-o3">—</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Temp</span><span class="si-val" id="s-temp">—</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Humidity</span><span class="si-val" id="s-hum">—</span></div>
+  <div class="si"><div class="si-dot g"></div><span class="si-lbl">Wind</span><span class="si-val" id="s-wind">—</span></div>
 </div>
 
 <div id="vignette"></div>
@@ -977,24 +993,127 @@ addEventListener('resize', () => {
   partResizeTimer = setTimeout(buildParticles, 150);
 });
 
-// ══════════════════════════════════════════════════════ SENSOR FLUCTUATION
-const sDefs = [
-  { id: 's-aqi', base: 42,   range: 6,   dec: 0, unit: ''        },
-  { id: 's-pm',  base: 18.4, range: 2.5, dec: 1, unit: ' µg/m³' },
-  { id: 's-co2', base: 412,  range: 4,   dec: 0, unit: ' ppm'   }
-];
-const sEls = sDefs
-  .map(d => ({ ...d, el: document.getElementById(d.id) }))
-  .filter(s => s.el);
+// ══════════════════════════════════════════════════════ DHAKA LIVE SENSOR DATA
+// Sources: Open-Meteo Weather API + Open-Meteo Air Quality API
+// Both are free, no API key, CORS-enabled, update hourly.
+(function () {
+  const DHAKA_LAT  = 23.8103;
+  const DHAKA_LON  = 90.4125;
+  const REFRESH_MS = 10 * 60 * 1000; // refresh every 10 minutes
 
-if (sEls.length) {
-  setInterval(() => {
-    for (const s of sEls) {
-      const v = s.base + (Math.random() - 0.5) * s.range;
-      s.el.textContent = v.toFixed(s.dec) + s.unit;
+  const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast'
+    + '?latitude=' + DHAKA_LAT + '&longitude=' + DHAKA_LON
+    + '&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m'
+    + '&wind_speed_unit=kmh&timezone=Asia%2FDhaka';
+
+  const AQI_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality'
+    + '?latitude=' + DHAKA_LAT + '&longitude=' + DHAKA_LON
+    + '&current=pm2_5,nitrogen_dioxide,ozone,us_aqi';
+
+  // CO₂ has no public hyperlocal API; global baseline drifts ~424 ppm in 2026.
+  // We add a small sinusoidal offset based on hour-of-day (traffic / photosynthesis cycle).
+  function co2Estimate() {
+    const h   = new Date().getHours();
+    // Peak CO₂ around rush-hour (8 h, 18 h), slight trough at midday (photosynthesis)
+    const off = 4 * Math.sin((h - 8) * Math.PI / 12) - 2 * Math.sin(h * Math.PI / 6);
+    return Math.round(424 + off);
+  }
+
+  // Convert wind degrees to 8-point compass
+  function degToCompass(deg) {
+    const dirs = ['N','NE','E','SE','S','SW','W','NW'];
+    return dirs[Math.round(((deg % 360) / 45)) % 8];
+  }
+
+  // Set dot colour by class: g / y / r
+  function setDot(id, cls) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.className = 'si-dot ' + cls;
+  }
+
+  // AQI thresholds (US EPA)
+  function aqiDot(v)  { return v <= 50 ? 'g' : v <= 100 ? 'y' : 'r'; }
+  // PM2.5 µg/m³ (US EPA 24-hr standard: 12 good, 35.4 moderate)
+  function pmDot(v)   { return v < 12  ? 'g' : v < 35.4 ? 'y' : 'r'; }
+  // NO₂ µg/m³ (WHO annual guideline 40; hourly 200)
+  function no2Dot(v)  { return v < 40  ? 'g' : v < 100  ? 'y' : 'r'; }
+  // O₃ µg/m³ (WHO 8-hr target 100; peak season guideline 60)
+  function o3Dot(v)   { return v < 60  ? 'g' : v < 120  ? 'y' : 'r'; }
+  // CO₂ ppm (outdoor baseline ~420; >700 indicates poor ventilation)
+  function co2Dot(v)  { return v < 450 ? 'g' : v < 700  ? 'y' : 'r'; }
+
+  function setText(id, txt) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  }
+
+  function setUpdated() {
+    const now  = new Date();
+    const hh   = String(now.getHours()).padStart(2, '0');
+    const mm   = String(now.getMinutes()).padStart(2, '0');
+    setText('s-updated', hh + ':' + mm);
+  }
+
+  function applyFallback() {
+    // Keep dashes but still show CO₂ estimate (always works)
+    const co2 = co2Estimate();
+    setText('s-co2', co2 + ' ppm');
+    setDot('d-co2', co2Dot(co2));
+  }
+
+  async function fetchDhakaData() {
+    try {
+      const [wRes, aqRes] = await Promise.all([
+        fetch(WEATHER_URL),
+        fetch(AQI_URL)
+      ]);
+
+      if (!wRes.ok || !aqRes.ok) { applyFallback(); return; }
+
+      const [w, aq] = await Promise.all([wRes.json(), aqRes.json()]);
+
+      const cw  = w.current  || {};
+      const caq = aq.current || {};
+
+      // ── Weather ──────────────────────────────────────────────
+      const temp  = cw.temperature_2m;
+      const hum   = cw.relative_humidity_2m;
+      const wspd  = cw.wind_speed_10m;
+      const wdir  = cw.wind_direction_10m;
+
+      if (temp != null) setText('s-temp', temp.toFixed(1) + ' °C');
+      if (hum  != null) setText('s-hum',  Math.round(hum) + ' %');
+      if (wspd != null && wdir != null)
+        setText('s-wind', Math.round(wspd) + ' km/h ' + degToCompass(wdir));
+
+      // ── Air Quality ───────────────────────────────────────────
+      const aqi  = caq.us_aqi;
+      const pm   = caq.pm2_5;
+      const no2  = caq.nitrogen_dioxide;  // µg/m³
+      const o3   = caq.ozone;             // µg/m³
+
+      if (aqi  != null) { setText('s-aqi', Math.round(aqi));               setDot('d-aqi', aqiDot(aqi)); }
+      if (pm   != null) { setText('s-pm',  pm.toFixed(1) + ' µg/m³');      setDot('d-pm',  pmDot(pm));   }
+      if (no2  != null) { setText('s-no2', no2.toFixed(2) + ' µg/m³');     setDot('d-no2', no2Dot(no2)); }
+      if (o3   != null) { setText('s-o3',  o3.toFixed(1)  + ' µg/m³');     setDot('d-o3',  o3Dot(o3));   }
+
+      // CO₂ – estimated baseline (no public real-time hyperlocal API)
+      const co2 = co2Estimate();
+      setText('s-co2', co2 + ' ppm');
+      setDot('d-co2', co2Dot(co2));
+
+      setUpdated();
+
+    } catch (_) {
+      applyFallback();
     }
-  }, 3500);
-}
+  }
+
+  // Initial fetch + periodic refresh
+  fetchDhakaData();
+  setInterval(fetchDhakaData, REFRESH_MS);
+}());
 
 // ══════════════════════════════════════════════════════ AIRSHIP PHYSICS
 (function () {
