@@ -2,10 +2,32 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
+  <!-- ─── HTTPS ENFORCEMENT ──────────────────────────────────────────────────
+       This script runs synchronously before anything else renders.
+       It immediately redirects any plain-HTTP visitor to the HTTPS equivalent.
+       This is a client-side safety net while GitHub Pages provisions its
+       Let's Encrypt certificate. Once GitHub enables "Enforce HTTPS" in the
+       repository Pages settings this redirect becomes redundant but harmless.  -->
+  <script>
+    if (location.protocol !== 'https:' &&
+        location.hostname !== 'localhost' &&
+        location.hostname !== '127.0.0.1') {
+      location.replace('https:' + location.href.substring(location.protocol.length));
+    }
+  </script>
+  <!-- Tells browsers to auto-upgrade any accidental HTTP sub-resource to HTTPS -->
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Air Hackathon 2026 landing page.">
+  <meta name="description" content="Air Hackathon 2026 – Dhaka's premier air-quality hackathon. Coming Soon.">
+  <meta name="robots" content="index, follow">
+  <!-- Open Graph / social preview -->
+  <meta property="og:title"       content="Air Hackathon 2026">
+  <meta property="og:description" content="Dhaka's premier air-quality hackathon. Coming Soon.">
+  <meta property="og:type"        content="website">
+  <meta property="og:url"         content="https://airhackathon.com">
   <meta id="m-tc" name="theme-color" content="#c8e8f5">
   <title>Air Hackathon 2026</title>
+  <link rel="canonical" href="https://airhackathon.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
@@ -458,6 +480,47 @@
     @media (pointer: coarse), (hover: none) {
       #cur-ring, #cur-dot { display: none; }
       html.js-cursor { cursor: auto; }
+    }
+
+    /* ══════════════════════════════════════════ RESPONSIVE */
+    /* Tablet and large phone (≤ 767px) */
+    @media (max-width: 767px) {
+      /* Sensor bar: scrollable row instead of clipped overflow */
+      #sbar {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding: 0 10px;
+      }
+      #sbar::-webkit-scrollbar { display: none; }
+      .si { padding: 0 10px; }
+
+      /* Scale airship down to fit smaller viewports */
+      #airship-svg { width: 160px; }
+
+      /* Reduce heavy CSS blur on mobile GPU */
+      .glb { filter: blur(60px); }
+    }
+
+    /* Small phone (≤ 479px) */
+    @media (max-width: 479px) {
+      #airship-svg { width: 120px; }
+      .glb { filter: blur(36px); }
+
+      /* Tighten letter-spacing so title fits without wrapping */
+      .t-hack { letter-spacing: 0.06em; }
+      .t-year { letter-spacing: 0.18em; }
+
+      /* Give text stage horizontal breathing room */
+      #stage { padding-left: 16px; padding-right: 16px; padding-bottom: 22vh; }
+    }
+
+    /* Landscape orientation on short screens */
+    @media (max-height: 480px) and (orientation: landscape) {
+      #stage { padding-bottom: 16vh; }
+      .div-line { margin: 1.2em auto; }
+      #scene-wrap { height: 28vh; bottom: 36px; }
     }
   </style>
 </head>
@@ -1035,7 +1098,7 @@ addEventListener('resize', () => {
 // ══════════════════════════════════════════════════════ AIR PARTICLES
 const pc   = document.getElementById('c-particles');
 const pctx = pc.getContext('2d');
-const PCNT = 200;
+const PCNT = window.innerWidth < 768 ? 80 : 200;
 let parts  = [];
 
 function buildParticles() {
@@ -1218,14 +1281,17 @@ addEventListener('resize', () => {
   const wrap = document.getElementById('airship-wrap');
   if (!wrap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const AW = 220; // airship display width (matches CSS)
+  const airSvg = document.getElementById('airship-svg');
+  const DEFAULT_AW = 220; // fallback when element hasn't rendered yet
+  function getAW() { return (airSvg && airSvg.offsetWidth > 0) ? airSvg.offsetWidth : DEFAULT_AW; }
+
   let phase   = 'idle';
   let startTs = 0;
-  let floatBX = 0, floatBY = 0;
 
   function raf(ts) {
     if (startTs === 0) startTs = ts;
     const elapsed = ts - startTs;
+    const AW = getAW();
 
     if (phase === 'fly-in') {
       const DUR = 5500;
@@ -1243,8 +1309,6 @@ addEventListener('resize', () => {
 
       if (t >= 1.0) {
         phase   = 'float';
-        floatBX = ex;
-        floatBY = by;
         startTs = 0; // reset for float timer
       }
 
