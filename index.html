@@ -407,7 +407,6 @@
       text-transform: uppercase;
       font-weight: 400;
       color: rgba(34,197,94,0.90);
-      animation: pdot 2.4s ease-in-out infinite;
     }
     .si-updated {
       font-size: 7.5px;
@@ -491,7 +490,7 @@
       transform: translate(-400px, 20vh);
     }
     #airship-svg {
-      width: 155px;
+      width: 110px;
       height: auto;
       filter: drop-shadow(0 6px 16px rgba(0,20,60,0.20));
       overflow: visible;
@@ -530,7 +529,7 @@
       .si { padding: 0 10px; }
 
       /* Scale airship down to fit smaller viewports */
-      #airship-svg { width: 120px; }
+      #airship-svg { width: 90px; }
 
       /* Reduce heavy CSS blur on mobile GPU */
       .glb { filter: blur(60px); }
@@ -538,7 +537,7 @@
 
     /* Small phone (≤ 479px) */
     @media (max-width: 479px) {
-      #airship-svg { width: 88px; }
+      #airship-svg { width: 72px; }
       .glb { filter: blur(36px); }
 
       /* Tighten letter-spacing so title fits without wrapping */
@@ -568,58 +567,6 @@
       transform-origin: 50% 100%;
     }
 
-    /* ══════════════════════════════════════════ LOGO BRAND */
-    #brand-logo {
-      position: fixed;
-      top: 14px; left: 16px;
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      opacity: 0;
-      animation: fd-in 0.8s ease 3.5s forwards;
-      text-decoration: none;
-      pointer-events: auto;
-    }
-    #brand-logo img {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      object-fit: contain;
-      background: rgba(255,255,255,0.14);
-      padding: 2px;
-    }
-    #brand-logo span {
-      font-family: 'Inter', sans-serif;
-      font-size: 8.5px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-sub);
-      white-space: nowrap;
-      transition: color 0.5s;
-    }
-
-    /* ══════════════════════════════════════════ COPYRIGHT */
-    #footer-copy {
-      position: fixed;
-      bottom: 42px; right: 16px;
-      z-index: 9;
-      font-family: 'Inter', sans-serif;
-      font-size: 8px;
-      letter-spacing: 0.10em;
-      color: var(--text-sub);
-      opacity: 0;
-      animation: fd-in 1s ease 4s forwards;
-      pointer-events: auto;
-      transition: color 0.5s;
-    }
-    #footer-copy a {
-      color: inherit;
-      text-decoration: none;
-      border-bottom: 1px solid currentColor;
-      padding-bottom: 0.5px;
-      opacity: 0.75;
-    }
-    #footer-copy a:hover { opacity: 1; color: var(--text-accent); }
 
     /* ══════════════════════════════════════════ SCREEN-READER ONLY */
     .sr-only {
@@ -687,6 +634,10 @@
         pointer-events: none;
       }
     }
+    /* Sky planes animation */
+    @keyframes sky-fly-r  { from{transform:translate(-250px,18vh)} to{transform:translate(calc(100vw + 250px),18vh)} }
+    @keyframes sky-fly-r2 { from{transform:translate(-220px,28vh)} to{transform:translate(calc(100vw + 220px),28vh)} }
+    @keyframes sky-fly-l  { from{transform:translate(calc(100vw + 200px),8vh)} to{transform:translate(-200px,8vh)} }
   </style>
 </head>
 <body>
@@ -795,13 +746,11 @@
          when moving right (flag streams backward/left); default streams right -->
     <g id="flag-dir">
       <g class="flag-cloth">
-        <rect x="44" y="-20" width="72" height="26" rx="2"
-              fill="white" opacity="0.96"
-              stroke="rgba(180,200,220,0.4)" stroke-width="0.6"/>
+        <rect x="44" y="-20" width="72" height="26" rx="2" fill="white" stroke="rgba(180,200,220,0.6)" stroke-width="0.8"/>
         <image href="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
                x="46" y="-19" width="68" height="24"
                preserveAspectRatio="xMidYMid meet"
-               opacity="0.94"/>
+               opacity="1.0"/>
       </g>
     </g>
   </svg>
@@ -1470,6 +1419,10 @@
 <!-- ══ SENSOR BAR ══ -->
 <div id="sbar-wrap">
 <div id="sbar">
+  <div class="si si-cedar">
+    <img src="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0" width="14" height="14" style="border-radius:50%;opacity:0.85;flex-shrink:0;" alt="Cedar"/>
+    <a href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer" style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sbar-lbl);text-decoration:none;white-space:nowrap;">cedar-initiative.org</a>
+  </div>
   <div class="si si-loc"><span class="si-city">⬤ DHAKA</span><span class="si-updated" id="s-updated">—</span></div>
   <div class="si"><div class="si-dot g" id="d-aqi"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">—</span></div>
   <div class="si"><div class="si-dot g" id="d-pm"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">—</span></div>
@@ -1484,15 +1437,7 @@
 
 <div id="vignette"></div>
 
-<!-- Brand logo (top-left) -->
-<a id="brand-logo" href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer" aria-label="Cedar Initiative">
-  <img src="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
-       alt="Cedar Initiative logo" width="26" height="26" loading="lazy"/>
-  <span>Cedar Initiative</span>
-</a>
-
-<!-- Copyright -->
-<div id="footer-copy">© Cedar Initiative · <a href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer">cedar-initiative.org</a></div>
+<div id="vignette"></div>
 
 <script>
 // ══════════════════════════════════════════════════════ THEME
@@ -1780,7 +1725,7 @@ addEventListener('resize', () => {
   if (!wrap || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const airSvg = document.getElementById('airship-svg');
-  const DEFAULT_AW = 155; // fallback when element hasn't rendered yet
+  const DEFAULT_AW = 110; // fallback when element hasn't rendered yet
   function getAW() { return (airSvg && airSvg.offsetWidth > 0) ? airSvg.offsetWidth : DEFAULT_AW; }
 
   let phase        = 'idle';
@@ -1812,7 +1757,7 @@ addEventListener('resize', () => {
 
       const sx  = -(AW + 40);
       const ex  = window.innerWidth  * 0.50 - AW * 0.5; // centered horizontally
-      const by  = window.innerHeight * 0.54;             // below "Coming Soon"
+      const by  = window.innerHeight * 0.70;             // below "Coming Soon"
       const cx  = sx + (ex - sx) * e;
       const cy  = by - Math.sin(t * Math.PI) * 28;      // gentle arc upward then settles
       const tilt = (1 - e) * -4;                        // nose-up during fly-in
@@ -1830,7 +1775,7 @@ addEventListener('resize', () => {
       const s  = elapsed * 0.001;
       // Home position re-computed each frame so resize is handled
       const hx = window.innerWidth  * 0.50 - AW * 0.5;
-      const hy = window.innerHeight * 0.54;
+      const hy = window.innerHeight * 0.70;
       // Multi-frequency drift gives organic, physics-like floating
       const x  = hx + Math.sin(s * 0.18) * 72 + Math.sin(s * 0.11) * 28 + Math.sin(s * 0.31) * 12;
       const y  = hy + Math.sin(s * 0.26) * 20 + Math.sin(s * 0.15) * 9;
