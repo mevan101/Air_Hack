@@ -94,7 +94,7 @@
     [data-theme="dark"] {
       --bg:          #020810;
       --sky-t:       #050c1e;
-      --sky-b:       #0d1e3a;
+      --sky-b:       #152a48;
       --hz1:         rgba(8,18,42,0.97);
       --hz2:         rgba(10,22,48,0.50);
       --text-main:   rgba(255,255,255,0.96);
@@ -103,14 +103,14 @@
       --divline:     rgba(120,210,255,0.38);
       --sbar-bg:     rgba(2,7,18,0.90);
       --sbar-bdr:    rgba(120,200,255,0.07);
-      --sbar-lbl:    rgba(120,200,255,0.38);
-      --sbar-val:    rgba(255,255,255,0.60);
+      --sbar-lbl:    rgba(140,210,255,0.68);
+      --sbar-val:    rgba(255,255,255,0.88);
       --vig:         rgba(2,8,18,0.52);
       --cur-ring:    rgba(148,218,255,0.45);
       --cur-dot:     rgba(148,218,255,0.95);
-      --glb1:        rgba(22,110,205,0.13);
-      --glb2:        rgba(14,165,148,0.09);
-      --glb3:        rgba(88,40,168,0.07);
+      --glb1:        rgba(30,120,240,0.38);
+      --glb2:        rgba(14,200,165,0.28);
+      --glb3:        rgba(110,50,220,0.22);
       --blend:       screen;
       --star-vis:    1;
     }
@@ -248,8 +248,8 @@
 
     /* ══════════════════════════════════════════ SCENE THEME CLASSES */
     /* Hills */
-    .sc-hills { fill: #2e5e30; }
-    [data-theme="dark"] .sc-hills { fill: #0b1c35; }
+    .sc-hills { fill: #386832; }
+    [data-theme="dark"] .sc-hills { fill: #0e2240; }
 
     /* Buildings */
     .sc-bld { fill: #3d4d5e; }
@@ -367,6 +367,18 @@
       from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
       to   { opacity: 1; transform: none; filter: blur(0); }
     }
+    .t-tag {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.62rem, 0.88vw, 0.80rem);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      margin-top: 1.8em;
+      opacity: 0;
+      animation: fd-up 1.1s cubic-bezier(0.16, 1, 0.3, 1) 2.9s forwards;
+      transition: color 0.5s;
+    }
     @keyframes fd-in {
       from { opacity: 0; }
       to   { opacity: 1; }
@@ -421,7 +433,10 @@
     }
     .si-dot.g { background: #22c55e; animation: pdot 2.2s ease-in-out infinite; }
     .si-dot.y { background: #f59e0b; animation: pdot 2.8s ease-in-out infinite; }
+    .si-dot.o { background: #f97316; animation: pdot 2.0s ease-in-out infinite; }
     .si-dot.r { background: #ef4444; animation: pdot 1.6s ease-in-out infinite; }
+    .si-dot.p { background: #9333ea; animation: pdot 1.4s ease-in-out infinite; }
+    .si-dot.m { background: #9f1239; animation: pdot 1.2s ease-in-out infinite; }
     @keyframes pdot {
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.35; transform: scale(0.55); }
@@ -501,6 +516,86 @@
       animation: prop-spin 0.32s linear infinite;
     }
     @keyframes prop-spin { to { transform: rotate(360deg); } }
+
+
+    /* ══════════════════════════════════════════ SUN & MOON */
+    #sun-wrap {
+      position: fixed;
+      top: 7vh; right: 11vw;
+      width: 78px; height: 78px;
+      z-index: 2;
+      pointer-events: none;
+      transition: opacity 0.8s;
+    }
+    [data-theme="dark"] #sun-wrap { opacity: 0; }
+
+    /* Radial conic "corona spokes" ring, rotates slowly */
+    #sun-rays {
+      position: absolute;
+      inset: -54px;
+      border-radius: 50%;
+      background: conic-gradient(
+        rgba(255,210,60,0.18) 0deg,  rgba(255,210,60,0)    8deg,
+        rgba(255,210,60,0.14) 16deg, rgba(255,210,60,0)    24deg,
+        rgba(255,210,60,0.16) 32deg, rgba(255,210,60,0)    40deg,
+        rgba(255,210,60,0.12) 48deg, rgba(255,210,60,0)    56deg,
+        rgba(255,210,60,0.18) 64deg, rgba(255,210,60,0)    72deg,
+        rgba(255,210,60,0.14) 80deg, rgba(255,210,60,0)    88deg,
+        rgba(255,210,60,0.16) 96deg, rgba(255,210,60,0)    104deg,
+        rgba(255,210,60,0.12) 112deg,rgba(255,210,60,0)    120deg,
+        rgba(255,210,60,0.18) 128deg,rgba(255,210,60,0)    136deg,
+        rgba(255,210,60,0.14) 144deg,rgba(255,210,60,0)    152deg,
+        rgba(255,210,60,0.16) 160deg,rgba(255,210,60,0)    168deg,
+        rgba(255,210,60,0.12) 176deg,rgba(255,210,60,0)    184deg,
+        rgba(255,210,60,0.18) 192deg,rgba(255,210,60,0)    200deg,
+        rgba(255,210,60,0.14) 208deg,rgba(255,210,60,0)    216deg,
+        rgba(255,210,60,0.16) 224deg,rgba(255,210,60,0)    232deg,
+        rgba(255,210,60,0.12) 240deg,rgba(255,210,60,0)    248deg,
+        rgba(255,210,60,0.18) 256deg,rgba(255,210,60,0)    264deg,
+        rgba(255,210,60,0.14) 272deg,rgba(255,210,60,0)    280deg,
+        rgba(255,210,60,0.16) 288deg,rgba(255,210,60,0)    296deg,
+        rgba(255,210,60,0.12) 304deg,rgba(255,210,60,0)    312deg,
+        rgba(255,210,60,0.18) 320deg,rgba(255,210,60,0)    328deg,
+        rgba(255,210,60,0.14) 336deg,rgba(255,210,60,0)    344deg,
+        rgba(255,210,60,0.16) 352deg,rgba(255,210,60,0)    360deg
+      );
+      animation: sun-rotate 80s linear infinite;
+    }
+    /* Wide outer glow */
+    #sun-glow {
+      position: absolute;
+      inset: -32px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,190,40,0.24) 0%, rgba(255,150,10,0.12) 50%, transparent 75%);
+      animation: sun-breathe 7s ease-in-out infinite;
+    }
+    /* Hot disc */
+    #sun-disc {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 42% 38%, #fff9e8 0%, #ffe566 40%, #ffb300 72%, rgba(255,120,0,0) 100%);
+      box-shadow: 0 0 18px 8px rgba(255,200,60,0.70), 0 0 50px 20px rgba(255,160,20,0.35);
+      animation: sun-breathe 7s ease-in-out infinite 0.5s;
+    }
+    @keyframes sun-breathe {
+      0%,100% { transform: scale(1.00); opacity: 1.0; }
+      50%      { transform: scale(1.07); opacity: 0.94; }
+    }
+    @keyframes sun-rotate { to { transform: rotate(360deg); } }
+
+    /* Moon */
+    #moon-wrap {
+      position: fixed;
+      top: 7vh; right: 11vw;
+      width: 70px; height: 70px;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s;
+    }
+    [data-theme="dark"] #moon-wrap { opacity: 1; }
+    #moon-wrap svg { width: 100%; height: 100%; overflow: visible; }
 
     /* ══════════════════════════════════════════ REDUCED MOTION */
     @media (prefers-reduced-motion: reduce) {
@@ -620,13 +715,24 @@
     [data-theme="dark"] .sc-plane-fin  { fill: #0f2348; }
 
     /* Hill layers */
-    .sc-hills-far { fill: #4a7e50; }
-    [data-theme="dark"] .sc-hills-far { fill: #091620; }
+    .sc-hills-far { fill: #5a9070; }
+    [data-theme="dark"] .sc-hills-far { fill: #0a1a2e; }
     /* Mountain trees */
     .sc-mtn-pine  { fill: #1a3a1e; }
-    [data-theme="dark"] .sc-mtn-pine { fill: #060d07; }
+    [data-theme="dark"] .sc-mtn-pine { fill: #122015; }
     .sc-mtn-broad { fill: #235226; }
-    [data-theme="dark"] .sc-mtn-broad { fill: #071308; }
+    [data-theme="dark"] .sc-mtn-broad { fill: #162a18; }
+    /* Stone hut walls */
+    .sc-stone-hut { fill: #6a6455; }
+    [data-theme="dark"] .sc-stone-hut { fill: #282420; }
+    /* Alpine refuge red */
+    .sc-refuge     { fill: #7a2215; }
+    [data-theme="dark"] .sc-refuge { fill: #3a1008; }
+    /* Snow cap: bright in light, muted in dark */
+    .sc-snow       { fill: rgba(255,255,255,0.78); }
+    [data-theme="dark"] .sc-snow { fill: rgba(200,215,230,0.25); }
+    .sc-snow-hi    { fill: rgba(255,255,255,0.88); }
+    [data-theme="dark"] .sc-snow-hi { fill: rgba(200,215,230,0.18); }
     /* Street shops */
     .sc-shop      { fill: #374c60; }
     [data-theme="dark"] .sc-shop { fill: #080f1d; }
@@ -692,6 +798,47 @@
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>
 </button>
+
+
+<!-- Sun (light mode) -->
+<div id="sun-wrap">
+  <div id="sun-rays"></div>
+  <div id="sun-glow"></div>
+  <div id="sun-disc"></div>
+</div>
+
+<!-- Moon (dark mode) -->
+<div id="moon-wrap">
+  <svg viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <radialGradient id="moon-halo" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="rgba(180,205,255,0.22)"/>
+        <stop offset="60%"  stop-color="rgba(160,190,255,0.06)"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+      <mask id="crescent">
+        <rect width="70" height="70" fill="white"/>
+        <!-- Shadow circle that bites into the disc to create crescent -->
+        <circle cx="46" cy="27" r="19" fill="black"/>
+      </mask>
+    </defs>
+    <!-- Outer halo glow -->
+    <circle cx="35" cy="35" r="35" fill="url(#moon-halo)"/>
+    <!-- Moon disc with crescent mask -->
+    <circle cx="35" cy="35" r="22" fill="#dce6fa" mask="url(#crescent)"/>
+    <!-- Subtle limb shading -->
+    <circle cx="35" cy="35" r="22"
+            fill="none" stroke="rgba(160,180,230,0.30)" stroke-width="0.8"
+            mask="url(#crescent)"/>
+    <!-- Mare (dark patches) -->
+    <circle cx="28" cy="40" r="4"  fill="rgba(150,165,210,0.35)" mask="url(#crescent)"/>
+    <circle cx="32" cy="29" r="2.5" fill="rgba(150,165,210,0.28)" mask="url(#crescent)"/>
+    <circle cx="23" cy="32" r="2" fill="rgba(140,158,205,0.22)"  mask="url(#crescent)"/>
+    <!-- Bright limb highlight -->
+    <path d="M22,22 Q17,35 22,48" fill="none" stroke="rgba(230,238,255,0.50)" stroke-width="1.2"
+          stroke-linecap="round" mask="url(#crescent)"/>
+  </svg>
+</div>
 
 <!-- Aurora blobs -->
 <div class="glb glb1"></div>
@@ -878,91 +1025,197 @@
     <polygon points="549,154 542,171 556,171" class="sc-mtn-pine" opacity="0.68"/>
     <rect x="548" y="171" width="2" height="4" class="sc-mtn-pine" opacity="0.68"/>
 
-    <!-- ── MOUNTAIN HUTS (left slope) ── -->
-    <!-- Hut 1 at x=336, hill≈y148 -->
-    <g opacity="0.88">
-      <rect x="330" y="140" width="14" height="9" rx="1" fill="#3a2d1e"/>
-      <polygon points="330,140 343,140 336,131" fill="#5a3a1a"/>
-      <rect x="337" y="143" width="4" height="6" rx="0.5" fill="#2a1e10"/>
-      <rect x="331" y="141" width="4" height="4" rx="0.5" class="sc-win"/>
-      <line x1="330" y1="148" x2="344" y2="148" stroke="#2a1e10" stroke-width="0.8"/>
+    <!-- ── MOUNTAIN HUTS (4 distinct types) ── -->
+
+    <!-- Hut 1 – A-frame chalet (left slope x=336, hill≈y148) -->
+    <!-- Steeply pitched A-frame roof with log walls and gable window -->
+    <g opacity="0.90">
+      <polygon points="336,129 324,149 348,149" fill="#5c3a1c"/>
+      <rect x="327" y="142" width="18" height="7" rx="0.5" fill="#3e2710"/>
+      <line x1="327" y1="144" x2="345" y2="144" stroke="#2a1a08" stroke-width="0.5" opacity="0.6"/>
+      <line x1="327" y1="146" x2="345" y2="146" stroke="#2a1a08" stroke-width="0.5" opacity="0.6"/>
+      <rect x="334" y="143" width="4" height="6" rx="1" fill="#1e1008"/>
+      <polygon points="336,132 333,137 339,137" class="sc-win" opacity="0.85"/>
+      <line x1="336" y1="129" x2="336" y2="135" stroke="#7a4a20" stroke-width="1.0" opacity="0.7"/>
     </g>
-    <!-- Hut 2 at x=444, hill≈y165 -->
-    <g opacity="0.84">
-      <rect x="438" y="157" width="14" height="9" rx="1" fill="#3a2d1e"/>
-      <polygon points="438,157 451,157 444,147" fill="#5a3a1a"/>
-      <rect x="445" y="160" width="4" height="6" rx="0.5" fill="#2a1e10"/>
-      <rect x="439" y="158" width="4" height="4" rx="0.5" class="sc-win"/>
-      <line x1="438" y1="165" x2="452" y2="165" stroke="#2a1e10" stroke-width="0.8"/>
+
+    <!-- Hut 2 – Swiss chalet (left slope x=444, hill≈y165) -->
+    <!-- Wide body, gentle pitch, wide eave overhang, balcony rail, dual windows -->
+    <g opacity="0.86">
+      <rect x="435" y="156" width="20" height="9" rx="0.5" fill="#4a3520"/>
+      <polygon points="432,156 456,156 444,146" fill="#8a5530"/>
+      <line x1="432" y1="156" x2="456" y2="156" stroke="#6a3e18" stroke-width="1.0"/>
+      <line x1="435" y1="160" x2="455" y2="160" stroke="#6a4520" stroke-width="0.7"/>
+      <line x1="438" y1="157" x2="438" y2="160" stroke="#6a4520" stroke-width="0.5"/>
+      <line x1="444" y1="157" x2="444" y2="160" stroke="#6a4520" stroke-width="0.5"/>
+      <line x1="450" y1="157" x2="450" y2="160" stroke="#6a4520" stroke-width="0.5"/>
+      <rect x="442" y="160" width="4" height="5" rx="0.5" fill="#1e1008"/>
+      <rect x="436" y="157" width="4" height="3" rx="0.4" class="sc-win"/>
+      <rect x="450" y="157" width="4" height="3" rx="0.4" class="sc-win"/>
     </g>
-    <!-- Hut 3 (right slope) at x=956, hill≈y110 -->
+
+    <!-- Hut 3 – Stone mountain hut (right slope x=956, hill≈y110) -->
+    <!-- Blocky granite walls, hip roof, chimney, arched door -->
+    <g opacity="0.82">
+      <rect x="948" y="101" width="18" height="10" rx="0.5" class="sc-stone-hut"/>
+      <line x1="948" y1="104" x2="966" y2="104" stroke="rgba(0,0,0,0.18)" stroke-width="0.5"/>
+      <line x1="948" y1="107" x2="966" y2="107" stroke="rgba(0,0,0,0.18)" stroke-width="0.5"/>
+      <polygon points="946,101 968,101 965,96 951,96" fill="#4a4438"/>
+      <rect x="960" y="91" width="3" height="6" rx="0.3" fill="#4a4438"/>
+      <rect x="959" y="90" width="5" height="1.5" rx="0.3" fill="#3a3430"/>
+      <path d="M955,111 L955,105 Q957.5,102 960,105 L960,111 Z" fill="#2a2218"/>
+      <rect x="949" y="103" width="3" height="3" rx="0.4" class="sc-win"/>
+    </g>
+
+    <!-- Hut 4 – Alpine refuge / mountain station (right slope x=1030, hill≈y120) -->
+    <!-- Red-painted timber; chimney with smoke wisps; warm window glow -->
     <g opacity="0.80">
-      <rect x="950" y="102" width="14" height="9" rx="1" fill="#3a2d1e"/>
-      <polygon points="950,102 963,102 956,92" fill="#5a3a1a"/>
-      <rect x="957" y="105" width="4" height="6" rx="0.5" fill="#2a1e10"/>
-      <rect x="951" y="103" width="4" height="4" rx="0.5" class="sc-win"/>
-      <line x1="950" y1="110" x2="964" y2="110" stroke="#2a1e10" stroke-width="0.8"/>
-    </g>
-    <!-- Hut 4 (right slope) at x=1030, hill≈y120 -->
-    <g opacity="0.78">
-      <rect x="1024" y="113" width="12" height="8" rx="1" fill="#3a2d1e"/>
-      <polygon points="1024,113 1036,113 1030,105" fill="#5a3a1a"/>
-      <rect x="1030" y="116" width="3" height="5" rx="0.5" fill="#2a1e10"/>
-      <rect x="1025" y="114" width="3" height="3" rx="0.5" class="sc-win"/>
+      <rect x="1022" y="112" width="16" height="9" rx="0.5" class="sc-refuge"/>
+      <polygon points="1020,112 1038,112 1030,103" fill="#5a1a0e"/>
+      <line x1="1020" y1="112" x2="1038" y2="112" stroke="rgba(255,245,235,0.45)" stroke-width="0.8"/>
+      <rect x="1033" y="99" width="3" height="5" rx="0.3" fill="#5a1a0e"/>
+      <rect x="1032" y="98" width="5" height="1.5" rx="0.3" fill="#3a1008"/>
+      <path d="M1034,98 Q1033,95 1035,93" fill="none" stroke="rgba(200,200,200,0.30)" stroke-width="0.8"/>
+      <rect x="1028" y="115" width="4" height="6" rx="0.5" fill="#2a0e08"/>
+      <rect x="1023" y="113" width="4" height="3" rx="0.4" fill="rgba(255,200,120,0.55)"/>
     </g>
 
     <!-- ── POWERLINE TRANSMISSION TOWERS (mountains) ── -->
-    <!-- Tower L1 at x=370, hill≈y150 -->
-    <g opacity="0.72">
-      <line x1="370" y1="127" x2="370" y2="150" stroke="#4a6070" stroke-width="1.2"/>
-      <line x1="363" y1="133" x2="377" y2="133" stroke="#4a6070" stroke-width="1.0"/>
-      <line x1="365" y1="140" x2="375" y2="140" stroke="#4a6070" stroke-width="0.9"/>
-      <line x1="366" y1="147" x2="374" y2="147" stroke="#4a6070" stroke-width="0.8"/>
-      <line x1="363" y1="133" x2="366" y2="147" stroke="#4a6070" stroke-width="0.6"/>
-      <line x1="377" y1="133" x2="374" y2="147" stroke="#4a6070" stroke-width="0.6"/>
-      <!-- insulator dots -->
-      <circle cx="363" cy="133" r="1.2" fill="#607080"/>
-      <circle cx="377" cy="133" r="1.2" fill="#607080"/>
+    <!-- Tower L1 at x=370, hill≈y150 – lattice pylon with spread legs and 3-wire system -->
+    <g opacity="0.75">
+      <!-- Spread legs at base -->
+      <line x1="370" y1="128" x2="366" y2="150" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="370" y1="128" x2="374" y2="150" stroke="#4a6070" stroke-width="1.2"/>
+      <!-- X-brace panel -->
+      <line x1="366" y1="137" x2="374" y2="144" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="374" y1="137" x2="366" y2="144" stroke="#4a6070" stroke-width="0.6"/>
+      <!-- Top cross-arm (phase wires) -->
+      <line x1="358" y1="132" x2="382" y2="132" stroke="#4a6070" stroke-width="1.1"/>
+      <!-- Diagonal arm supports -->
+      <line x1="358" y1="132" x2="366" y2="137" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="382" y1="132" x2="374" y2="137" stroke="#4a6070" stroke-width="0.6"/>
+      <!-- Insulator hangers (short drop before wire) -->
+      <line x1="358" y1="132" x2="358" y2="134" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="382" y1="132" x2="382" y2="134" stroke="#8090a0" stroke-width="0.8"/>
+      <!-- Ground wire attachment at peak -->
+      <line x1="370" y1="128" x2="370" y2="130" stroke="#8090a0" stroke-width="0.8"/>
+      <!-- Insulator discs -->
+      <circle cx="358" cy="134" r="1.3" fill="#7090a8"/>
+      <circle cx="382" cy="134" r="1.3" fill="#7090a8"/>
+      <circle cx="370" cy="130" r="1.0" fill="#8090a0"/>
     </g>
     <!-- Tower L2 at x=490, hill≈y169 -->
-    <g opacity="0.68">
-      <line x1="490" y1="148" x2="490" y2="169" stroke="#4a6070" stroke-width="1.2"/>
-      <line x1="483" y1="154" x2="497" y2="154" stroke="#4a6070" stroke-width="1.0"/>
-      <line x1="485" y1="161" x2="495" y2="161" stroke="#4a6070" stroke-width="0.9"/>
-      <line x1="486" y1="167" x2="494" y2="167" stroke="#4a6070" stroke-width="0.8"/>
-      <line x1="483" y1="154" x2="486" y2="167" stroke="#4a6070" stroke-width="0.6"/>
-      <line x1="497" y1="154" x2="494" y2="167" stroke="#4a6070" stroke-width="0.6"/>
-      <circle cx="483" cy="154" r="1.2" fill="#607080"/>
-      <circle cx="497" cy="154" r="1.2" fill="#607080"/>
-    </g>
-    <!-- Wires between L1 and L2 (sagging curve) -->
-    <path d="M363,133 Q426,142 483,154" fill="none" stroke="#4a6070" stroke-width="0.5" opacity="0.55"/>
-    <path d="M377,133 Q426,142 497,154" fill="none" stroke="#4a6070" stroke-width="0.5" opacity="0.55"/>
-    <!-- Tower R1 at x=1000, hill≈y122 -->
     <g opacity="0.70">
-      <line x1="1000" y1="100" x2="1000" y2="122" stroke="#4a6070" stroke-width="1.2"/>
-      <line x1="993"  y1="106" x2="1007" y2="106" stroke="#4a6070" stroke-width="1.0"/>
-      <line x1="995"  y1="113" x2="1005" y2="113" stroke="#4a6070" stroke-width="0.9"/>
-      <line x1="996"  y1="120" x2="1004" y2="120" stroke="#4a6070" stroke-width="0.8"/>
-      <line x1="993"  y1="106" x2="996" y2="120" stroke="#4a6070" stroke-width="0.6"/>
-      <line x1="1007" y1="106" x2="1004" y2="120" stroke="#4a6070" stroke-width="0.6"/>
-      <circle cx="993"  cy="106" r="1.2" fill="#607080"/>
-      <circle cx="1007" cy="106" r="1.2" fill="#607080"/>
+      <line x1="490" y1="149" x2="486" y2="169" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="490" y1="149" x2="494" y2="169" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="486" y1="158" x2="494" y2="165" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="494" y1="158" x2="486" y2="165" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="478" y1="153" x2="502" y2="153" stroke="#4a6070" stroke-width="1.1"/>
+      <line x1="478" y1="153" x2="486" y2="158" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="502" y1="153" x2="494" y2="158" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="478" y1="153" x2="478" y2="155" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="502" y1="153" x2="502" y2="155" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="490" y1="149" x2="490" y2="151" stroke="#8090a0" stroke-width="0.8"/>
+      <circle cx="478" cy="155" r="1.3" fill="#7090a8"/>
+      <circle cx="502" cy="155" r="1.3" fill="#7090a8"/>
+      <circle cx="490" cy="151" r="1.0" fill="#8090a0"/>
+    </g>
+    <!-- ── WIRES L1→L2 – proper catenary sag (cubic bezier) ── -->
+    <!-- Ground wire at top: (370,130)→(490,151), sag≈8px -->
+    <path id="wire-l-gnd"   d="M370,130 C410,147 450,154 490,151" fill="none" stroke="#4a6070" stroke-width="0.55" opacity="0.60"/>
+    <!-- Left phase wire: (358,134)→(478,155), sag≈9px -->
+    <path id="wire-l-lft"   d="M358,134 C398,152 438,159 478,155" fill="none" stroke="#4a6070" stroke-width="0.65" opacity="0.65"/>
+    <!-- Right phase wire: (382,134)→(502,155), sag≈9px -->
+    <path id="wire-l-rgt"   d="M382,134 C422,152 462,159 502,155" fill="none" stroke="#4a6070" stroke-width="0.65" opacity="0.65"/>
+
+    <!-- Tower R1 at x=1000, hill≈y122 -->
+    <g opacity="0.72">
+      <line x1="1000" y1="101" x2="996" y2="122" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="1000" y1="101" x2="1004" y2="122" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="996" y1="110" x2="1004" y2="117" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="1004" y1="110" x2="996" y2="117" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="988" y1="105" x2="1012" y2="105" stroke="#4a6070" stroke-width="1.1"/>
+      <line x1="988" y1="105" x2="996" y2="110" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="1012" y1="105" x2="1004" y2="110" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="988" y1="105" x2="988" y2="107" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="1012" y1="105" x2="1012" y2="107" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="1000" y1="101" x2="1000" y2="103" stroke="#8090a0" stroke-width="0.8"/>
+      <circle cx="988" cy="107" r="1.3" fill="#7090a8"/>
+      <circle cx="1012" cy="107" r="1.3" fill="#7090a8"/>
+      <circle cx="1000" cy="103" r="1.0" fill="#8090a0"/>
     </g>
     <!-- Tower R2 at x=1070, hill≈y133 -->
-    <g opacity="0.66">
-      <line x1="1070" y1="111" x2="1070" y2="133" stroke="#4a6070" stroke-width="1.2"/>
-      <line x1="1063" y1="117" x2="1077" y2="117" stroke="#4a6070" stroke-width="1.0"/>
-      <line x1="1065" y1="124" x2="1075" y2="124" stroke="#4a6070" stroke-width="0.9"/>
-      <line x1="1066" y1="131" x2="1074" y2="131" stroke="#4a6070" stroke-width="0.8"/>
-      <line x1="1063" y1="117" x2="1066" y2="131" stroke="#4a6070" stroke-width="0.6"/>
-      <line x1="1077" y1="117" x2="1074" y2="131" stroke="#4a6070" stroke-width="0.6"/>
-      <circle cx="1063" cy="117" r="1.2" fill="#607080"/>
-      <circle cx="1077" cy="117" r="1.2" fill="#607080"/>
+    <g opacity="0.68">
+      <line x1="1070" y1="112" x2="1066" y2="133" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="1070" y1="112" x2="1074" y2="133" stroke="#4a6070" stroke-width="1.2"/>
+      <line x1="1066" y1="120" x2="1074" y2="127" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="1074" y1="120" x2="1066" y2="127" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="1058" y1="116" x2="1082" y2="116" stroke="#4a6070" stroke-width="1.1"/>
+      <line x1="1058" y1="116" x2="1066" y2="120" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="1082" y1="116" x2="1074" y2="120" stroke="#4a6070" stroke-width="0.6"/>
+      <line x1="1058" y1="116" x2="1058" y2="118" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="1082" y1="116" x2="1082" y2="118" stroke="#8090a0" stroke-width="0.8"/>
+      <line x1="1070" y1="112" x2="1070" y2="114" stroke="#8090a0" stroke-width="0.8"/>
+      <circle cx="1058" cy="118" r="1.3" fill="#7090a8"/>
+      <circle cx="1082" cy="118" r="1.3" fill="#7090a8"/>
+      <circle cx="1070" cy="114" r="1.0" fill="#8090a0"/>
     </g>
-    <!-- Wires R1-R2 -->
-    <path d="M993,106 Q1028,113 1063,117" fill="none" stroke="#4a6070" stroke-width="0.5" opacity="0.50"/>
-    <path d="M1007,106 Q1028,113 1077,117" fill="none" stroke="#4a6070" stroke-width="0.5" opacity="0.50"/>
+    <!-- ── WIRES R1→R2 – proper catenary sag ── -->
+    <!-- Ground wire: (1000,103)→(1070,114), sag≈6px -->
+    <path id="wire-r-gnd"   d="M1000,103 C1023,117 1047,121 1070,114" fill="none" stroke="#4a6070" stroke-width="0.55" opacity="0.58"/>
+    <!-- Left phase: (988,107)→(1058,118), sag≈6px -->
+    <path id="wire-r-lft"   d="M988,107 C1011,121 1035,125 1058,118" fill="none" stroke="#4a6070" stroke-width="0.65" opacity="0.62"/>
+    <!-- Right phase: (1012,107)→(1082,118), sag≈6px -->
+    <path id="wire-r-rgt"   d="M1012,107 C1035,121 1059,125 1082,118" fill="none" stroke="#4a6070" stroke-width="0.65" opacity="0.62"/>
+
+    <!-- ── SNOW CAP on right mountain peak (x≈880, y≈72) ── -->
+    <!-- Follows the hill contour; bright only in light mode, subtle in dark -->
+    <ellipse cx="880" cy="80" rx="22" ry="10" class="sc-snow" opacity="0.80"/>
+    <ellipse cx="878" cy="78" rx="14" ry="6"  class="sc-snow-hi" opacity="0.85"/>
+    <!-- Snow highlights / glint -->
+    <line x1="872" y1="76" x2="888" y2="76" stroke="rgba(255,255,255,0.50)" stroke-width="0.6"/>
+
+    <!-- ── UPPER SLOPE TREES (right mountain x=700–880 sparse fill) ── -->
+    <!-- Valley floor approaching right peak -->
+    <polygon points="710,135 705,148 715,148" class="sc-mtn-pine" opacity="0.60"/>
+    <rect x="709" y="148" width="2" height="4" class="sc-mtn-pine" opacity="0.60"/>
+    <circle cx="722" cy="140" r="6" class="sc-mtn-broad" opacity="0.55"/>
+    <polygon points="734,130 728,145 740,145" class="sc-mtn-pine" opacity="0.62"/>
+    <polygon points="734,138 726,149 742,149" class="sc-mtn-pine" opacity="0.62"/>
+    <rect x="733" y="149" width="2" height="4" class="sc-mtn-pine" opacity="0.62"/>
+    <circle cx="748" cy="137" r="5" class="sc-mtn-broad" opacity="0.55"/>
+    <polygon points="760,125 754,140 766,140" class="sc-mtn-pine" opacity="0.65"/>
+    <rect x="759" y="140" width="2" height="4" class="sc-mtn-pine" opacity="0.65"/>
+    <ellipse cx="773" cy="130" rx="5" ry="4" class="sc-mtn-broad" opacity="0.58"/>
+    <polygon points="786,118 780,133 792,133" class="sc-mtn-pine" opacity="0.68"/>
+    <polygon points="786,126 778,137 794,137" class="sc-mtn-pine" opacity="0.68"/>
+    <rect x="785" y="137" width="2" height="4" class="sc-mtn-pine" opacity="0.68"/>
+    <circle cx="800" cy="123" r="6" class="sc-mtn-broad" opacity="0.62"/>
+    <polygon points="813,112 807,127 819,127" class="sc-mtn-pine" opacity="0.70"/>
+    <rect x="812" y="127" width="2" height="4" class="sc-mtn-pine" opacity="0.70"/>
+    <ellipse cx="826" cy="117" rx="5" ry="4" class="sc-mtn-broad" opacity="0.64"/>
+    <polygon points="840,105 834,119 846,119" class="sc-mtn-pine" opacity="0.72"/>
+    <polygon points="840,113 832,122 848,122" class="sc-mtn-pine" opacity="0.72"/>
+    <rect x="839" y="122" width="2" height="4" class="sc-mtn-pine" opacity="0.72"/>
+    <circle cx="853" cy="108" r="5" class="sc-mtn-broad" opacity="0.66"/>
+    <polygon points="864,98  858,112 870,112" class="sc-mtn-pine" opacity="0.73"/>
+    <rect x="863" y="112" width="2" height="4" class="sc-mtn-pine" opacity="0.73"/>
+
+    <!-- Upper-left mountain slope extra trees (x=195–295) -->
+    <polygon points="205,125 199,140 211,140" class="sc-mtn-pine" opacity="0.72"/>
+    <rect x="204" y="140" width="2" height="4" class="sc-mtn-pine" opacity="0.72"/>
+    <circle cx="220" cy="128" r="6" class="sc-mtn-broad" opacity="0.65"/>
+    <polygon points="234,120 228,135 240,135" class="sc-mtn-pine" opacity="0.74"/>
+    <polygon points="234,128 226,139 242,139" class="sc-mtn-pine" opacity="0.74"/>
+    <rect x="233" y="139" width="2" height="5" class="sc-mtn-pine" opacity="0.74"/>
+    <ellipse cx="248" cy="126" rx="5" ry="4" class="sc-mtn-broad" opacity="0.68"/>
+    <polygon points="261,122 255,138 267,138" class="sc-mtn-pine" opacity="0.76"/>
+    <rect x="260" y="138" width="2" height="5" class="sc-mtn-pine" opacity="0.76"/>
+    <circle cx="274" cy="130" r="6" class="sc-mtn-broad" opacity="0.70"/>
+    <polygon points="285,128 279,143 291,143" class="sc-mtn-pine" opacity="0.76"/>
+    <polygon points="285,136 277,147 293,147" class="sc-mtn-pine" opacity="0.76"/>
+    <rect x="284" y="147" width="2" height="5" class="sc-mtn-pine" opacity="0.76"/>
+
 
     <!-- ── EXTRA MOUNTAIN TREES (left slope dense fill x=555–700) ── -->
     <!-- Trees in the valley/transition zone between mountains -->
@@ -2296,6 +2549,7 @@
   <div class="t-year">2026</div>
   <div class="div-line"></div>
   <div class="t-soon">Coming Soon</div>
+  <div class="t-tag">Open innovation for clean air · Dhaka 2026</div>
 </main>
 
 <!-- ══ SENSOR BAR ══ -->
@@ -2515,10 +2769,10 @@ addEventListener('resize', () => {
     el.className = 'si-dot ' + cls;
   }
 
-  // AQI thresholds (US EPA)
-  function aqiDot(v)  { return v <= 50 ? 'g' : v <= 100 ? 'y' : 'r'; }
-  // PM2.5 µg/m³ (US EPA 24-hr standard: 12 good, 35.4 moderate)
-  function pmDot(v)   { return v < 12  ? 'g' : v < 35.4 ? 'y' : 'r'; }
+  // AQI thresholds (US EPA 6-level)
+  function aqiDot(v)  { return v <= 50 ? 'g' : v <= 100 ? 'y' : v <= 150 ? 'o' : v <= 200 ? 'r' : v <= 300 ? 'p' : 'm'; }
+  // PM2.5 µg/m³ (US EPA 6-level)
+  function pmDot(v)   { return v < 12 ? 'g' : v < 35.4 ? 'y' : v < 55.4 ? 'o' : v < 150.4 ? 'r' : v < 250.4 ? 'p' : 'm'; }
   // NO₂ µg/m³ (WHO annual guideline 40; hourly 200)
   function no2Dot(v)  { return v < 40  ? 'g' : v < 100  ? 'y' : 'r'; }
   // O₃ µg/m³ (WHO 8-hr target 100; peak season guideline 60)
@@ -2659,11 +2913,14 @@ addEventListener('resize', () => {
       // Multi-frequency drift gives organic, physics-like floating
       const x  = hx + Math.sin(s * 0.18) * 72 + Math.sin(s * 0.11) * 28 + Math.sin(s * 0.31) * 12;
       const y  = hy + Math.sin(s * 0.26) * 20 + Math.sin(s * 0.15) * 9;
-      // Tilt proportional to instantaneous horizontal velocity
+      // Tilt proportional to instantaneous velocity vector (pitch = atan2(vy, vx) blended in)
       const dt = 0.016;
       const px = hx + Math.sin((s - dt) * 0.18) * 72 + Math.sin((s - dt) * 0.11) * 28 + Math.sin((s - dt) * 0.31) * 12;
+      const py = hy + Math.sin((s - dt) * 0.26) * 20 + Math.sin((s - dt) * 0.15) * 9;
       const vx = (x - px) / dt;
-      const tilt = Math.max(-8, Math.min(8, vx * 0.042));
+      const vy = (y - py) / dt;
+      // Blend horizontal and vertical velocity for a realistic envelope pitch
+      const tilt = Math.max(-10, Math.min(10, vx * 0.036 + vy * 0.014));
 
       wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + tilt + 'deg)';
 
@@ -2681,6 +2938,42 @@ addEventListener('resize', () => {
     requestAnimationFrame(raf);
   }, 2200);
 }());
+
+// ══════════════════════════════════════════════════════ CABLE SWAY
+(function () {
+  // Each wire defined by: [id, x0,y0, cx1,cy1, cx2,cy2, x1,y1]
+  // Sway is a small perpendicular (vertical) sinusoidal offset applied to
+  // both Bezier control points, giving a realistic wind-blown catenary.
+  var wires = [
+    { id:'wire-l-gnd', x0:370,y0:130, cx1:410,cy1:147, cx2:450,cy2:154, x1:490,y1:151, amp:0.9, freq:0.55, ph:0.0 },
+    { id:'wire-l-lft', x0:358,y0:134, cx1:398,cy1:152, cx2:438,cy2:159, x1:478,y1:155, amp:1.2, freq:0.48, ph:0.8 },
+    { id:'wire-l-rgt', x0:382,y0:134, cx1:422,cy1:152, cx2:462,cy2:159, x1:502,y1:155, amp:1.2, freq:0.52, ph:1.5 },
+    { id:'wire-r-gnd', x0:1000,y0:103,cx1:1023,cy1:117,cx2:1047,cy2:121,x1:1070,y1:114,amp:0.8, freq:0.60, ph:0.3 },
+    { id:'wire-r-lft', x0:988, y0:107,cx1:1011,cy1:121,cx2:1035,cy2:125,x1:1058,y1:118,amp:1.1, freq:0.45, ph:1.1 },
+    { id:'wire-r-rgt', x0:1012,y0:107,cx1:1035,cy1:121,cx2:1059,cy2:125,x1:1082,y1:118,amp:1.1, freq:0.50, ph:2.0 }
+  ];
+  // Pre-cache elements
+  wires.forEach(function(w){ w.el = document.getElementById(w.id); });
+  if (!wires[0].el) return; // scene SVG not in DOM
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  function animWires(ts) {
+    var t = ts * 0.001;
+    wires.forEach(function(w) {
+      if (!w.el) return;
+      // Blend two sine waves per wire for irregular "gusting" motion
+      var s = w.amp * (Math.sin(t * w.freq + w.ph) * 0.7 + Math.sin(t * w.freq * 1.62 + w.ph) * 0.3);
+      var d = 'M' + w.x0 + ',' + w.y0
+            + ' C' + w.cx1 + ',' + (w.cy1 + s)
+            + ' '  + w.cx2 + ',' + (w.cy2 + s)
+            + ' '  + w.x1  + ',' + w.y1;
+      w.el.setAttribute('d', d);
+    });
+    requestAnimationFrame(animWires);
+  }
+  requestAnimationFrame(animWires);
+}());
+
 </script>
 </body>
 </html>
