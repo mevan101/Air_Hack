@@ -216,7 +216,9 @@
       position: fixed;
       bottom: 36px;
       left: 0; right: 0;
-      height: 36vh;
+      /* max() ensures the scene fills the full viewport width at any aspect ratio.
+         1440/280 ≈ 5.143 is the SVG's native aspect ratio. */
+      height: max(36vh, calc(100vw / 5.143));
       z-index: 4;
       pointer-events: none;
     }
@@ -233,17 +235,17 @@
     .t-bl-c { animation-duration: 8s; }
     @keyframes t-spin { to { transform: rotate(360deg); } }
 
-    /* Flag wave */
+    /* Flag wave – hanging banner pivots at its top edge */
     .flag-cloth {
       transform-box: fill-box;
-      transform-origin: 0% 50%;
-      animation: flag-wave 3.2s ease-in-out infinite;
+      transform-origin: 50% 0%;
+      animation: flag-wave 3.4s ease-in-out infinite;
     }
     @keyframes flag-wave {
-      0%   { transform: skewX(-5deg) scaleX(0.97); }
-      30%  { transform: skewX(2deg)  scaleX(1.01); }
-      60%  { transform: skewX(5deg)  scaleX(1.03); }
-      100% { transform: skewX(-5deg) scaleX(0.97); }
+      0%   { transform: skewX(-3.5deg) scaleX(0.98); }
+      33%  { transform: skewX(1.5deg)  scaleX(1.01); }
+      66%  { transform: skewX(4deg)    scaleX(1.02); }
+      100% { transform: skewX(-3.5deg) scaleX(0.98); }
     }
 
     /* ══════════════════════════════════════════ SCENE THEME CLASSES */
@@ -627,6 +629,10 @@
 
       /* Reduce heavy CSS blur on mobile GPU */
       .glb { filter: blur(60px); }
+
+      /* Tighter scene on mobile – keep it from eating too much vertical space */
+      #scene-wrap { height: max(28vh, calc(100vw / 5.143)); }
+      #stage { padding-bottom: 24vh; }
     }
 
     /* Small phone (≤ 479px) */
@@ -640,26 +646,36 @@
 
       /* Give text stage horizontal breathing room */
       #stage { padding-left: 16px; padding-right: 16px; padding-bottom: 22vh; }
+
+      /* Reduce scene height on very small screens */
+      #scene-wrap { height: max(22vh, calc(100vw / 5.143)); }
     }
 
     /* Landscape orientation on short screens */
     @media (max-height: 480px) and (orientation: landscape) {
       #stage { padding-bottom: 16vh; }
       .div-line { margin: 1.2em auto; }
-      #scene-wrap { height: 28vh; bottom: 36px; }
+      #scene-wrap { height: max(28vh, calc(100vw / 5.143)); bottom: 36px; }
     }
 
     body.sky-sunrise { background: linear-gradient(to bottom, #ff9060 0%, #ffcc80 100%) !important; transition: background 0.6s !important; }
     body.sky-sunset  { background: linear-gradient(to bottom, #e06030 0%, #ff9040 100%) !important; transition: background 0.6s !important; }
 
+    /* Medium screens – tablets / small laptops (768-1199px) */
+    @media (min-width: 768px) and (max-width: 1199px) {
+      #scene-wrap { height: max(32vh, calc(100vw / 5.143)); }
+      #stage { padding-bottom: 26vh; }
+    }
+
     /* Very large / wide screens (≥ 1600px) */
     @media (min-width: 1600px) {
-      #scene-wrap { height: 32vh; bottom: 36px; }
+      #scene-wrap { height: max(32vh, calc(100vw / 5.143)); bottom: 36px; }
       #stage { padding-bottom: 26vh; }
+      /* Centre sensor bar items on wide displays */
+      #sbar { justify-content: center; padding: 0 24px; }
     }
     /* Ultra-wide screens (≥ 2200px) */
     @media (min-width: 2200px) {
-      #scene-wrap { height: 28vh; }
       #stage { padding-bottom: 24vh; }
       .t-hack { font-size: clamp(3rem, 5.5vw, 9.5rem); }
     }
@@ -670,8 +686,10 @@
 
     /* ══════════════════════════════════════════ FLAG PHYSICS */
     #flag-dir {
-      /* CSS-transition for smooth flag-flip when direction changes */
+      /* CSS-transition for smooth swing when direction changes */
       transition: transform 0.55s ease;
+      transform-box: fill-box;
+      transform-origin: 50% 0%;   /* pivot at top-centre – where the banner bar is */
     }
 
     /* ══════════════════════════════════════════ CAR EXHAUST SMOKE */
@@ -946,17 +964,17 @@
       <animate attributeName="opacity" values="0.1;1;0.1" dur="1.1s" repeatCount="indefinite"/>
     </circle>
 
-    <!-- Flag pole at rear (tail end of envelope, ~x=44) -->
-    <line x1="44" y1="22" x2="44" y2="-42"
-          stroke="rgba(200,210,230,0.85)" stroke-width="2.0" stroke-linecap="round"/>
+    <!-- Banner bar – two short straps from gondola underside, then a horizontal spreader -->
+    <line x1="114" y1="99" x2="114" y2="104" stroke="rgba(160,190,230,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+    <line x1="170" y1="99" x2="170" y2="104" stroke="rgba(160,190,230,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+    <rect x="98" y="102" width="88" height="3.5" rx="1.8" fill="rgba(185,210,240,0.92)" stroke="rgba(130,168,218,0.55)" stroke-width="0.7"/>
 
-    <!-- Flag direction wrapper – JS sets transform="translate(88,0) scale(-1,1)"
-         when moving right (flag streams backward/left); default streams right -->
+    <!-- Flag banner hanging below gondola; JS applies a small rotation on direction change -->
     <g id="flag-dir">
       <g class="flag-cloth">
-        <rect x="44" y="-42" width="100" height="38" rx="2.5" fill="white" stroke="rgba(180,200,220,0.6)" stroke-width="1.0"/>
+        <rect x="98" y="105.5" width="88" height="60" rx="2.5" fill="white" stroke="rgba(180,200,222,0.55)" stroke-width="0.9"/>
         <image href="https://github.com/user-attachments/assets/804e6f2d-a1c8-44c4-ad2e-baa6c12735d0"
-               x="46" y="-41" width="96" height="36"
+               x="100" y="107.5" width="84" height="56"
                preserveAspectRatio="xMidYMid meet"
                opacity="1.0"/>
       </g>
@@ -2703,6 +2721,7 @@
     <a href="https://cedar-initiative.org" target="_blank" rel="noopener noreferrer" style="font-size:8px;letter-spacing:0.14em;text-transform:uppercase;color:var(--sbar-lbl);text-decoration:none;white-space:nowrap;">cedar-initiative.org</a>
   </div>
   <div class="si si-loc"><span class="si-city">⬤ DHAKA</span><span class="si-updated" id="s-updated">—</span></div>
+  <div class="si"><span class="si-lbl">Time</span><span class="si-val" id="s-time">—</span></div>
   <div class="si"><div class="si-dot g" id="d-aqi"></div><span class="si-lbl">AQI</span><span class="si-val" id="s-aqi">—</span></div>
   <div class="si"><div class="si-dot g" id="d-pm"></div><span class="si-lbl">PM2.5</span><span class="si-val" id="s-pm">—</span></div>
   <div class="si"><div class="si-dot g" id="d-co2"></div><span class="si-lbl">CO₂</span><span class="si-val" id="s-co2">—</span></div>
@@ -2899,126 +2918,178 @@ addEventListener('resize', () => {
   partResizeTimer = setTimeout(buildParticles, 150);
 });
 
-// ══════════════════════════════════════════════════════ DHAKA LIVE SENSOR DATA
-// Sources: Open-Meteo Weather API + Open-Meteo Air Quality API
-// Both are free, no API key, CORS-enabled, update hourly.
+// ══════════════════════════════════════════════════════ LIVE SENSOR DATA + GEOLOCATION
+// Sources: Open-Meteo Weather API + Open-Meteo Air Quality API (free, no API key, CORS-enabled).
+// Location: uses browser Geolocation API when granted; falls back to Dhaka.
 (function () {
-  const DHAKA_LAT  = 23.8103;
-  const DHAKA_LON  = 90.4125;
-  const REFRESH_MS = 10 * 60 * 1000; // refresh every 10 minutes
+  const DEFAULT_LAT  = 23.8103;
+  const DEFAULT_LON  = 90.4125;
+  const DEFAULT_CITY = 'Dhaka';
+  const REFRESH_MS   = 10 * 60 * 1000; // refresh every 10 minutes
 
-  const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast'
-    + '?latitude=' + DHAKA_LAT + '&longitude=' + DHAKA_LON
-    + '&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m'
-    + '&wind_speed_unit=kmh&timezone=Asia%2FDhaka';
+  // ── Helpers ─────────────────────────────────────────────────────────────────
+  function setText(id, txt) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = txt;
+  }
+  function setDot(id, cls) {
+    const el = document.getElementById(id);
+    if (el) el.className = 'si-dot ' + cls;
+  }
+  function setCity(name) {
+    const el = document.querySelector('.si-city');
+    if (el) el.textContent = '⬤ ' + name.toUpperCase();
+  }
 
-  const AQI_URL = 'https://air-quality-api.open-meteo.com/v1/air-quality'
-    + '?latitude=' + DHAKA_LAT + '&longitude=' + DHAKA_LON
-    + '&current=pm2_5,nitrogen_dioxide,ozone,us_aqi';
-
-  // CO₂ has no public hyperlocal API; global baseline drifts ~424 ppm in 2026.
-  // We add a small sinusoidal offset based on hour-of-day (traffic / photosynthesis cycle).
+  // CO₂ – no public real-time hyperlocal API; use global baseline + traffic cycle.
   function co2Estimate() {
     const h   = new Date().getHours();
-    // Peak CO₂ around rush-hour (8 h, 18 h), slight trough at midday (photosynthesis)
     const off = 4 * Math.sin((h - 8) * Math.PI / 12) - 2 * Math.sin(h * Math.PI / 6);
     return Math.round(424 + off);
   }
 
-  // Convert wind degrees to 8-point compass
+  // Wind degrees → 8-point compass
   function degToCompass(deg) {
     const dirs = ['N','NE','E','SE','S','SW','W','NW'];
     return dirs[Math.round(((deg % 360) / 45)) % 8];
   }
 
-  // Set dot colour by class: g / y / r
-  function setDot(id, cls) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.className = 'si-dot ' + cls;
-  }
-
   // AQI thresholds (US EPA 6-level)
-  function aqiDot(v)  { return v <= 50 ? 'g' : v <= 100 ? 'y' : v <= 150 ? 'o' : v <= 200 ? 'r' : v <= 300 ? 'p' : 'm'; }
-  // PM2.5 µg/m³ (US EPA 6-level)
-  function pmDot(v)   { return v < 12 ? 'g' : v < 35.4 ? 'y' : v < 55.4 ? 'o' : v < 150.4 ? 'r' : v < 250.4 ? 'p' : 'm'; }
-  // NO₂ µg/m³ (WHO annual guideline 40; hourly 200)
-  function no2Dot(v)  { return v < 40  ? 'g' : v < 100  ? 'y' : 'r'; }
-  // O₃ µg/m³ (WHO 8-hr target 100; peak season guideline 60)
-  function o3Dot(v)   { return v < 60  ? 'g' : v < 120  ? 'y' : 'r'; }
-  // CO₂ ppm (outdoor baseline ~420; >700 indicates poor ventilation)
-  function co2Dot(v)  { return v < 450 ? 'g' : v < 700  ? 'y' : 'r'; }
-
-  function setText(id, txt) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = txt;
-  }
+  function aqiDot(v)  { return v <= 50  ? 'g' : v <= 100  ? 'y' : v <= 150  ? 'o' : v <= 200 ? 'r' : v <= 300 ? 'p' : 'm'; }
+  function pmDot(v)   { return v < 12   ? 'g' : v < 35.4  ? 'y' : v < 55.4  ? 'o' : v < 150.4 ? 'r' : v < 250.4 ? 'p' : 'm'; }
+  function no2Dot(v)  { return v < 40   ? 'g' : v < 100   ? 'y' : 'r'; }
+  function o3Dot(v)   { return v < 60   ? 'g' : v < 120   ? 'y' : 'r'; }
+  function co2Dot(v)  { return v < 450  ? 'g' : v < 700   ? 'y' : 'r'; }
 
   function setUpdated() {
-    const now  = new Date();
-    const hh   = String(now.getHours()).padStart(2, '0');
-    const mm   = String(now.getMinutes()).padStart(2, '0');
-    setText('s-updated', hh + ':' + mm);
+    const now = new Date();
+    setText('s-updated', String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'));
   }
 
   function applyFallback() {
-    // Keep dashes but still show CO₂ estimate (always works)
     const co2 = co2Estimate();
     setText('s-co2', co2 + ' ppm');
     setDot('d-co2', co2Dot(co2));
   }
 
-  async function fetchDhakaData() {
+  // ── Local time ticker (browser timezone, no geolocation needed) ───────────
+  function updateTime() {
+    const now     = new Date();
+    const hh      = String(now.getHours()).padStart(2, '0');
+    const mm      = String(now.getMinutes()).padStart(2, '0');
+    const ss      = String(now.getSeconds()).padStart(2, '0');
+    // Extract short timezone abbreviation (e.g. "BST", "UTC+6")
+    const tzParts = now.toLocaleTimeString('en-US', { timeZoneName: 'short' }).split(' ');
+    const tzAbbr  = tzParts[tzParts.length - 1] || '';
+    setText('s-time', hh + ':' + mm + ':' + ss + (tzAbbr ? ' ' + tzAbbr : ''));
+  }
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  // ── Build API URLs for any lat/lon ────────────────────────────────────────
+  function buildWeatherURL(lat, lon) {
+    return 'https://api.open-meteo.com/v1/forecast'
+      + '?latitude='  + lat + '&longitude=' + lon
+      + '&current=temperature_2m,relative_humidity_2m,wind_speed_10m,wind_direction_10m'
+      + '&wind_speed_unit=kmh&timezone=auto';
+  }
+  function buildAqiURL(lat, lon) {
+    return 'https://air-quality-api.open-meteo.com/v1/air-quality'
+      + '?latitude=' + lat + '&longitude=' + lon
+      + '&current=pm2_5,nitrogen_dioxide,ozone,us_aqi';
+  }
+
+  // ── Reverse-geocode via Nominatim (one request on page load) ──────────────
+  function reverseGeocode(lat, lon) {
+    return fetch(
+      'https://nominatim.openstreetmap.org/reverse?lat=' + lat.toFixed(4)
+      + '&lon=' + lon.toFixed(4) + '&format=json&zoom=10',
+      { headers: { 'Accept-Language': 'en' } }
+    )
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (d) {
+      if (!d || !d.address) return DEFAULT_CITY;
+      return d.address.city || d.address.town || d.address.county || d.address.state || DEFAULT_CITY;
+    })
+    .catch(function () { return DEFAULT_CITY; });
+  }
+
+  // ── Fetch weather + AQI for given coordinates ─────────────────────────────
+  async function fetchData(lat, lon) {
     try {
       const [wRes, aqRes] = await Promise.all([
-        fetch(WEATHER_URL),
-        fetch(AQI_URL)
+        fetch(buildWeatherURL(lat, lon)),
+        fetch(buildAqiURL(lat, lon))
       ]);
-
       if (!wRes.ok || !aqRes.ok) { applyFallback(); return; }
-
       const [w, aq] = await Promise.all([wRes.json(), aqRes.json()]);
 
       const cw  = w.current  || {};
       const caq = aq.current || {};
 
-      // ── Weather ──────────────────────────────────────────────
+      // Weather
       const temp  = cw.temperature_2m;
       const hum   = cw.relative_humidity_2m;
       const wspd  = cw.wind_speed_10m;
       const wdir  = cw.wind_direction_10m;
-
       if (temp != null) setText('s-temp', temp.toFixed(1) + ' °C');
       if (hum  != null) setText('s-hum',  Math.round(hum) + ' %');
       if (wspd != null && wdir != null)
         setText('s-wind', Math.round(wspd) + ' km/h ' + degToCompass(wdir));
 
-      // ── Air Quality ───────────────────────────────────────────
-      const aqi  = caq.us_aqi;
-      const pm   = caq.pm2_5;
-      const no2  = caq.nitrogen_dioxide;  // µg/m³
-      const o3   = caq.ozone;             // µg/m³
+      // Air quality
+      const aqi = caq.us_aqi;
+      const pm  = caq.pm2_5;
+      const no2 = caq.nitrogen_dioxide;
+      const o3  = caq.ozone;
+      if (aqi != null) { setText('s-aqi', Math.round(aqi));             setDot('d-aqi', aqiDot(aqi)); }
+      if (pm  != null) { setText('s-pm',  pm.toFixed(1) + ' µg/m³');   setDot('d-pm',  pmDot(pm));   }
+      if (no2 != null) { setText('s-no2', no2.toFixed(2) + ' µg/m³');  setDot('d-no2', no2Dot(no2)); }
+      if (o3  != null) { setText('s-o3',  o3.toFixed(1)  + ' µg/m³');  setDot('d-o3',  o3Dot(o3));   }
 
-      if (aqi  != null) { setText('s-aqi', Math.round(aqi));               setDot('d-aqi', aqiDot(aqi)); }
-      if (pm   != null) { setText('s-pm',  pm.toFixed(1) + ' µg/m³');      setDot('d-pm',  pmDot(pm));   }
-      if (no2  != null) { setText('s-no2', no2.toFixed(2) + ' µg/m³');     setDot('d-no2', no2Dot(no2)); }
-      if (o3   != null) { setText('s-o3',  o3.toFixed(1)  + ' µg/m³');     setDot('d-o3',  o3Dot(o3));   }
-
-      // CO₂ – estimated baseline (no public real-time hyperlocal API)
       const co2 = co2Estimate();
       setText('s-co2', co2 + ' ppm');
       setDot('d-co2', co2Dot(co2));
 
       setUpdated();
-
-    } catch (_) {
-      applyFallback();
-    }
+    } catch (_) { applyFallback(); }
   }
 
-  // Initial fetch + periodic refresh
-  fetchDhakaData();
-  setInterval(fetchDhakaData, REFRESH_MS);
+  function startRefresh(lat, lon) {
+    fetchData(lat, lon);
+    setInterval(function () { fetchData(lat, lon); }, REFRESH_MS);
+  }
+
+  // ── Geolocation: try user location, fall back to Dhaka ───────────────────
+  const GEO_TIMEOUT_MS = 8000; // must exceed the options.timeout value (7000)
+  if (navigator.geolocation) {
+    let resolved = false;
+    const geoTimer = setTimeout(function () {
+      if (!resolved) { resolved = true; startRefresh(DEFAULT_LAT, DEFAULT_LON); }
+    }, GEO_TIMEOUT_MS);
+
+    navigator.geolocation.getCurrentPosition(
+      function (pos) {
+        if (resolved) return;
+        resolved = true;
+        clearTimeout(geoTimer);
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        // Show coordinates immediately; update to city name once geocoded
+        reverseGeocode(lat, lon).then(function (city) { setCity(city); });
+        startRefresh(lat, lon);
+      },
+      function () {
+        if (resolved) return;
+        resolved = true;
+        clearTimeout(geoTimer);
+        startRefresh(DEFAULT_LAT, DEFAULT_LON);
+      },
+      { timeout: 7000, maximumAge: 300000 }
+    );
+  } else {
+    startRefresh(DEFAULT_LAT, DEFAULT_LON);
+  }
 }());
 
 // ══════════════════════════════════════════════════════ AIRSHIP PHYSICS
@@ -3033,19 +3104,15 @@ addEventListener('resize', () => {
 
   let phase        = 'idle';
   let startTs      = 0;
-  let lastFlagFlip = false; // tracks whether flag is currently flipped
+  let lastFlagFlip = false; // tracks whether flag is currently rotated right/neutral
 
-  // Flip the rear flag around x=44 (pole position) in SVG space:
-  // translate(88,0) scale(-1,1)  = mirror around x=44  → flag streams LEFT (airship moving right)
-  // removeAttribute / identity   = flag streams RIGHT   (airship moving left / stationary)
+  // Hanging banner swing: rotate slightly backward (opposite travel direction).
+  // Uses CSS style.transform so the CSS transition handles the smooth tween.
   function setFlagDir(flip) {
     if (!flagDir || flip === lastFlagFlip) return;
     lastFlagFlip = flip;
-    if (flip) {
-      flagDir.setAttribute('transform', 'translate(88,0) scale(-1,1)');
-    } else {
-      flagDir.removeAttribute('transform');
-    }
+    // Moving right → banner trails left (−7°); stationary/left → hangs straight
+    flagDir.style.transform = flip ? 'rotate(-7deg)' : 'rotate(0deg)';
   }
 
   function raf(ts) {
