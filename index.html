@@ -2966,12 +2966,6 @@ addEventListener('resize', () => {
     setText('s-updated', String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0'));
   }
 
-  function applyFallback() {
-    const co2 = co2Estimate();
-    setText('s-co2', co2 + ' ppm');
-    setDot('d-co2', co2Dot(co2));
-  }
-
   // ── Local time ticker (browser timezone, no geolocation needed) ───────────
   function updateTime() {
     const now     = new Date();
@@ -2996,7 +2990,7 @@ addEventListener('resize', () => {
   function buildAqiURL(lat, lon) {
     return 'https://air-quality-api.open-meteo.com/v1/air-quality'
       + '?latitude=' + lat + '&longitude=' + lon
-      + '&current=pm2_5,nitrogen_dioxide,ozone,us_aqi';
+      + '&current=pm2_5,nitrogen_dioxide,ozone,us_aqi&timezone=auto';
   }
 
   // ── Reverse-geocode via Nominatim (one request on page load) ──────────────
@@ -3016,43 +3010,48 @@ addEventListener('resize', () => {
 
   // ── Fetch weather + AQI for given coordinates ─────────────────────────────
   async function fetchData(lat, lon) {
+    // Weather and AQI are fetched independently so a failure in one does not
+    // prevent the other from showing data.
+
+    // Weather
     try {
-      const [wRes, aqRes] = await Promise.all([
-        fetch(buildWeatherURL(lat, lon)),
-        fetch(buildAqiURL(lat, lon))
-      ]);
-      if (!wRes.ok || !aqRes.ok) { applyFallback(); return; }
-      const [w, aq] = await Promise.all([wRes.json(), aqRes.json()]);
+      const wRes = await fetch(buildWeatherURL(lat, lon));
+      if (wRes.ok) {
+        const w  = await wRes.json();
+        const cw = w.current || {};
+        const temp = cw.temperature_2m;
+        const hum  = cw.relative_humidity_2m;
+        const wspd = cw.wind_speed_10m;
+        const wdir = cw.wind_direction_10m;
+        if (temp != null) setText('s-temp', temp.toFixed(1) + ' °C');
+        if (hum  != null) setText('s-hum',  Math.round(hum) + ' %');
+        if (wspd != null && wdir != null)
+          setText('s-wind', Math.round(wspd) + ' km/h ' + degToCompass(wdir));
+      }
+    } catch (_) {}
 
-      const cw  = w.current  || {};
-      const caq = aq.current || {};
+    // Air quality
+    try {
+      const aqRes = await fetch(buildAqiURL(lat, lon));
+      if (aqRes.ok) {
+        const aq  = await aqRes.json();
+        const caq = aq.current || {};
+        const aqi = caq.us_aqi;
+        const pm  = caq.pm2_5;
+        const no2 = caq.nitrogen_dioxide;
+        const o3  = caq.ozone;
+        if (aqi != null) { setText('s-aqi', Math.round(aqi));             setDot('d-aqi', aqiDot(aqi)); }
+        if (pm  != null) { setText('s-pm',  pm.toFixed(1) + ' µg/m³');   setDot('d-pm',  pmDot(pm));   }
+        if (no2 != null) { setText('s-no2', no2.toFixed(2) + ' µg/m³');  setDot('d-no2', no2Dot(no2)); }
+        if (o3  != null) { setText('s-o3',  o3.toFixed(1)  + ' µg/m³');  setDot('d-o3',  o3Dot(o3));   }
+      }
+    } catch (_) {}
 
-      // Weather
-      const temp  = cw.temperature_2m;
-      const hum   = cw.relative_humidity_2m;
-      const wspd  = cw.wind_speed_10m;
-      const wdir  = cw.wind_direction_10m;
-      if (temp != null) setText('s-temp', temp.toFixed(1) + ' °C');
-      if (hum  != null) setText('s-hum',  Math.round(hum) + ' %');
-      if (wspd != null && wdir != null)
-        setText('s-wind', Math.round(wspd) + ' km/h ' + degToCompass(wdir));
-
-      // Air quality
-      const aqi = caq.us_aqi;
-      const pm  = caq.pm2_5;
-      const no2 = caq.nitrogen_dioxide;
-      const o3  = caq.ozone;
-      if (aqi != null) { setText('s-aqi', Math.round(aqi));             setDot('d-aqi', aqiDot(aqi)); }
-      if (pm  != null) { setText('s-pm',  pm.toFixed(1) + ' µg/m³');   setDot('d-pm',  pmDot(pm));   }
-      if (no2 != null) { setText('s-no2', no2.toFixed(2) + ' µg/m³');  setDot('d-no2', no2Dot(no2)); }
-      if (o3  != null) { setText('s-o3',  o3.toFixed(1)  + ' µg/m³');  setDot('d-o3',  o3Dot(o3));   }
-
-      const co2 = co2Estimate();
-      setText('s-co2', co2 + ' ppm');
-      setDot('d-co2', co2Dot(co2));
-
-      setUpdated();
-    } catch (_) { applyFallback(); }
+    // CO₂ (local estimate) and timestamp always update
+    const co2 = co2Estimate();
+    setText('s-co2', co2 + ' ppm');
+    setDot('d-co2', co2Dot(co2));
+    setUpdated();
   }
 
   function startRefresh(lat, lon) {
