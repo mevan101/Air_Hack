@@ -18,7 +18,7 @@
   <!-- Tells browsers to auto-upgrade any accidental HTTP sub-resource to HTTPS.
        connect-src whitelists the three free APIs this page fetches; script-src,
        style-src, img-src and font-src lock down every other external resource. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://github.com https://objects.githubusercontent.com https://camo.githubusercontent.com; connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://github.com https://objects.githubusercontent.com https://camo.githubusercontent.com https://private-user-images.githubusercontent.com https://user-images.githubusercontent.com; connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Air Hackathon 2026 – Open-innovation challenge on air quality. Coming Soon.">
@@ -487,6 +487,17 @@
       pointer-events: none;
       will-change: transform;
       transform: translate(-400px, 20vh);
+    }
+    #airship-wrap.airship-interactive {
+      pointer-events: auto;
+      cursor: grab;
+    }
+    #airship-wrap.airship-dragging {
+      cursor: grabbing;
+    }
+    #airship-wrap.airship-dragging #airship-svg {
+      filter: drop-shadow(0 8px 28px rgba(80,160,255,0.55));
+      transition: filter 0.15s;
     }
     #airship-svg {
       width: 110px;
@@ -3086,6 +3097,20 @@ addEventListener('resize', () => {
   let startTs      = 0;
   let lastFlagFlip = false; // tracks whether flag is currently rotated right/neutral
 
+  // Current rendered position – shared across all phases
+  let curX = 0, curY = 0;
+
+  // ── Drag state ────────────────────────────────────────────────────────────
+  let dragActive = false;
+  let dragOffX   = 0, dragOffY  = 0;
+  let dragPrevX  = 0, dragPrevY = 0;
+  let dragTilt   = 0;
+
+  // ── Snap-back state ───────────────────────────────────────────────────────
+  let snapFromX   = 0, snapFromY   = 0;
+  let snapStartTs = 0;
+  const SNAP_DUR  = 1000; // ms – duration of spring return
+
   // Hanging banner swing: rotate slightly backward (opposite travel direction).
   // Uses CSS style.transform so the CSS transition handles the smooth tween.
   function setFlagDir(flip) {
@@ -3094,6 +3119,59 @@ addEventListener('resize', () => {
     // Moving right → banner trails left (−7°); stationary/left → hangs straight
     flagDir.style.transform = flip ? 'rotate(-7deg)' : 'rotate(0deg)';
   }
+
+  function getPointerPos(e) {
+    const src = e.touches ? e.touches[0] : e;
+    return { x: src.clientX, y: src.clientY };
+  }
+
+  function startDrag(e) {
+    if (phase !== 'float' && phase !== 'snap') return;
+    dragActive = true;
+    phase      = 'drag';
+    wrap.classList.add('airship-dragging');
+    const p  = getPointerPos(e);
+    dragOffX  = p.x - curX;
+    dragOffY  = p.y - curY;
+    dragPrevX = curX;
+    dragPrevY = curY;
+    dragTilt  = 0;
+    setFlagDir(false);
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function onDragMove(e) {
+    if (!dragActive) return;
+    const p  = getPointerPos(e);
+    const nx = p.x - dragOffX;
+    const ny = p.y - dragOffY;
+    // Tilt proportional to horizontal velocity for a natural pitch feel
+    dragTilt  = Math.max(-14, Math.min(14, (nx - dragPrevX) * 0.35));
+    setFlagDir(nx - dragPrevX > 1.5);
+    dragPrevX = nx;
+    dragPrevY = ny;
+    curX      = nx;
+    curY      = ny;
+    if (e.cancelable) e.preventDefault();
+  }
+
+  function endDrag() {
+    if (!dragActive) return;
+    dragActive  = false;
+    wrap.classList.remove('airship-dragging');
+    snapFromX   = curX;
+    snapFromY   = curY;
+    snapStartTs = 0;
+    startTs     = 0; // float will restart from t=0 (home position) after snap
+    phase       = 'snap';
+  }
+
+  wrap.addEventListener('mousedown',  startDrag);
+  wrap.addEventListener('touchstart', startDrag, { passive: false });
+  document.addEventListener('mousemove',  onDragMove);
+  document.addEventListener('touchmove',  onDragMove, { passive: false });
+  document.addEventListener('mouseup',    endDrag);
+  document.addEventListener('touchend',   endDrag);
 
   function raf(ts) {
     if (startTs === 0) startTs = ts;
@@ -3112,6 +3190,7 @@ addEventListener('resize', () => {
       const cy  = by - Math.sin(t * Math.PI) * 28;      // gentle arc upward then settles
       const tilt = (1 - e) * -4;                        // nose-up during fly-in
 
+      curX = cx; curY = cy;
       wrap.style.transform = 'translate(' + cx + 'px,' + cy + 'px) rotate(' + tilt + 'deg)';
       // Flying right during fly-in → flag streams left
       setFlagDir(true);
@@ -3119,6 +3198,7 @@ addEventListener('resize', () => {
       if (t >= 1.0) {
         phase   = 'float';
         startTs = 0; // reset for float timer
+        wrap.classList.add('airship-interactive');
       }
 
     } else if (phase === 'float') {
@@ -3138,10 +3218,35 @@ addEventListener('resize', () => {
       // Blend horizontal and vertical velocity for a realistic envelope pitch
       const tilt = Math.max(-10, Math.min(10, vx * 0.036 + vy * 0.014));
 
+      curX = x; curY = y;
       wrap.style.transform = 'translate(' + x + 'px,' + y + 'px) rotate(' + tilt + 'deg)';
 
       // Flag physics: streams opposite to direction of travel (> 1.5 px/s threshold to avoid flicker)
       setFlagDir(vx > 1.5);
+
+    } else if (phase === 'drag') {
+      // Position already updated live in onDragMove; just apply transform each frame
+      wrap.style.transform = 'translate(' + curX + 'px,' + curY + 'px) rotate(' + dragTilt + 'deg)';
+
+    } else if (phase === 'snap') {
+      if (snapStartTs === 0) snapStartTs = ts;
+      const sElapsed = ts - snapStartTs;
+      const t = Math.min(sElapsed / SNAP_DUR, 1.0);
+      // Elastic ease-out: snappy spring return with subtle bounce
+      const e = t === 1.0 ? 1.0
+              : 1 - Math.pow(2, -10 * t) * Math.cos(t * Math.PI * 5.0);
+      const hx = window.innerWidth  * 0.50 - AW * 0.5;
+      const hy = window.innerHeight * 0.70;
+      const x  = snapFromX + (hx - snapFromX) * e;
+      const y  = snapFromY + (hy - snapFromY) * e;
+      curX = x; curY = y;
+      wrap.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+      setFlagDir(false);
+
+      if (t >= 1.0) {
+        phase   = 'float';
+        startTs = 0; // float drifts from home, so restart its timer
+      }
     }
 
     requestAnimationFrame(raf);
