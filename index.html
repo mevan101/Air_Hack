@@ -470,29 +470,7 @@
     }
 
     /* ══════════════════════════════════════════ THEME TOGGLE */
-    #theme-toggle {
-      position: fixed;
-      top: 16px; right: 16px;
-      z-index: 20;
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      border: 1px solid var(--sbar-bdr);
-      background: var(--sbar-bg);
-      color: var(--sbar-lbl);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(14px);
-      transition: transform 0.25s, border-color 0.3s, background 0.5s, color 0.5s;
-      opacity: 0;
-      animation: fd-in 0.8s ease 3.5s forwards;
-      outline: none;
-      padding: 0;
-    }
-    #theme-toggle:hover { transform: scale(1.12) rotate(18deg); }
-    #theme-toggle:focus-visible { outline: 2px solid var(--text-accent); outline-offset: 3px; }
-    #theme-toggle svg { width: 16px; height: 16px; pointer-events: none; }
+    /* theme-toggle button hidden in favour of the sun/moon SVG click targets */
     #theme-toggle { display: none; }
     .icon-moon { display: none; }
     [data-theme="dark"] .icon-sun  { display: none; }
@@ -601,7 +579,7 @@
     /* ══════════════════════════════════════════ REDUCED MOTION */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
-      .t-hack, .t-year, .t-soon, .div-line, #sbar, #theme-toggle {
+      .t-hack, .t-year, .t-soon, .t-tag, .div-line, #sbar {
         opacity: 1 !important; filter: none !important; transform: none !important;
       }
     }
