@@ -586,9 +586,13 @@
     }
     [data-theme="dark"] #moon-wrap { opacity: 1; }
     #moon-wrap svg { width: 100%; height: 100%; overflow: visible; }
-    /* Sun/moon clickable theme toggle */
-    #sun-wrap, #moon-wrap { pointer-events: auto; cursor: pointer; }
-    #sun-wrap:hover, #moon-wrap:hover { transform: scale(1.1); transition: transform 0.25s; }
+    /* Sun/moon clickable theme toggle – only the visible element should receive clicks */
+    #sun-wrap { pointer-events: auto; cursor: pointer; }
+    [data-theme="dark"] #sun-wrap { pointer-events: none; }
+    #moon-wrap { pointer-events: none; cursor: pointer; }
+    [data-theme="dark"] #moon-wrap { pointer-events: auto; }
+    #sun-wrap:hover { transform: scale(1.1); transition: transform 0.25s; }
+    [data-theme="dark"] #moon-wrap:hover { transform: scale(1.1); transition: transform 0.25s; }
 
     /* ══════════════════════════════════════════ REDUCED MOTION */
     @media (prefers-reduced-motion: reduce) {
