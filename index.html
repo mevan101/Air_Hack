@@ -18,7 +18,7 @@
   <!-- Tells browsers to auto-upgrade any accidental HTTP sub-resource to HTTPS.
        connect-src whitelists the three free APIs this page fetches; script-src,
        style-src, img-src and font-src lock down every other external resource. -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://github.com https://objects.githubusercontent.com https://camo.githubusercontent.com https://private-user-images.githubusercontent.com https://user-images.githubusercontent.com; connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org; upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src https://github.com https://objects.githubusercontent.com https://camo.githubusercontent.com https://private-user-images.githubusercontent.com https://user-images.githubusercontent.com https://github-production-user-asset-6210df.s3.amazonaws.com; connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Air Hackathon 2026 – Open-innovation challenge on air quality. Coming Soon.">
@@ -586,9 +586,13 @@
     }
     [data-theme="dark"] #moon-wrap { opacity: 1; }
     #moon-wrap svg { width: 100%; height: 100%; overflow: visible; }
-    /* Sun/moon clickable theme toggle */
-    #sun-wrap, #moon-wrap { pointer-events: auto; cursor: pointer; }
-    #sun-wrap:hover, #moon-wrap:hover { transform: scale(1.1); transition: transform 0.25s; }
+    /* Sun/moon clickable theme toggle – only the visible element should receive clicks */
+    #sun-wrap { pointer-events: auto; cursor: pointer; }
+    [data-theme="dark"] #sun-wrap { pointer-events: none; }
+    #moon-wrap { pointer-events: none; cursor: pointer; }
+    [data-theme="dark"] #moon-wrap { pointer-events: auto; }
+    #sun-wrap:hover { transform: scale(1.1); transition: transform 0.25s; }
+    [data-theme="dark"] #moon-wrap:hover { transform: scale(1.1); transition: transform 0.25s; }
 
     /* ══════════════════════════════════════════ REDUCED MOTION */
     @media (prefers-reduced-motion: reduce) {
