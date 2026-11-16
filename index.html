@@ -10,21 +10,16 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; form-action 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://api.open-meteo.com https://air-quality-api.open-meteo.com https://nominatim.openstreetmap.org; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light dark">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#08090a">
   <script>
-    /* Theme override (FOUC-safe) + intro gate. Kept tiny on purpose. */
-    try { var cs = localStorage.getItem('color-scheme'); if (cs) document.querySelector('meta[name="color-scheme"]').content = cs; } catch (e) {}
-    try {
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('intro-seen')) document.documentElement.classList.add('has-intro');
-    } catch (e) {}
+    try { if (!matchMedia('(prefers-reduced-motion: reduce)').matches && !sessionStorage.getItem('intro-seen')) document.documentElement.classList.add('has-intro'); } catch (e) {}
     document.documentElement.classList.add('js');
   </script>
   <title>Air Hackathon 2027 · Hack the air Dhaka breathes</title>
-  <meta name="description" content="Air Hackathon 2027 is an open-innovation challenge on air quality in Dhaka, run by Cedar Initiative. Watch Dhaka's air live, scrub through 48 hours of it, and see the problems teams will build on.">
+  <meta name="description" content="Air Hackathon 2027 is an open-innovation challenge on air quality in Dhaka, run by Cedar Initiative. See Dhaka's air live, scrub through 48 hours of it, and find the problems worth building on.">
   <link rel="canonical" href="https://airhackathon.com/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="theme-color" content="#f2f4f7" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#0d1017" media="(prefers-color-scheme: dark)">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Air Hackathon">
@@ -34,7 +29,7 @@
   <meta property="og:image" content="https://airhackathon.com/og.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Dhaka's skyline behind a layer of smog, with the words Hack the air Dhaka breathes.">
+  <meta property="og:image:alt" content="Dhaka's skyline at night under a layer of smog, with the words Hack the air Dhaka breathes.">
   <meta name="twitter:card" content="summary_large_image">
 
   <script type="application/ld+json">
@@ -52,52 +47,40 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://air-quality-api.open-meteo.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mona+Sans:wdth,wght@100..112.5,400..700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@600&display=swap&text=%E0%A6%A8%E0%A6%BF%E0%A6%B0%E0%A7%8D%E0%A6%AE%E0%A6%B2%20%E0%A6%AC%E0%A6%BE%E0%A6%A4%E0%A6%BE%E0%A6%B8">
 
   <style>
-    @property --r { syntax: "<length>"; inherits: false; initial-value: 0px; }
-
-    /* ═══════════════════════════════════════════ TOKENS */
+    /* ═══════════════════════════════════════════ TOKENS
+       One dark world. Colour only ever encodes data: AQI bands, WHO-safe mint, smog amber. */
     :root {
-      color-scheme: light dark;
-      --bg:        light-dark(oklch(96.6% 0.005 245), oklch(15.5% 0.014 262));
-      --bg-2:      light-dark(oklch(93.6% 0.008 245), oklch(18.5% 0.016 262));
-      --bg-3:      light-dark(oklch(21% 0.02 262),     oklch(10.5% 0.012 262));
-      --on-bg-3:   oklch(95.5% 0.008 85);
-      --ink:       light-dark(oklch(21% 0.02 262),     oklch(95.5% 0.008 85));
-      --muted:     light-dark(oklch(43% 0.02 262),     oklch(76% 0.014 85));
-      --rule:      light-dark(oklch(21% 0.02 262 / 0.14), oklch(95% 0.01 85 / 0.14));
-      --rule-2:    light-dark(oklch(21% 0.02 262 / 0.28), oklch(95% 0.01 85 / 0.26));
-      --accent:    light-dark(oklch(46% 0.1 172),      oklch(86% 0.13 168));
-      --accent-ink:light-dark(oklch(98% 0.01 172),     oklch(19% 0.04 172));
-      --accent-hi: light-dark(oklch(40% 0.1 172),      oklch(91% 0.12 168));
-      --mint:      oklch(86% 0.13 168);
-      --smog:      light-dark(oklch(55% 0.11 62),      oklch(76% 0.12 66));
-      --cedar-green: light-dark(#1a5029, #2e7a46);
-      --scrim:     light-dark(oklch(96.6% 0.005 245 / 0.8), oklch(15.5% 0.014 262 / 0.72));
-      --glass:     light-dark(oklch(98% 0.004 245 / 0.82), oklch(16% 0.014 262 / 0.78));
-
+      color-scheme: dark;
+      --bg:     #08090a;
+      --bg-1:   #0e0f11;
+      --bg-2:   #141518;
+      --ink:    #f4f5f6;
+      --ink-2:  #9ba1ab;
+      --ink-3:  #737983;
+      --line:   rgb(255 255 255 / 0.08);
+      --line-2: rgb(255 255 255 / 0.14);
+      --line-3: rgb(255 255 255 / 0.24);
+      --safe:   #8fdcc2;
+      --smog:   #e4a660;
+      --cedar:  #2e7a46;
       --aqi-1: #3fae5a; --aqi-2: #e3c11d; --aqi-3: #f08a24;
-      --aqi-4: #e0403a; --aqi-5: #8f3f97; --aqi-6: #7e1e33;
-      --band: var(--muted);
+      --aqi-4: #e0403a; --aqi-5: #9b59b6; --aqi-6: #a3283f;
+      --band: var(--ink-3);
 
-      --f-display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-      --f-body:    "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
-      --f-data:    "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-      --f-bangla:  "Anek Bangla", "Noto Sans Bengali", sans-serif;
-
+      --font: "Mona Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      --bangla: "Anek Bangla", "Noto Sans Bengali", sans-serif;
       --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
       --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
-      --spring: linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1);
+      --ease-arrive: cubic-bezier(0.16, 1, 0.3, 1);
 
-      --gutter: max(16px, env(safe-area-inset-left), min(5vw, 64px));
-      --maxw: 1240px;
-      --nav-h: 72px;
-      --r-1: 6px; --r-2: 12px; --r-3: 20px; --r-pill: 999px;
-
-      &:has(> head > meta[name="color-scheme"][content="dark"])  { color-scheme: dark; }
-      &:has(> head > meta[name="color-scheme"][content="light"]) { color-scheme: light; }
+      --gutter: max(20px, env(safe-area-inset-left), min(5vw, 56px));
+      --maxw: 1200px;
+      --nav-h: 60px;
+      --r-s: 6px; --r-m: 10px; --r-l: 16px; --r-pill: 999px;
     }
 
     /* ═══════════════════════════════════════════ BASE */
@@ -105,425 +88,362 @@
     * { margin: 0; }
     html {
       -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
-      scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 12px);
-      @media (prefers-reduced-motion: reduce) { scroll-behavior: auto; }
+      scroll-padding-top: calc(var(--nav-h) + 16px);
+      @media (prefers-reduced-motion: no-preference) { scroll-behavior: smooth; }
       @media (pointer: fine) { overscroll-behavior-y: none; }
     }
     body {
       background: var(--bg); color: var(--ink);
-      font: 400 1.0625rem/1.6 var(--f-body);
-      font-variation-settings: "opsz" 14;
+      font: 400 1.0625rem/1.55 var(--font);
       -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
       overflow-x: clip; -webkit-tap-highlight-color: transparent;
     }
-    ::selection { background: var(--accent); color: var(--accent-ink); }
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+    ::selection { background: var(--ink); color: var(--bg); }
+    :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 4px; }
     img, svg, canvas { display: block; max-width: 100%; }
     a { color: inherit; }
     button { font: inherit; color: inherit; }
-    h1, h2, h3 { font-family: var(--f-display); font-weight: 700; text-wrap: balance; letter-spacing: -0.025em; font-variation-settings: "opsz" 96; }
+    a, button, [role="tab"] { touch-action: manipulation; }
+    h1, h2, h3 { font-weight: 600; text-wrap: balance; }
     p { text-wrap: pretty; }
-    .num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+    .tnum { font-variant-numeric: tabular-nums; }
     .vh { position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
     .wrap { width: min(100% - 2 * var(--gutter), var(--maxw)); margin-inline: auto; }
-    kbd { font: 500 0.75rem/1 var(--f-data); padding: 3px 6px; border: 1px solid var(--rule-2); border-radius: 5px; }
-
-    .skip {
-      position: fixed; left: var(--gutter); top: 12px; z-index: 100;
-      padding: 10px 16px; border-radius: var(--r-1);
-      background: var(--ink); color: var(--bg); font-weight: 600; text-decoration: none;
-      translate: 0 -200%;
-      &:focus-visible { translate: 0 0; }
-    }
-
-    /* Global pause (WCAG 2.2.2): freezes every CSS loop on the page */
+    kbd { font: 500 0.75rem/1 var(--font); padding: 3px 5px; border: 1px solid var(--line-2); border-radius: 4px; color: var(--ink-2); }
+    .skip { position: fixed; left: var(--gutter); top: 10px; z-index: 100; padding: 10px 14px; border-radius: var(--r-s); background: var(--ink); color: var(--bg); font-weight: 600; text-decoration: none; translate: 0 -200%; &:focus-visible { translate: 0 0; } }
     html.still *, html.still *::before, html.still *::after { animation-play-state: paused !important; }
 
     /* ═══════════════════════════════════════════ CONTROLS */
     .btn {
-      --h: 48px;
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      min-height: var(--h); padding: 0 22px;
-      border-radius: var(--r-pill); border: 1px solid transparent;
-      font: 600 1rem/1 var(--f-body); letter-spacing: -0.005em;
-      text-decoration: none; cursor: pointer; white-space: nowrap;
-      touch-action: manipulation; position: relative;
-      transition: transform 180ms var(--ease-out), background-color 160ms var(--ease-out), border-color 160ms var(--ease-out), color 160ms var(--ease-out), box-shadow 200ms var(--ease-out);
-      &:hover  { transform: translate(var(--mx, 0px), calc(var(--my, 0px) - 1px)); }
-      &:active { transform: translate(var(--mx, 0px), var(--my, 0px)) scale(0.97); transition-duration: 80ms; }
-      & svg { width: 18px; height: 18px; flex: none; transition: transform 220ms var(--ease-out); }
-      &:hover svg.arrow { transform: translateX(3px); }
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 0 18px; border-radius: var(--r-pill); border: 1px solid transparent;
+      font: 550 0.9375rem/1 var(--font); text-decoration: none; cursor: pointer; white-space: nowrap;
+      touch-action: manipulation;
+      transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, scale 160ms var(--ease-out);
+      &:active { scale: 0.96; }
+      & svg { width: 16px; height: 16px; flex: none; transition: translate 200ms var(--ease-out); }
     }
-    .btn-primary {
-      background: var(--accent); color: var(--accent-ink);
-      &:hover { background: var(--accent-hi); box-shadow: 0 10px 30px -10px color-mix(in oklch, var(--accent) 70%, transparent); }
+    .btn-primary { background: var(--ink); color: var(--bg); }
+    .btn-ghost { border-color: var(--line-2); background: rgb(8 9 10 / 0.4); }
+    .btn-sm { min-height: 36px; padding: 0 14px; font-size: 0.875rem; }
+    @media (hover: hover) and (pointer: fine) {
+      .btn-primary:hover { background: #ffffff; }
+      .btn-ghost:hover { border-color: var(--line-3); background: rgb(255 255 255 / 0.06); }
+      .btn:hover svg.arrow { translate: 2px 0; }
     }
-    .btn-ghost { border-color: var(--rule-2); background: color-mix(in oklch, var(--bg) 55%, transparent); &:hover { border-color: var(--ink); } }
-    .btn-sm { --h: 40px; padding: 0 16px; font-size: 0.9375rem; }
     .icon-btn {
-      display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: var(--r-pill);
-      border: 1px solid var(--rule-2); background: color-mix(in oklch, var(--bg) 55%, transparent); cursor: pointer;
-      transition: border-color 160ms var(--ease-out), transform 160ms var(--ease-out), background-color 160ms var(--ease-out);
-      &:hover { border-color: var(--ink); }
-      &:active { transform: scale(0.94); }
-      & svg { width: 20px; height: 20px; }
+      position: relative; display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-pill);
+      border: 1px solid var(--line-2); background: transparent; cursor: pointer; color: var(--ink-2);
+      transition: color 160ms ease, border-color 160ms ease, scale 160ms var(--ease-out);
+      &::after { content: ""; position: absolute; inset: -4px; }
+      &:active { scale: 0.96; }
+      & svg { width: 18px; height: 18px; }
     }
-    .link { text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat; transition: background-size 260ms var(--ease-out); padding-bottom: 1px;
-      &:hover, &:focus-visible { background-size: 100% 1px; } }
-    .link-under { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--rule-2); transition: text-decoration-color 160ms var(--ease-out); &:hover { text-decoration-color: currentColor; } }
+    @media (hover: hover) and (pointer: fine) { .icon-btn:hover { color: var(--ink); border-color: var(--line-3); } }
+    .link { color: var(--ink-2); text-decoration: none; transition: color 160ms ease; }
+    @media (hover: hover) and (pointer: fine) { .link:hover { color: var(--ink); } }
+    .link-u { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: var(--line-3); transition: text-decoration-color 160ms ease; }
+    @media (hover: hover) and (pointer: fine) { .link-u:hover { text-decoration-color: currentColor; } }
 
-    /* ═══════════════════════════════════════════ INTRO */
+    /* ═══════════════════════════════════════════ INTRO (once per session) */
     .intro { display: none; }
-    .has-intro .intro {
-      display: grid; place-items: center; position: fixed; inset: 0; z-index: 90;
-      background: var(--bg-3); color: var(--on-bg-3);
-      mask: radial-gradient(circle at 50% 50%, transparent var(--r), #000 calc(var(--r) + 1px));
-      cursor: pointer;
-    }
-    .intro.go { animation: open 1100ms var(--ease-in-out) forwards; }
-    @keyframes open { to { --r: 150vmax; } }
-    .intro-inner { display: grid; justify-items: center; gap: 28px; text-align: center; }
-    .lung { width: 120px; height: 120px; border-radius: 50%; border: 1px solid oklch(86% 0.13 168 / 0.5); display: grid; place-items: center; animation: inhale 1.8s var(--ease-in-out) infinite alternate; }
-    .lung::after { content: ""; width: 44%; height: 44%; border-radius: 50%; background: var(--mint); filter: blur(10px); opacity: 0.7; }
-    @keyframes inhale { from { scale: 0.72; } to { scale: 1.08; } }
-    .intro-word { font: 650 clamp(2rem, 5vw, 3.5rem)/1 var(--f-display); letter-spacing: -0.03em; }
-    .intro-count { font: 500 0.875rem/1 var(--f-data); opacity: 0.7; letter-spacing: 0.08em; }
-    .intro-skip { font-size: 0.8125rem; opacity: 0.55; }
+    .has-intro .intro { display: grid; place-items: center; position: fixed; inset: 0; z-index: 90; background: var(--bg); transition: opacity 600ms var(--ease-out); cursor: pointer; }
+    .intro.go { opacity: 0; pointer-events: none; }
+    .intro-inner { display: grid; justify-items: center; gap: 18px; }
+    .intro-mark { font: 600 1rem/1 var(--font); letter-spacing: -0.01em; }
+    .intro-bar { width: 160px; height: 1px; background: var(--line-2); overflow: hidden; }
+    .intro-bar i { display: block; height: 100%; background: var(--ink); transform-origin: 0 50%; scale: var(--p, 0) 1; transition: scale 200ms linear; }
+    .intro-txt { font-size: 0.8125rem; color: var(--ink-2); }
 
-    /* ═══════════════════════════════════════════ STAGE (fixed WebGL world) */
-    #stage {
-      position: fixed; inset: 0; z-index: 0; width: 100%; height: 100lvh;
-      background:
-        linear-gradient(to top, light-dark(#4b5160, #05070c) 0 14%, transparent 14%),
-        linear-gradient(to bottom, light-dark(#c3ccd4, #0b0f1a), light-dark(#d9cdb6, #3a2a1f));
-    }
+    /* ═══════════════════════════════════════════ STAGE */
+    #stage { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100lvh; background: linear-gradient(#0a0e18, #2a1d16 70%, #05070c 70%); }
     main, footer { position: relative; z-index: 1; }
-    .opaque { background: var(--bg); position: relative; z-index: 1; }
+    .solid { background: var(--bg); position: relative; z-index: 1; }
 
     /* ═══════════════════════════════════════════ NAV */
     .nav {
-      position: fixed; inset: 0 0 auto; z-index: 40; height: var(--nav-h);
-      padding-top: env(safe-area-inset-top);
-      transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out), backdrop-filter 300ms;
+      position: fixed; inset: 0 0 auto; z-index: 40; height: calc(var(--nav-h) + env(safe-area-inset-top)); padding-top: env(safe-area-inset-top);
       border-bottom: 1px solid transparent;
-      &.solid { background: var(--glass); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); border-color: var(--rule); }
+      transition: background-color 240ms ease, border-color 240ms ease;
+      &.scrolled { background: rgb(8 9 10 / 0.82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-color: var(--line); }
     }
-    .nav .wrap { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    .brand {
-      display: inline-flex; align-items: center; gap: 10px; text-decoration: none; min-height: 44px;
-      font: 750 1.0625rem/1 var(--f-display); letter-spacing: -0.02em;
-      & .yr { font: 500 0.8125rem/1 var(--f-data); color: var(--muted); padding: 5px 7px; border: 1px solid var(--rule-2); border-radius: var(--r-1); }
-    }
-    .nav ul { display: flex; gap: 26px; list-style: none; padding: 0; font-weight: 500; }
-    .nav ul a { display: inline-block; padding-block: 12px; }
-    .nav-end { display: flex; align-items: center; gap: 10px; }
-    .cmdk { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px 0 14px; border-radius: var(--r-pill); border: 1px solid var(--rule-2); background: color-mix(in oklch, var(--bg) 55%, transparent); cursor: pointer; font-weight: 500; font-size: 0.9375rem; transition: border-color 160ms var(--ease-out); &:hover { border-color: var(--ink); } }
-    #theme .i-moon, #sound .i-on { display: none; }
-    :root:has(> head > meta[name="color-scheme"][content="dark"]) #theme .i-sun { display: none; }
-    :root:has(> head > meta[name="color-scheme"][content="dark"]) #theme .i-moon { display: block; }
-    @media (prefers-color-scheme: dark) {
-      :root:not(:has(> head > meta[name="color-scheme"][content="light"])) #theme .i-sun { display: none; }
-      :root:not(:has(> head > meta[name="color-scheme"][content="light"])) #theme .i-moon { display: block; }
-    }
+    .nav .wrap { height: 100%; display: flex; align-items: center; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; min-height: 44px; font: 600 0.9375rem/1 var(--font); letter-spacing: -0.01em; margin-right: auto; }
+    .brand .yr { color: var(--ink-3); font-weight: 500; }
+    .nav ul { display: flex; gap: 4px; list-style: none; padding: 0; }
+    .nav ul a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 10px; font-size: 0.875rem; }
+    .nav-end { display: flex; align-items: center; gap: 8px; }
+    .cmdk { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 8px 0 12px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: transparent; color: var(--ink-2); cursor: pointer; font-size: 0.875rem; transition: color 160ms ease, border-color 160ms ease; }
+    @media (hover: hover) and (pointer: fine) { .cmdk:hover { color: var(--ink); border-color: var(--line-3); } }
+    #sound .i-on { display: none; }
+    #sound[aria-pressed="true"] { color: var(--ink); }
     #sound[aria-pressed="true"] .i-on { display: block; }
     #sound[aria-pressed="true"] .i-off { display: none; }
-    .progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: var(--accent); transform-origin: 0 50%; scale: 0 1; }
-    @supports (animation-timeline: scroll()) {
-      .progress { animation: grow linear both; animation-timeline: scroll(root); }
-      @keyframes grow { to { scale: 1 1; } }
-    }
 
     /* ═══════════════════════════════════════════ HERO */
-    .hero { position: relative; min-height: 100svh; display: grid; grid-template-rows: 1fr auto; padding-top: var(--nav-h); isolation: isolate; }
-    .hero::before {
-      content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background: radial-gradient(110% 80% at 0% 30%, var(--scrim) 0%, transparent 60%), linear-gradient(to bottom, var(--scrim), transparent 28%);
-    }
-    .hero-body { align-self: center; padding-block: clamp(32px, 6vh, 80px) clamp(150px, 26vh, 260px); position: relative; }
+    .hero { position: relative; height: 100svh; min-height: 620px; display: grid; grid-template-rows: 1fr auto; grid-template-columns: minmax(0, 1fr); padding-top: var(--nav-h); isolation: isolate; }
+    .hero::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(90deg, rgb(8 9 10 / 0.72) 0%, rgb(8 9 10 / 0.35) 45%, transparent 70%), linear-gradient(rgb(8 9 10 / 0.6), transparent 25%); }
+    .hero-body { align-self: center; padding-block: 24px clamp(64px, 14vh, 160px); }
     .hero h1 {
-      font-size: clamp(2.9rem, 1.2rem + 7vw, 6.5rem); line-height: 0.96; letter-spacing: -0.032em; font-weight: 760;
-      max-width: 12.5ch;
+      font-size: clamp(3rem, 1.4rem + 6.4vw, 6rem); line-height: 0.98; letter-spacing: -0.038em; font-weight: 620; font-stretch: 104%;
+      max-width: 13ch;
     }
-    .hero h1 em { font-style: normal; color: var(--accent); }
     .ch { display: inline-block; white-space: pre; }
     .w { display: inline-block; white-space: nowrap; }
     @media (prefers-reduced-motion: no-preference) {
-      .js .hero h1 .ch { opacity: 0; translate: 0 0.5em; filter: blur(8px); }
-      .ready .hero h1 .ch { animation: rise 900ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 28ms + 80ms); }
-      @keyframes rise { to { opacity: 1; translate: 0 0; filter: blur(0); } }
-      .js .fade-up { opacity: 0; translate: 0 16px; }
-      .ready .fade-up { animation: fu 900ms var(--ease-out) forwards; animation-delay: var(--d, 600ms); }
-      @keyframes fu { to { opacity: 1; translate: 0 0; } }
+      .js .hero h1 .ch { opacity: 0; translate: 0 0.35em; filter: blur(6px); }
+      .ready .hero h1 .ch { transition: opacity 700ms var(--ease-arrive), translate 800ms var(--ease-arrive), filter 700ms var(--ease-arrive); transition-delay: calc(var(--i) * 22ms + 120ms); opacity: 1; translate: 0 0; filter: blur(0); }
+      .js .rise { opacity: 0; translate: 0 10px; }
+      .ready .rise { transition: opacity 700ms var(--ease-arrive), translate 700ms var(--ease-arrive); transition-delay: var(--d, 600ms); opacity: 1; translate: 0 0; }
     }
-    .lede { margin-top: 24px; max-width: 37ch; font-size: clamp(1.0625rem, 0.95rem + 0.45vw, 1.3125rem); line-height: 1.5; }
-    .lede strong { font-weight: 650; }
-    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-    .tips { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 0.875rem; color: var(--muted); }
-    .tips span { display: inline-flex; align-items: center; gap: 8px; }
-    .tips i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-    @media (pointer: coarse) { .tips .fine { display: none; } }
+    .lede { margin-top: 22px; max-width: 36ch; font-size: clamp(1.0625rem, 0.98rem + 0.35vw, 1.25rem); line-height: 1.5; color: var(--ink-2); }
+    .lede strong { color: var(--ink); font-weight: 550; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+    .hint { margin-top: 22px; font-size: 0.8125rem; color: var(--ink-2); }
+    @media (pointer: coarse) { .hint .fine { display: none; } }
+    @media (pointer: fine) { .hint .coarse { display: none; } }
 
-    .year {
-      position: absolute; right: var(--gutter); bottom: clamp(110px, 18vh, 190px); z-index: -1;
-      font: 800 clamp(6rem, 3rem + 14vw, 17rem)/0.8 var(--f-display); letter-spacing: -0.06em;
-      color: transparent; -webkit-text-stroke: 1.5px color-mix(in oklch, var(--ink) 30%, transparent);
-      pointer-events: none; user-select: none;
-    }
-
-    /* Airship */
     .ship {
-      position: absolute; left: 0; top: 0; z-index: 2; width: clamp(150px, 15vw, 230px);
-      translate: var(--x, -400px) var(--y, 140px); rotate: var(--rot, 0deg);
+      position: absolute; left: 0; top: 0; z-index: 2; width: clamp(130px, 13vw, 200px);
+      translate: -400px 140px;
       cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
-      filter: drop-shadow(0 18px 18px oklch(0% 0 0 / 0.18));
       &.drag { cursor: grabbing; }
-      & .body { transform-box: fill-box; transform-origin: center; scale: var(--flip, 1) 1; transition: scale 600ms var(--ease-out); }
-      & .prop { transform-box: fill-box; transform-origin: center; animation: spin 0.3s linear infinite; }
-      & .cloth { transform-box: fill-box; transform-origin: 50% 0; animation: wave 3.2s ease-in-out infinite; }
-    }
-    @keyframes spin { to { rotate: 360deg; } }
-    @keyframes wave { 0%, 100% { rotate: -2deg; skew: 0deg 1deg; } 50% { rotate: 2deg; skew: 0deg -1deg; } }
-
-    /* Ticker */
-    .ticker {
-      position: relative; border-block: 1px solid var(--rule); background: var(--glass);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      overflow: hidden; font: 500 0.875rem/1 var(--f-data); font-variant-numeric: tabular-nums;
-      display: flex; align-items: center;
-    }
-    .ticker-pause { flex: none; align-self: stretch; display: inline-flex; align-items: center; gap: 8px; padding: 0 16px; border: 0; border-right: 1px solid var(--rule); background: transparent; cursor: pointer; font: 500 0.8125rem/1 var(--f-body); min-height: 48px;
-      & svg { width: 12px; height: 12px; } & .i-play { display: none; } }
-    .still .ticker-pause .i-play { display: block; }
-    .still .ticker-pause .i-pause { display: none; }
-    .tick-viewport { overflow: hidden; flex: 1; outline-offset: -3px; mask: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
-    .tick-track { display: flex; width: max-content; }
-    .tick-row { display: flex; gap: 36px; padding: 16px 18px; white-space: nowrap; }
-    .tick-row > span { display: inline-flex; gap: 8px; align-items: center; }
-    .tick-row b { font-weight: 500; color: var(--muted); }
-    .tick-row .dot { width: 7px; height: 7px; }
-    @media (prefers-reduced-motion: no-preference) {
-      .tick-track { animation: marquee 48s linear infinite; }
-      .ticker:hover .tick-track, .ticker:focus-within .tick-track { animation-play-state: paused; }
-    }
-    @media (prefers-reduced-motion: reduce) { .tick-viewport { overflow-x: auto; } .tick-row[aria-hidden] { display: none; } }
-    @keyframes marquee { to { translate: -50% 0; } }
-
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--band); flex: none;
-      @media (prefers-reduced-motion: no-preference) { animation: live 2.4s var(--ease-in-out) infinite; } }
-    @keyframes live { 50% { opacity: 0.35; } }
-
-    /* ═══════════════════════════════════════════ SECTIONS */
-    .sec { padding-block: clamp(88px, 13vh, 150px); }
-    .sec-head { display: grid; gap: 16px; max-width: 780px; margin-bottom: clamp(40px, 6vh, 64px); }
-    .sec-head h2 { font-size: clamp(2.3rem, 1.4rem + 3.4vw, 4.25rem); line-height: 1; letter-spacing: -0.035em; }
-    .sec-head p { color: var(--muted); font-size: 1.125rem; max-width: 56ch; }
-    .reveal-line { display: block; overflow: clip; padding-bottom: 0.08em; }
-    @supports ((animation-timeline: view()) and (animation-range: 0% 100%)) {
+      & .body { transform-box: fill-box; transform-origin: center; scale: var(--flip, 1) 1; transition: scale 600ms var(--ease-in-out); }
+      & .prop { transform-box: fill-box; transform-origin: center; }
+      & .cloth { transform-box: fill-box; transform-origin: 50% 0; }
       @media (prefers-reduced-motion: no-preference) {
-        .sec-head h2 .reveal-line > span { display: inline-block; animation: line-up linear both; animation-timeline: view(); animation-range: entry 0% entry 70%; }
-        @keyframes line-up { from { translate: 0 105%; } }
+        & .prop { animation: spin 0.3s linear infinite; }
+        & .cloth { animation: wave 3.2s ease-in-out infinite; }
       }
     }
+    @keyframes spin { to { rotate: 360deg; } }
+    @keyframes wave { 0%, 100% { rotate: -2deg; } 50% { rotate: 2deg; } }
 
-    /* ── Live air ── */
-    #air { border-top: 1px solid var(--rule); }
-    .air-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 88px); align-items: start; }
-    .aqi-big { display: flex; align-items: baseline; gap: 16px;
-      & .v { font: 500 clamp(5.5rem, 3rem + 8vw, 10rem)/0.85 var(--f-data); letter-spacing: -0.06em; font-variant-numeric: tabular-nums; }
-      & .u { font: 500 1rem/1.2 var(--f-data); color: var(--muted); } }
-    .band-name { margin-top: 18px; font: 650 1.5rem/1.2 var(--f-display); letter-spacing: -0.02em; display: flex; gap: 10px; align-items: center; }
-    .band-name .dot { width: 12px; height: 12px; }
-    .air-sentence { margin-top: 14px; font-size: 1.125rem; max-width: 40ch; }
-    .air-meta { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; font-size: 0.9375rem; color: var(--muted); }
-    .air-status { margin-top: 12px; font-size: 0.9375rem; color: var(--smog); min-height: 1.6em; }
-    .scale { position: relative; padding-top: 38px; }
-    .scale-bar { display: grid; grid-template-columns: 50fr 50fr 50fr 50fr 100fr 100fr; height: 14px; border-radius: var(--r-pill); overflow: clip; gap: 2px; }
+    /* Live readings bar */
+    .livebar { min-width: 0; border-top: 1px solid var(--line); background: rgb(8 9 10 / 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .livebar .wrap { display: flex; align-items: stretch; overflow-x: auto; scrollbar-width: none; }
+    .livebar .wrap::-webkit-scrollbar { display: none; }
+    .livebar dl { display: flex; flex: 1; }
+    .cell { display: grid; gap: 4px; padding: 14px 20px; border-left: 1px solid var(--line); white-space: nowrap; min-width: 0; }
+    .cell:first-child { padding-left: 0; border-left: 0; }
+    .cell dt { font-size: 0.75rem; color: var(--ink-2); display: flex; align-items: center; gap: 6px; }
+    .cell dd { font-size: 0.9375rem; font-weight: 550; }
+    .cell dd small { color: var(--ink-2); font-weight: 400; font-size: 0.8125rem; }
+    .still-btn { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; padding: 0 0 0 20px; border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--ink-2); cursor: pointer; font-size: 0.8125rem; min-height: 44px; white-space: nowrap;
+      & svg { width: 12px; height: 12px; } & .i-play { display: none; } }
+    @media (hover: hover) and (pointer: fine) { .still-btn:hover { color: var(--ink); } }
+    .still .still-btn .i-play { display: block; }
+    .still .still-btn .i-pause { display: none; }
+    .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--band); flex: none; }
+
+    /* ═══════════════════════════════════════════ SECTIONS */
+    .sec { padding-block: clamp(96px, 14vh, 160px); border-top: 1px solid var(--line); }
+    .sec-head { display: grid; gap: 14px; max-width: 720px; margin-bottom: clamp(40px, 6vh, 64px); }
+    .sec-head h2 { font-size: clamp(2.25rem, 1.5rem + 2.8vw, 3.75rem); line-height: 1.02; letter-spacing: -0.035em; font-stretch: 104%; }
+    .sec-head p { color: var(--ink-2); font-size: 1.125rem; max-width: 54ch; }
+
+    /* ── Statement: words light up as you read down ── */
+    .statement { padding-block: clamp(120px, 22vh, 220px); }
+    .statement p:first-child { font-size: clamp(1.75rem, 1.1rem + 2.5vw, 3.25rem); line-height: 1.2; letter-spacing: -0.028em; font-weight: 560; font-stretch: 102%; max-width: 24ch; }
+    .statement .wd { transition: color 200ms linear; }
+    .js .statement .wd { color: #5f636b; }
+    .js .statement .wd.on { color: var(--ink); }
+    .js .statement .wd.on.num-hi { color: var(--smog); }
+    @media (prefers-reduced-motion: reduce) { .js .statement .wd { color: var(--ink); } .js .statement .wd.num-hi { color: var(--smog); } }
+    .statement-src { margin-top: 28px; font-size: 0.8125rem; color: var(--ink-2); }
+
+    /* ── Live air: a hairline grid ── */
+    .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); }
+    .g { padding: clamp(20px, 2.4vw, 32px); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-width: 0; }
+    .g-aqi { grid-column: span 5; grid-row: span 2; display: grid; align-content: space-between; gap: 32px; }
+    .g-scale { grid-column: span 7; border-right: 0; }
+    .g-reads { grid-column: span 7; border-right: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .g-reads > div { padding: 20px clamp(20px, 2.4vw, 32px); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .g-reads > div:nth-child(3n) { border-right: 0; }
+    .g-reads > div:nth-last-child(-n+3) { border-bottom: 0; }
+    .g-foot { grid-column: span 12; border-right: 0; border-bottom: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 24px; }
+    .label { font-size: 0.8125rem; color: var(--ink-2); }
+    .aqi-v { font-size: clamp(5rem, 3rem + 7vw, 9rem); line-height: 0.85; font-weight: 600; letter-spacing: -0.05em; margin-top: 12px; }
+    .aqi-band { margin-top: 18px; display: flex; align-items: center; gap: 10px; font-size: 1.25rem; font-weight: 550; letter-spacing: -0.01em; }
+    .aqi-band .dot { width: 10px; height: 10px; }
+    .aqi-sent { color: var(--ink-2); max-width: 38ch; }
+    .aqi-sent b { color: var(--ink); font-weight: 550; }
+    .scale { position: relative; padding-top: 40px; margin-top: 10px; }
+    .scale-bar { display: grid; grid-template-columns: 50fr 50fr 50fr 50fr 100fr 100fr; height: 8px; border-radius: var(--r-pill); overflow: clip; gap: 2px; }
     .scale-bar i { background: var(--c); }
-    .scale-ticks { display: grid; grid-template-columns: 50fr 50fr 50fr 50fr 100fr 100fr; margin-top: 8px; font: 400 0.75rem/1.2 var(--f-data); color: var(--muted); }
-    .marker { position: absolute; top: 0; left: clamp(0%, var(--pos, 0%), 100%); translate: -50% 0; display: grid; justify-items: center; gap: 4px; font: 500 0.8125rem/1 var(--f-data);
-      transition: left 1400ms var(--spring);
-      & i { width: 2px; height: 38px; background: var(--ink); border-radius: 2px; translate: 0 6px; } }
-    .readings { margin-top: 44px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule); }
-    .readings > div { padding: 18px 16px 18px 0; border-bottom: 1px solid var(--rule); min-width: 0; }
-    .readings dt { font-size: 0.875rem; color: var(--muted); }
-    .readings dd { margin-top: 4px; font: 500 1.375rem/1.2 var(--f-data); font-variant-numeric: tabular-nums; letter-spacing: -0.02em; overflow-wrap: anywhere; }
-    .readings dd small { font-size: 0.8125rem; color: var(--muted); letter-spacing: 0; }
-    .source { margin-top: 20px; font-size: 0.8125rem; color: var(--muted); max-width: 70ch; }
+    .scale-ticks { display: grid; grid-template-columns: 50fr 50fr 50fr 50fr 100fr 100fr; margin-top: 10px; font-size: 0.75rem; color: var(--ink-2); }
+    .marker { position: absolute; top: 0; left: clamp(0%, var(--pos, 0%), 100%); translate: -50% 0; display: grid; justify-items: center; gap: 6px; font-size: 0.8125rem; font-weight: 600; transition: left 1100ms var(--ease-arrive); }
+    .marker i { width: 2px; height: 34px; background: var(--ink); border-radius: 2px; }
+    .reading dt { font-size: 0.8125rem; color: var(--ink-2); }
+    .reading dd { margin-top: 6px; font-size: 1.375rem; font-weight: 550; letter-spacing: -0.02em; }
+    .reading dd small { font-size: 0.8125rem; color: var(--ink-2); font-weight: 400; letter-spacing: 0; }
+    .air-status { color: var(--smog); font-size: 0.875rem; }
+    .air-status:empty { display: none; }
+    .src { font-size: 0.8125rem; color: var(--ink-2); max-width: 70ch; }
 
     /* ── Breath ── */
-    #breath { background: var(--bg-3); color: var(--on-bg-3); --muted: oklch(76% 0.014 85); --rule: oklch(95% 0.01 85 / 0.14); --rule-2: oklch(95% 0.01 85 / 0.26); --accent: var(--mint); --accent-ink: oklch(19% 0.04 172); position: relative; z-index: 1; }
-    .breath-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
-    .lungs { position: relative; aspect-ratio: 1; width: min(100%, 460px); margin-inline: auto; display: grid; place-items: center; }
-    .lungs .ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid oklch(95% 0.01 85 / 0.16); }
-    .lungs .ring:nth-child(2) { inset: 12%; }
-    .lungs .ring:nth-child(3) { inset: 24%; }
-    .orb {
-      position: absolute; inset: 22%; border-radius: 50%;
-      background: radial-gradient(circle at 40% 35%, color-mix(in oklch, var(--band) 80%, white), var(--band) 55%, color-mix(in oklch, var(--band) 45%, black));
-      box-shadow: 0 30px 80px -20px color-mix(in oklch, var(--band) 60%, transparent);
-      scale: 0.62;
-    }
-    .breathing .orb { animation: breathe 10s var(--ease-in-out) infinite; }
-    @keyframes breathe { 0%, 100% { scale: 0.62; } 40%, 50% { scale: 1.18; } }
-    .orb-label { position: relative; font: 650 1.375rem/1.1 var(--f-display); color: oklch(15% 0.02 262); text-align: center; letter-spacing: -0.01em; }
-    .counters { display: grid; gap: 28px; }
-    .counter dt { font-size: 0.9375rem; color: var(--muted); }
-    .counter dd { font: 500 clamp(2.5rem, 1.6rem + 3vw, 4.25rem)/1 var(--f-data); font-variant-numeric: tabular-nums; letter-spacing: -0.04em; margin-top: 6px; }
-    .counter dd small { font-size: 1rem; letter-spacing: 0; color: var(--muted); margin-left: 6px; }
-    .cig { padding-top: 24px; border-top: 1px solid var(--rule); font-size: 1.125rem; max-width: 44ch; }
-    .cig b { font-weight: 650; color: oklch(80% 0.12 66); }
+    .breath { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: center; }
+    .lungs { position: relative; aspect-ratio: 1; width: min(100%, 440px); margin-inline: auto; display: grid; place-items: center; }
+    .lungs .ring { position: absolute; border-radius: 50%; border: 1px solid var(--line); }
+    .lungs .ring.r1 { inset: 0; } .lungs .ring.r2 { inset: 14%; } .lungs .ring.r3 { inset: 28%; }
+    .orb { position: absolute; inset: 26%; border-radius: 50%; border: 2px solid var(--band); background: color-mix(in oklch, var(--band) 16%, var(--bg)); scale: 0.7; }
+    @media (prefers-reduced-motion: no-preference) { .breathing .orb { animation: breathe 10s var(--ease-in-out) infinite; } }
+    @keyframes breathe { 0%, 100% { scale: 0.7; } 40%, 50% { scale: 1.16; } }
+    .orb-label { position: relative; z-index: 1; font-size: 1.0625rem; font-weight: 600; color: var(--ink); }
+    .counters { border-top: 1px solid var(--line); }
+    .counter { padding-block: 24px; border-bottom: 1px solid var(--line); }
+    .counter dt { font-size: 0.875rem; color: var(--ink-2); }
+    .counter dd { margin-top: 6px; font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem); line-height: 1; font-weight: 600; letter-spacing: -0.04em; }
+    .counter dd small { font-size: 1rem; color: var(--ink-2); font-weight: 400; letter-spacing: 0; margin-left: 6px; }
+    .cig { padding-top: 24px; font-size: 1.0625rem; color: var(--ink-2); max-width: 44ch; }
+    .cig b { color: var(--smog); font-weight: 600; }
     .cig-row { display: flex; gap: 6px; margin-top: 14px; flex-wrap: wrap; }
-    .cig-row i { width: 30px; height: 6px; border-radius: 3px; background: linear-gradient(90deg, oklch(92% 0.01 85) 78%, oklch(70% 0.12 60) 78%); opacity: 0; translate: 0 6px; transition: opacity 400ms var(--ease-out), translate 500ms var(--spring); transition-delay: calc(var(--i) * 60ms); }
-    .cig-row i.on { opacity: 1; translate: 0 0; }
-    .fine-print { font-size: 0.8125rem; color: var(--muted); }
+    .cig-row i { width: 26px; height: 5px; border-radius: 3px; background: linear-gradient(90deg, #d9dadc 78%, #c77d3a 78%); }
+    .fine { margin-top: 18px; font-size: 0.8125rem; color: var(--ink-2); max-width: 52ch; }
 
-    /* ── 48 hours (pinned scrollytelling over the stage) ── */
-    #day { height: 420vh; position: relative; z-index: 1; }
-    .day-sticky { position: sticky; top: 0; height: 100svh; display: grid; grid-template-rows: 1fr auto; padding-top: calc(var(--nav-h) + 16px); overflow: clip; }
-    .day-top { display: flex; justify-content: space-between; align-items: start; gap: 24px; }
-    .day-card { background: var(--glass); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2); border: 1px solid var(--rule); border-radius: var(--r-3); padding: clamp(18px, 2.4vw, 28px); box-shadow: 0 20px 50px -24px oklch(0% 0 0 / 0.35); }
-    .day-intro { max-width: 420px; }
-    .day-intro h2 { font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.75rem); line-height: 1; letter-spacing: -0.03em; }
-    .day-intro p { margin-top: 10px; color: var(--muted); font-size: 0.9375rem; }
-    .day-now { text-align: right; min-width: 250px; }
-    .day-when { font: 500 0.875rem/1 var(--f-data); color: var(--muted); }
-    .day-clock { font: 500 clamp(2.75rem, 2rem + 3vw, 4.75rem)/1 var(--f-data); letter-spacing: -0.05em; margin-top: 6px; font-variant-numeric: tabular-nums; }
-    .day-val { margin-top: 10px; font: 500 1.0625rem/1.2 var(--f-data); display: flex; gap: 8px; justify-content: flex-end; align-items: center; font-variant-numeric: tabular-nums; }
-    .day-note { margin-top: 8px; font-size: 0.9375rem; min-height: 1.5em; }
-    .day-chart { margin-bottom: clamp(16px, 4vh, 40px); }
-    .day-chart svg { width: 100%; height: clamp(110px, 20vh, 190px); overflow: visible; }
-    .day-chart .base { fill: none; stroke: color-mix(in oklch, var(--ink) 25%, transparent); stroke-width: 2; vector-effect: non-scaling-stroke; }
-    .day-chart .fc { stroke-dasharray: 6 6; }
-    .day-chart .lit { fill: none; stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke; }
-    .day-chart .area { fill: color-mix(in oklch, var(--smog) 30%, transparent); }
-    .day-chart .who { stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-dasharray: 2 4; }
-    .day-chart .nowline { stroke: var(--ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
-    .day-axis { display: flex; justify-content: space-between; font: 500 0.75rem/1 var(--f-data); color: var(--muted); margin-top: 10px; }
-    .scrub { fill: var(--bg); stroke: var(--ink); stroke-width: 3; vector-effect: non-scaling-stroke; }
+    /* ── 48 hours: pinned over the sky ── */
+    #day { height: 400vh; position: relative; z-index: 1; border-top: 1px solid var(--line); }
+    .day-pin { position: sticky; top: 0; height: 100svh; display: grid; grid-template-rows: auto 1fr auto; overflow: clip; }
+    .day-pin::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(rgb(8 9 10 / 0.92), rgb(8 9 10 / 0.62) 26%, rgb(8 9 10 / 0.1) 46%, transparent 52%, rgb(8 9 10 / 0.4) 66%, rgb(8 9 10 / 0.92)); }
+    .day-top { position: relative; padding-top: calc(var(--nav-h) + clamp(20px, 5vh, 56px)); display: flex; justify-content: space-between; align-items: start; gap: 32px; }
+    .day-top h2 { font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem); line-height: 1.02; letter-spacing: -0.035em; font-stretch: 104%; max-width: 13ch; }
+    .day-intro p { margin-top: 12px; color: var(--ink-2); max-width: 40ch; font-size: 0.9375rem; }
+    .day-now { text-align: right; }
+    .day-when { font-size: 0.875rem; color: var(--ink-2); }
+    .day-clock { font-size: clamp(3rem, 2rem + 4vw, 5.5rem); line-height: 1; font-weight: 600; letter-spacing: -0.05em; margin-top: 6px; }
+    .day-val { margin-top: 10px; display: flex; gap: 8px; justify-content: flex-end; align-items: center; font-weight: 550; }
+    .day-note { margin-top: 6px; font-size: 0.875rem; color: var(--ink-2); min-height: 1.4em; }
+    .day-chart { position: relative; padding-bottom: clamp(20px, 4vh, 44px); }
+    .day-chart svg { width: 100%; height: clamp(110px, 18vh, 170px); overflow: visible; }
+    .day-chart .base { fill: none; stroke: rgb(255 255 255 / 0.3); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+    .day-chart .fc { stroke-dasharray: 4 5; }
+    .day-chart .lit { fill: none; stroke: var(--ink); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+    .day-chart .area { fill: rgb(228 166 96 / 0.18); }
+    .day-chart .who { stroke: var(--safe); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 2 4; }
+    .day-chart .nowline { stroke: rgb(255 255 255 / 0.5); stroke-width: 1; vector-effect: non-scaling-stroke; }
+    .scrub { fill: var(--bg); stroke: var(--ink); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+    .day-axis { display: flex; justify-content: space-between; gap: 16px; margin-top: 10px; font-size: 0.75rem; color: var(--ink-2); }
+    .day-axis .safe { color: var(--safe); }
 
-    /* ── Tracks ── */
-    #build { border-top: 1px solid var(--rule); }
-    .tracks { display: flex; gap: 12px; min-height: 520px; list-style: none; padding: 0; }
-    .track {
-      position: relative; flex: 1 1 0; min-width: 0; border-radius: var(--r-3); overflow: clip;
-      background: var(--bg-2); border: 1px solid var(--rule);
-      transition: flex-grow 700ms var(--ease-out), background-color 300ms var(--ease-out), color 300ms var(--ease-out);
-      display: grid; grid-template-rows: auto 1fr auto; grid-template-areas: "head" "viz" "panel";
-    }
-    .track-h { grid-area: head; } .track-panel { grid-area: panel; } .viz { grid-area: viz; }
-    .track[data-open] { flex-grow: 2.6; background: var(--bg-3); color: var(--on-bg-3); --muted: oklch(76% 0.014 85); --rule-2: oklch(95% 0.01 85 / 0.26); --accent: var(--mint); }
-    .track-btn { all: unset; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 26px 26px 0; cursor: pointer; min-height: 44px; position: relative; z-index: 1; }
-    .track-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; border-radius: var(--r-3); }
-    .track-tag { font: 500 0.8125rem/1 var(--f-data); color: var(--muted); }
-    .track-h { font-size: inherit; }
-    .track-title { font: 700 clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem)/1.02 var(--f-display); font-variation-settings: "opsz" 96; letter-spacing: -0.03em; max-width: 14ch; text-wrap: balance; }
-    .track-panel { padding: 0 26px 26px; display: grid; align-content: end; gap: 16px; opacity: 0; translate: 0 12px; max-height: 0; padding-bottom: 0; overflow: clip; transition: opacity 400ms var(--ease-out), translate 500ms var(--ease-out), max-height 600ms var(--ease-out), padding 600ms var(--ease-out); position: relative; z-index: 1; }
-    .track[data-open] .track-panel { opacity: 1; translate: 0 0; max-height: 320px; padding-bottom: 26px; transition-delay: 160ms, 160ms, 0s, 0s; }
-    .track-panel p { max-width: 50ch; }
-    .sources { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; }
-    .sources li { font: 400 0.8125rem/1 var(--f-data); padding: 8px 10px; border: 1px solid var(--rule-2); border-radius: var(--r-1); color: var(--muted); }
-    .viz { position: relative; min-height: 120px; padding: 12px 20px 22px; pointer-events: none; display: grid; align-items: end; }
-    .viz svg { width: 100%; height: 100%; }
-    .viz .stroke { fill: none; stroke: currentColor; stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: 0.5; }
-    .viz .node { fill: var(--accent); }
-    .viz .ping { fill: none; stroke: var(--accent); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; }
-    .viz .draw { fill: none; stroke: var(--accent); stroke-width: 2.5; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; }
-    .viz .pin { transform-box: fill-box; transform-origin: 50% 100%; fill: var(--smog); }
-    .viz .plume { fill: color-mix(in oklch, var(--smog) 45%, transparent); transform-box: fill-box; transform-origin: 50% 100%; }
+    /* ── Problems: tabs ── */
+    .tabs { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); min-height: 480px; }
+    .tablist { display: grid; align-content: start; border-right: 1px solid var(--line); }
+    .tab { all: unset; box-sizing: border-box; display: grid; gap: 6px; padding: 24px clamp(20px, 2.4vw, 28px); border-bottom: 1px solid var(--line); cursor: pointer; color: var(--ink-2); transition: color 160ms ease, background-color 160ms ease; position: relative; }
+    .tab::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--ink); scale: 1 0; transition: scale 240ms var(--ease-out); transform-origin: 50% 0; }
+    .tab[aria-selected="true"] { color: var(--ink); background: var(--bg-2); }
+    .tab[aria-selected="true"]::before { scale: 1 1; }
+    .tab:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+    @media (hover: hover) and (pointer: fine) { .tab:hover { color: var(--ink); } }
+    .tab-k { font-size: 0.8125rem; }
+    .tab-t { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+    .panel { display: grid; grid-template-rows: 1fr auto; min-width: 0; }
+    .panel[hidden] { display: none; }
+    .panel-viz { position: relative; border-bottom: 1px solid var(--line); min-height: 260px; display: grid; place-items: center; padding: 24px; overflow: clip; }
+    .panel-viz svg { width: min(100%, 560px); height: auto; }
+    .panel-body { padding: clamp(20px, 2.4vw, 32px); display: grid; gap: 18px; }
+    .panel-body p { color: var(--ink-2); max-width: 58ch; }
+    .sources { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; }
+    .sources li { font-size: 0.8125rem; padding: 6px 10px; border: 1px solid var(--line-2); border-radius: var(--r-pill); color: var(--ink-2); }
+    .viz-line { fill: none; stroke: rgb(255 255 255 / 0.22); stroke-width: 1.25; vector-effect: non-scaling-stroke; }
+    .viz-node { fill: var(--ink); }
+    .viz-hot { fill: var(--smog); }
+    .viz-safe { stroke: var(--safe); fill: none; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+    .viz-draw { fill: none; stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; }
+    .viz-ping { fill: none; stroke: var(--ink); stroke-width: 1; transform-box: fill-box; transform-origin: center; opacity: 0; }
+    .viz-plume { fill: rgb(228 166 96 / 0.35); transform-box: fill-box; transform-origin: 50% 100%; }
     @media (prefers-reduced-motion: no-preference) {
-      .in-view .viz .ping { animation: ping 3s var(--ease-out) infinite; animation-delay: calc(var(--i) * 260ms); }
-      .in-view .viz .draw { animation: draw 3.6s var(--ease-in-out) infinite; }
-      .in-view .viz .pin { animation: drop 3.2s var(--spring) infinite; animation-delay: calc(var(--i) * 300ms); }
-      .in-view .viz .plume { animation: plume 3s ease-in-out infinite; animation-delay: calc(var(--i) * 400ms); }
+      .in-view .panel:not([hidden]) .viz-ping { animation: ping 3s var(--ease-out) infinite; animation-delay: calc(var(--i) * 0.4s); }
+      .in-view .panel:not([hidden]) .viz-draw { animation: draw 3.6s var(--ease-in-out) infinite; }
+      .in-view .panel:not([hidden]) .viz-plume { animation: plume 3.2s ease-in-out infinite; animation-delay: calc(var(--i) * 0.5s); }
     }
-    @media (prefers-reduced-motion: reduce) { .viz .draw { stroke-dashoffset: 0; } }
-    @keyframes ping { 0% { scale: 0.4; opacity: 0.9; } 70%, 100% { scale: 2.6; opacity: 0; } }
+    @keyframes ping { 0% { scale: 0.6; opacity: 0.8; } 70%, 100% { scale: 3; opacity: 0; } }
     @keyframes draw { 0% { stroke-dashoffset: 1; } 55%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -1; } }
-    @keyframes drop { 0% { translate: 0 -40px; opacity: 0; } 25%, 80% { translate: 0 0; opacity: 1; } 100% { opacity: 0; } }
-    @keyframes plume { 0%, 100% { scale: 0.85 0.8; opacity: 0.5; } 50% { scale: 1.1 1.25; opacity: 0.9; } }
+    @keyframes plume { 0%, 100% { scale: 0.85 0.8; opacity: 0.6; } 50% { scale: 1.1 1.25; opacity: 1; } }
 
     /* ── Plan + close ── */
-    #plan { border-top: 1px solid var(--rule); }
-    .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--rule-2); position: relative; }
-    .step { padding: 24px 24px 28px 0; border-right: 1px solid var(--rule); min-width: 0; }
-    .step + .step { padding-left: 24px; }
+    .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); }
+    .step { padding: clamp(20px, 2.4vw, 32px); border-right: 1px solid var(--line); min-width: 0; }
     .step:last-child { border-right: 0; }
-    .step .when { display: inline-flex; align-items: center; gap: 8px; font: 500 0.8125rem/1 var(--f-data); color: var(--muted); }
-    .step.is-now .when { color: var(--accent); }
-    .step.is-now .when::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent) 60%, transparent); }
-    @media (prefers-reduced-motion: no-preference) { .step.is-now .when::before { animation: halo 2s var(--ease-out) infinite; } }
-    @keyframes halo { to { box-shadow: 0 0 0 10px transparent; } }
-    .step h3 { margin-top: 16px; font-size: 1.5rem; line-height: 1.15; letter-spacing: -0.02em; }
-    .step p { margin-top: 10px; color: var(--muted); }
-    .close { margin-top: clamp(72px, 12vh, 140px); display: grid; gap: 28px; }
-    .bn { font: 600 min(13rem, 16vw)/1.05 var(--f-bangla); letter-spacing: -0.01em; }
+    .when { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--ink-2); }
+    .is-now .when { color: var(--safe); }
+    .is-now .when::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--safe); }
+    .step h3 { margin-top: 18px; font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.02em; }
+    .step p { margin-top: 10px; color: var(--ink-2); font-size: 0.9375rem; }
+    .close { margin-top: clamp(96px, 16vh, 180px); display: grid; gap: 32px; }
+    .bn { font: 600 min(12.5rem, 17vw)/1.05 var(--bangla); color: var(--ink); }
     .bn span { display: inline-block; }
-    .bn-row { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px 48px; }
-    .bn-row p { font: 650 clamp(1.5rem, 1rem + 1.6vw, 2.25rem)/1.15 var(--f-display); letter-spacing: -0.02em; max-width: 18ch; }
-    .bn-row p span { color: var(--muted); font-weight: 500; }
     @supports ((animation-timeline: view()) and (animation-range: 0% 100%)) {
       @media (prefers-reduced-motion: no-preference) {
-        .bn { animation: wipe linear both; animation-timeline: view(); animation-range: entry 10% cover 45%; }
+        .bn { animation: wipe linear both; animation-timeline: view(); animation-range: entry 10% cover 42%; }
         @keyframes wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
       }
     }
+    .close-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 24px 48px; border-top: 1px solid var(--line); padding-top: 28px; }
+    .close-row p { font-size: clamp(1.375rem, 1rem + 1.2vw, 2rem); line-height: 1.15; font-weight: 600; letter-spacing: -0.025em; max-width: 22ch; }
+    .close-row p span { color: var(--ink-2); font-weight: 500; }
 
-    footer { background: var(--bg); border-top: 1px solid var(--rule); padding-block: 48px max(40px, env(safe-area-inset-bottom)); font-size: 0.9375rem; }
-    .foot { display: grid; grid-template-columns: auto 1fr; gap: 24px 64px; align-items: start; }
-    .foot-logo { display: block; width: 148px; color: var(--ink); }
+    footer { background: var(--bg); border-top: 1px solid var(--line); padding-block: 48px max(40px, env(safe-area-inset-bottom)); }
+    .foot { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) minmax(0, 5fr); gap: 32px 48px; }
+    .foot-logo { display: block; width: 132px; color: var(--ink); --cedar-green: var(--cedar); }
     .foot-logo svg { width: 100%; height: auto; aspect-ratio: 1044.5 / 570.8; }
-    .foot-text { display: grid; gap: 10px; color: var(--muted); max-width: 72ch; }
-    .foot-text a { color: var(--ink); }
+    .foot h2 { font-size: 0.8125rem; font-weight: 500; color: var(--ink-2); margin-bottom: 12px; }
+    .foot ul { list-style: none; padding: 0; display: grid; gap: 2px; }
+    .foot ul a { display: inline-flex; min-height: 32px; align-items: center; font-size: 0.875rem; }
+    .foot-src { display: grid; gap: 10px; font-size: 0.8125rem; color: var(--ink-2); }
+    .foot-src a { color: var(--ink); }
 
-    /* ═══════════════════════════════════════════ PALETTE + TOAST */
-    dialog.palette {
-      width: min(560px, 100% - 32px); margin: 14vh auto auto; padding: 0; border: 1px solid var(--rule-2); border-radius: var(--r-3);
-      background: var(--bg); color: var(--ink); box-shadow: 0 30px 80px -20px oklch(0% 0 0 / 0.5);
-      overscroll-behavior: contain;
-      opacity: 1; scale: 1; translate: 0 0;
-      transition: opacity 200ms var(--ease-out), scale 260ms var(--ease-out), translate 260ms var(--ease-out), display 260ms allow-discrete, overlay 260ms allow-discrete;
-      &:not([open]) { opacity: 0; scale: 0.98; }
-      &::backdrop { background: oklch(10% 0.01 262 / 0.45); backdrop-filter: blur(4px); transition: opacity 260ms, display 260ms allow-discrete, overlay 260ms allow-discrete; }
-      &:not([open])::backdrop { opacity: 0; }
-    }
-    @starting-style { dialog.palette[open] { opacity: 0; scale: 0.96; translate: 0 -8px; } dialog.palette[open]::backdrop { opacity: 0; } }
-    .pal-search { display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid var(--rule); }
-    .pal-search svg { width: 18px; height: 18px; color: var(--muted); flex: none; }
-    .pal-search input { flex: 1; min-width: 0; height: 56px; border: 0; background: transparent; color: inherit; font: 500 1.0625rem/1 var(--f-body); outline: none; }
-    .pal-list { list-style: none; padding: 8px; max-height: min(60vh, 440px); overflow-y: auto; overscroll-behavior: contain; }
-    .pal-list li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px; border-radius: var(--r-2); cursor: pointer; min-height: 44px; }
-    .pal-list li[aria-selected="true"] { background: var(--bg-2); }
-    .pal-list li small { color: var(--muted); font: 400 0.75rem/1 var(--f-data); }
-    .pal-list .pal-empty { color: var(--muted); cursor: default; }
-    .pal-foot { display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--rule); font-size: 0.8125rem; color: var(--muted); }
-    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; translate: -50% 200%; opacity: 0; visibility: hidden; padding: 12px 18px; border-radius: var(--r-pill); background: var(--ink); color: var(--bg); font-weight: 500; font-size: 0.9375rem; transition: translate 420ms var(--spring), opacity 200ms var(--ease-out), visibility 0s 420ms; pointer-events: none; max-width: calc(100% - 32px); }
+    /* ═══════════════════════════════════════════ COMMAND MENU (keyboard-triggered: no animation) + TOAST */
+    dialog.palette { width: min(560px, 100% - 32px); margin: 14vh auto auto; padding: 0; border: 1px solid var(--line-2); border-radius: var(--r-l); background: var(--bg-2); color: var(--ink); box-shadow: 0 24px 64px -16px rgb(0 0 0 / 0.7); overscroll-behavior: contain; }
+    dialog.palette::backdrop { background: rgb(0 0 0 / 0.55); }
+    .pal-search { display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid var(--line); }
+    .pal-search:has(input:focus-visible) { box-shadow: inset 0 -2px 0 var(--ink); }
+    .pal-search svg { width: 16px; height: 16px; color: var(--ink-2); flex: none; }
+    .pal-search input { flex: 1; min-width: 0; height: 52px; border: 0; background: transparent; color: inherit; font: 400 1rem/1 var(--font); outline: none; }
+    .pal-search input::placeholder { color: var(--ink-2); }
+    .pal-list { list-style: none; padding: 6px; max-height: min(60vh, 420px); overflow-y: auto; overscroll-behavior: contain; }
+    .pal-list li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 0 10px; min-height: 40px; border-radius: var(--r-m); cursor: pointer; font-size: 0.9375rem; }
+    .pal-list li[aria-selected="true"] { background: rgb(255 255 255 / 0.07); }
+    .pal-list li small { color: var(--ink-2); font-size: 0.75rem; }
+    .pal-list .pal-empty { color: var(--ink-2); cursor: default; }
+    .pal-foot { display: flex; gap: 16px; padding: 10px 16px; border-top: 1px solid var(--line); font-size: 0.75rem; color: var(--ink-2); }
+    .toast { position: fixed; left: 50%; bottom: 20px; z-index: 80; translate: -50% 12px; opacity: 0; visibility: hidden; padding: 10px 16px; border-radius: var(--r-pill); background: var(--ink); color: var(--bg); font-size: 0.875rem; font-weight: 500; pointer-events: none; max-width: calc(100% - 32px); transition: translate 300ms var(--ease-out), opacity 200ms ease, visibility 0s 300ms; }
     .toast.show { translate: -50% 0; opacity: 1; visibility: visible; transition-delay: 0s; }
 
-    ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-
     /* ═══════════════════════════════════════════ RESPONSIVE */
-    @media (max-width: 1080px) { .nav ul { display: none; } }
-    @media (max-width: 960px) {
-      .air-grid, .breath-grid { grid-template-columns: minmax(0, 1fr); }
-      .tracks { flex-direction: column; min-height: 0; }
-      .track[data-open] { flex-grow: 1; }
-      .track-panel, .track[data-open] .track-panel { opacity: 1; translate: 0 0; max-height: none; padding-bottom: 26px; }
-      .viz { min-height: 0; height: 140px; }
+    @media (max-width: 1000px) {
+      .nav ul { display: none; }
+      .g-aqi { grid-column: span 12; grid-row: auto; border-right: 0; }
+      .g-scale, .g-reads { grid-column: span 12; }
+      .breath { grid-template-columns: minmax(0, 1fr); }
+      .tabs { grid-template-columns: minmax(0, 1fr); }
+      .tablist { grid-template-columns: repeat(3, minmax(0, 1fr)); border-right: 0; border-bottom: 1px solid var(--line); }
+      .tab { border-bottom: 0; border-right: 1px solid var(--line); padding: 16px; }
+      .tab:last-child { border-right: 0; }
+      .tab::before { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: 2px; scale: 0 1; transform-origin: 0 50%; }
+      .tab[aria-selected="true"]::before { scale: 1 1; }
+      .tab-t { font-size: 0.9375rem; }
+      .foot { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+      .foot-src { grid-column: 1 / -1; }
     }
-    @media (max-width: 760px) {
-      :root { --nav-h: 64px; }
+    @media (max-width: 720px) {
       .cmdk .lbl, .cmdk kbd, .nav-cta { display: none; }
+      .cmdk { width: 36px; padding: 0; justify-content: center; }
+      .cta-row .btn { flex: 1 1 100%; min-height: 48px; }
+      .g-reads { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .g-reads > div:nth-child(3n) { border-right: 1px solid var(--line); }
+      .g-reads > div:nth-child(2n) { border-right: 0; }
+      .g-reads > div:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
+      .g-reads > div:nth-last-child(-n+2) { border-bottom: 0; }
       .steps { grid-template-columns: minmax(0, 1fr); }
-      .step, .step + .step { padding: 22px 0; border-right: 0; border-bottom: 1px solid var(--rule); }
-      .readings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .cta-row .btn { flex: 1 1 100%; }
-      .foot { grid-template-columns: minmax(0, 1fr); }
-      .day-top { flex-direction: column; align-items: stretch; gap: 12px; }
-      .day-now { text-align: left; min-width: 0; }
-      .day-val { justify-content: flex-start; }
+      .step { border-right: 0; border-bottom: 1px solid var(--line); }
+      .step:last-child { border-bottom: 0; }
+      .day-top { flex-direction: column; gap: 16px; }
       .day-intro p { display: none; }
-      .year { right: 50%; translate: 50% 0; bottom: 74px; font-size: 5.5rem; }
-      .ship { width: 128px; }
+      .day-now { text-align: left; }
+      .day-val { justify-content: flex-start; }
+      .day-axis .safe { display: none; }
+      .tab-k { display: none; }
     }
   </style>
 </head>
@@ -697,10 +617,9 @@
 
 <div class="intro" id="intro" aria-hidden="true">
   <div class="intro-inner">
-    <div class="lung"></div>
-    <p class="intro-word" id="intro-word">Inhale…</p>
-    <p class="intro-count" id="intro-count">READING DHAKA’S AIR · 00%</p>
-    <p class="intro-skip">Click to skip</p>
+    <p class="intro-mark">Air Hackathon 2027</p>
+    <div class="intro-bar"><i id="intro-bar"></i></div>
+    <p class="intro-txt" id="intro-txt">Reading Dhaka’s air…</p>
   </div>
 </div>
 
@@ -709,273 +628,256 @@
 <nav class="nav" id="nav" aria-label="Primary">
   <div class="wrap">
     <a class="brand" href="#top" translate="no">Air Hackathon <span class="yr">2027</span></a>
+    <ul>
+      <li><a class="link" href="#air">Live air</a></li>
+      <li><a class="link" href="#breath">Your breath</a></li>
+      <li><a class="link" href="#day">48 hours</a></li>
+      <li><a class="link" href="#build">Problems</a></li>
+      <li><a class="link" href="#plan">Plan</a></li>
+    </ul>
     <div class="nav-end">
-      <ul>
-        <li><a class="link" href="#air">Live air</a></li>
-        <li><a class="link" href="#breath">Your breath</a></li>
-        <li><a class="link" href="#day">48 hours</a></li>
-        <li><a class="link" href="#build">Problems</a></li>
-      </ul>
       <button class="cmdk" type="button" id="cmdk" aria-haspopup="dialog" aria-controls="palette" aria-label="Open command menu">
-        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" width="18" height="18"><path d="M3 6h14M3 10h14M3 14h9"/></svg>
-        <span class="lbl">Commands</span><kbd id="kbd-hint" aria-hidden="true">⌘K</kbd>
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" width="16" height="16"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+        <span class="lbl">Search</span><kbd id="kbd-hint" aria-hidden="true">⌘K</kbd>
       </button>
       <button class="icon-btn" type="button" id="sound" aria-pressed="false" aria-label="City sound">
-        <svg class="i-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
-        <svg class="i-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
+        <svg class="i-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
+        <svg class="i-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
       </button>
-      <button class="icon-btn" type="button" id="theme">
-        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"/></svg>
-        <span class="vh" id="theme-label">Switch theme</span>
-      </button>
-      <a class="btn btn-primary btn-sm nav-cta mag" href="https://cedar-initiative.org" rel="noopener">Get Updates</a>
+      <a class="btn btn-primary btn-sm nav-cta" href="https://cedar-initiative.org" rel="noopener">Get Updates</a>
     </div>
   </div>
-  <div class="progress" aria-hidden="true"></div>
 </nav>
 
 <header class="hero" id="top">
   <svg class="ship" id="ship" viewBox="0 0 280 170" aria-hidden="true" focusable="false">
     <defs>
-      <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5d8fc9"/><stop offset=".55" stop-color="#2d5a8c"/><stop offset="1" stop-color="#173458"/></linearGradient>
-      <linearGradient id="ag-gon" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2c4060"/><stop offset="1" stop-color="#16233a"/></linearGradient>
+      <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f5f86"/><stop offset=".55" stop-color="#26405f"/><stop offset="1" stop-color="#152538"/></linearGradient>
     </defs>
     <g class="body">
-      <polygon points="26,46 45,24 45,68" fill="#1e3050"/>
-      <polygon points="42,28 58,6 64,28" fill="#1e3050" opacity=".8"/>
-      <polygon points="42,64 58,86 64,64" fill="#1e3050" opacity=".8"/>
-      <line x1="94" y1="87" x2="100" y2="73" stroke="#3c5a82" stroke-width=".8"/>
-      <line x1="142" y1="88" x2="142" y2="73" stroke="#3c5a82" stroke-width=".8"/>
-      <line x1="190" y1="87" x2="184" y2="73" stroke="#3c5a82" stroke-width=".8"/>
-      <rect x="82" y="73" width="120" height="26" rx="7" fill="url(#ag-gon)"/>
-      <g fill="#ffd27a" opacity=".85"><rect x="92" y="79" width="16" height="12" rx="2.5"/><rect x="114" y="79" width="16" height="12" rx="2.5"/><rect x="136" y="79" width="16" height="12" rx="2.5"/><rect x="158" y="79" width="16" height="12" rx="2.5"/></g>
-      <rect x="196" y="80" width="16" height="5" rx="2.5" fill="#16233a"/>
-      <g class="prop"><ellipse cx="214" cy="82.5" rx="2.2" ry="9" fill="#2e4a6e"/><ellipse cx="214" cy="82.5" rx="9" ry="2.2" fill="#2e4a6e"/></g>
+      <polygon points="26,46 45,24 45,68" fill="#1b2b3f"/>
+      <polygon points="42,28 58,6 64,28" fill="#1b2b3f"/>
+      <polygon points="42,64 58,86 64,64" fill="#1b2b3f"/>
+      <path d="M94 87 100 73M142 88V73M190 87l-6-14" stroke="#4b6584" stroke-width=".8"/>
+      <rect x="82" y="73" width="120" height="26" rx="7" fill="#1a2738"/>
+      <g fill="#ffcf7a" opacity=".9"><rect x="92" y="79" width="16" height="11" rx="2.5"/><rect x="114" y="79" width="16" height="11" rx="2.5"/><rect x="136" y="79" width="16" height="11" rx="2.5"/><rect x="158" y="79" width="16" height="11" rx="2.5"/></g>
+      <rect x="196" y="80" width="16" height="5" rx="2.5" fill="#152538"/>
+      <g class="prop"><ellipse cx="214" cy="82.5" rx="2.2" ry="9" fill="#3b5576"/><ellipse cx="214" cy="82.5" rx="9" ry="2.2" fill="#3b5576"/></g>
       <ellipse cx="142" cy="46" rx="116" ry="41" fill="url(#ag-env)"/>
-      <ellipse cx="118" cy="30" rx="58" ry="14" fill="#fff" opacity=".12"/>
-      <path d="M40 46h204" stroke="#9cc4ff" stroke-opacity=".25" stroke-width="1"/>
-      <ellipse cx="258" cy="46" rx="6" ry="5" fill="#173458"/>
-      <circle cx="258" cy="43" r="2.2" fill="#ff4646"><animate attributeName="opacity" values="1;.1;1" dur="1.1s" repeatCount="indefinite"/></circle>
-      <circle cx="258" cy="49" r="2.2" fill="#46f046"><animate attributeName="opacity" values=".1;1;.1" dur="1.1s" repeatCount="indefinite"/></circle>
+      <path d="M40 46h204" stroke="#fff" stroke-opacity=".08"/>
+      <ellipse cx="258" cy="46" rx="6" ry="5" fill="#152538"/>
+      <circle cx="258" cy="43" r="2" fill="#ff5a4e"/>
+      <circle cx="258" cy="49" r="2" fill="#4ee07a"/>
     </g>
-    <line x1="114" y1="99" x2="114" y2="104" stroke="#b9d2f0" stroke-width="1.1"/>
-    <line x1="170" y1="99" x2="170" y2="104" stroke="#b9d2f0" stroke-width="1.1"/>
-    <rect x="98" y="102" width="88" height="3.5" rx="1.8" fill="#b9d2f0"/>
+    <path d="M114 99v5M170 99v5" stroke="#9fb3cc" stroke-width="1.1"/>
+    <rect x="98" y="102" width="88" height="3" rx="1.5" fill="#9fb3cc"/>
     <g class="cloth">
-      <rect x="98" y="105.5" width="88" height="58" rx="2.5" fill="#fff"/>
-      <use href="#cedar-logo" x="104" y="110" width="76" height="48" style="color:#111;--cedar-green:#1a5029"/>
+      <rect x="98" y="105" width="88" height="58" rx="3" fill="#f4f5f6"/>
+      <use href="#cedar-logo" x="104" y="110" width="76" height="48" style="color:#0b0c0e;--cedar-green:#1a5029"/>
     </g>
   </svg>
 
   <div class="hero-body wrap">
-    <h1 id="hero-h1" aria-label="Hack the air Dhaka breathes.">Hack the air <em>Dhaka</em> breathes.</h1>
-    <p class="lede fade-up" style="--d:700ms"><strong>Air Hackathon 2027</strong> is an open-innovation challenge on air quality, run by Cedar Initiative. Teams build tools that measure, forecast and cut the smog over Dhaka.</p>
-    <div class="cta-row fade-up" style="--d:820ms">
-      <a class="btn btn-primary mag" href="https://cedar-initiative.org" rel="noopener">Follow Cedar Initiative
-        <svg class="arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
-      <a class="btn btn-ghost mag" href="#breath">What Am I Breathing?</a>
+    <h1 id="hero-h1" aria-label="Hack the air Dhaka breathes.">Hack the air Dhaka breathes.</h1>
+    <p class="lede rise" style="--d:640ms"><strong>Air Hackathon 2027</strong> is an open-innovation challenge on air quality, run by Cedar Initiative. Teams build tools that measure, forecast and cut Dhaka’s smog.</p>
+    <div class="cta-row rise" style="--d:740ms">
+      <a class="btn btn-primary" href="https://cedar-initiative.org" rel="noopener">Follow Cedar Initiative
+        <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a class="btn btn-ghost" href="#air">See the Air Now</a>
     </div>
-    <p class="tips fade-up" style="--d:940ms" aria-hidden="true">
-      <span class="fine"><i></i>Move to clear the smog</span>
-      <span><i></i>Click or tap the sky to purify it</span>
-      <span class="fine"><i></i>Drag the airship</span>
-    </p>
+    <p class="hint rise" style="--d:840ms"><span class="fine">Move your pointer to clear the smog. Click the sky to purify it.</span><span class="coarse">Tap the sky to purify it.</span></p>
   </div>
-  <p class="year" aria-hidden="true">2027</p>
 
-  <div class="ticker fade-up" style="--d:1000ms" id="ticker">
-    <button class="ticker-pause" type="button" id="still-btn" aria-label="Pause all motion">
-      <svg class="i-pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>
-      <svg class="i-play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.6v10.8a.8.8 0 0 0 1.2.7l9-5.4a.8.8 0 0 0 0-1.4l-9-5.4a.8.8 0 0 0-1.2.7Z"/></svg>
-      <span id="still-label" aria-hidden="true">Pause</span>
-    </button>
-    <div class="tick-viewport" tabindex="0" role="region" aria-label="Live readings ticker. Focus to pause.">
-      <div class="tick-track">
-        <p class="tick-row" aria-label="Live readings">
-          <span><span class="dot" data-band></span><b>Live</b> <span data-city>Dhaka</span></span>
-          <span><b>Time</b> <span data-clock>…</span></span>
-          <span><b>US AQI</b> <span data-aqi>…</span></span>
-          <span><b>PM2.5</b> <span data-pm>…</span> µg/m³</span>
-          <span><b>vs WHO</b> <span data-multx>…</span></span>
-          <span><b>PM10</b> <span data-pm10>…</span> µg/m³</span>
-          <span><b>NO₂</b> <span data-no2>…</span> µg/m³</span>
-          <span><b>O₃</b> <span data-o3>…</span> µg/m³</span>
-          <span><b>Temp</b> <span data-temp>…</span> °C</span>
-          <span><b>Humidity</b> <span data-hum>…</span> %</span>
-          <span><b>Wind</b> <span data-wind>…</span> km/h <span data-wind-dir></span></span>
-        </p>
-        <p class="tick-row" aria-hidden="true"></p>
-      </div>
+  <div class="livebar rise" style="--d:900ms">
+    <div class="wrap">
+      <dl aria-label="Live air in Dhaka">
+        <div class="cell"><dt><span class="dot" data-band></span><span><span data-city>Dhaka</span>, live</span></dt><dd data-clock>…</dd></div>
+        <div class="cell"><dt>US AQI</dt><dd><span data-aqi>…</span> <small data-band-name></small></dd></div>
+        <div class="cell"><dt>PM2.5</dt><dd><span data-pm>…</span> <small>µg/m³</small></dd></div>
+        <div class="cell"><dt>WHO 24-hour guideline</dt><dd data-multx>…</dd></div>
+        <div class="cell"><dt>Wind</dt><dd><span data-wind>…</span> <small>km/h <span data-wind-dir></span></small></dd></div>
+      </dl>
+      <button class="still-btn" type="button" id="still-btn">
+        <svg class="i-pause" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><rect x="3" y="2" width="3.5" height="12" rx="1"/><rect x="9.5" y="2" width="3.5" height="12" rx="1"/></svg>
+        <svg class="i-play" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M4 2.6v10.8a.8.8 0 0 0 1.2.7l9-5.4a.8.8 0 0 0 0-1.4l-9-5.4a.8.8 0 0 0-1.2.7Z"/></svg>
+        <span id="still-label">Pause motion</span>
+      </button>
     </div>
   </div>
 </header>
 
 <main id="main">
-  <!-- ════════ LIVE AIR ════════ -->
-  <section id="air" class="sec opaque" aria-labelledby="air-h">
+  <section class="statement solid" aria-label="Why this hackathon">
+    <div class="wrap">
+      <p id="statement">Dhaka breathes some of the dirtiest air of any major city. Right now its PM2.5 sits at <span class="num-hi" data-pm>…</span> µg/m³, <span class="num-hi" data-mult>…</span> times what the WHO calls safe for a day. Air Hackathon 2027 asks developers, designers and scientists to build what changes that.</p>
+      <p class="statement-src">Bangladesh has ranked first in IQAir’s World Air Quality Report in several recent years.</p>
+    </div>
+  </section>
+
+  <section id="air" class="sec solid" aria-labelledby="air-h">
     <div class="wrap">
       <div class="sec-head">
-        <h2 id="air-h"><span class="reveal-line"><span><span data-city>Dhaka</span>’s air,</span></span><span class="reveal-line"><span>right now</span></span></h2>
-        <p>Every number here is live. The smog in the sky above is drawn from the same PM2.5 reading, so the page is only as clear as the city’s air.</p>
+        <h2 id="air-h"><span data-city>Dhaka</span>’s air, right now</h2>
+        <p>Every number here is live, and the smog in the sky above is drawn from the same PM2.5 reading.</p>
       </div>
-      <div class="air-grid" aria-live="polite" aria-busy="true" id="air-live">
-        <div>
-          <div class="aqi-big"><span class="v" data-aqi>…</span><span class="u">US AQI</span></div>
-          <p class="band-name"><span class="dot" data-band></span><span data-band-name>Loading…</span></p>
-          <p class="air-sentence" data-sentence>Fetching the latest reading.</p>
-          <div class="air-meta">
-            <span>Updated <time data-updated>…</time></span>
-            <button class="btn btn-ghost btn-sm" type="button" id="locate">Use My Location</button>
+      <div class="grid" id="air-live" aria-live="polite" aria-busy="true">
+        <div class="g g-aqi">
+          <div>
+            <p class="label">US Air Quality Index</p>
+            <p class="aqi-v" data-aqi>…</p>
+            <p class="aqi-band"><span class="dot" data-band></span><span data-band-name>Loading…</span></p>
           </div>
-          <p class="air-status" data-status role="status"></p>
+          <p class="aqi-sent" data-sentence>Fetching the latest reading.</p>
         </div>
-        <div>
+        <div class="g g-scale">
+          <p class="label">Where that sits on the scale</p>
           <div class="scale" aria-hidden="true">
-            <div class="marker" data-marker><span class="num" data-marker-v>–</span><i></i></div>
+            <div class="marker" data-marker><span data-marker-v>–</span><i></i></div>
             <div class="scale-bar"><i style="--c:var(--aqi-1)"></i><i style="--c:var(--aqi-2)"></i><i style="--c:var(--aqi-3)"></i><i style="--c:var(--aqi-4)"></i><i style="--c:var(--aqi-5)"></i><i style="--c:var(--aqi-6)"></i></div>
             <div class="scale-ticks"><span>0</span><span>50</span><span>100</span><span>150</span><span>200</span><span>300</span></div>
           </div>
-          <dl class="readings">
-            <div><dt>PM2.5</dt><dd><span data-pm>…</span> <small>µg/m³</small></dd></div>
-            <div><dt>PM10</dt><dd><span data-pm10>…</span> <small>µg/m³</small></dd></div>
-            <div><dt>NO₂</dt><dd><span data-no2>…</span> <small>µg/m³</small></dd></div>
-            <div><dt>Ozone</dt><dd><span data-o3>…</span> <small>µg/m³</small></dd></div>
-            <div><dt>Temperature</dt><dd><span data-temp>…</span> <small>°C</small></dd></div>
-            <div><dt>Wind</dt><dd><span data-wind>…</span> <small>km/h <span data-wind-dir></span></small></dd></div>
-          </dl>
-          <p class="source">Modelled data from the <a class="link-under" href="https://open-meteo.com/en/docs/air-quality-api" rel="noopener">Open-Meteo air-quality API</a> (Copernicus CAMS), refreshed every 10 minutes. It is a regional model, not a sensor on your street. That gap is one of the problems below.</p>
+        </div>
+        <dl class="g g-reads">
+          <div class="reading"><dt>PM2.5</dt><dd><span data-pm>…</span> <small>µg/m³</small></dd></div>
+          <div class="reading"><dt>PM10</dt><dd><span data-pm10>…</span> <small>µg/m³</small></dd></div>
+          <div class="reading"><dt>NO₂</dt><dd><span data-no2>…</span> <small>µg/m³</small></dd></div>
+          <div class="reading"><dt>Ozone</dt><dd><span data-o3>…</span> <small>µg/m³</small></dd></div>
+          <div class="reading"><dt>Temperature</dt><dd><span data-temp>…</span> <small>°C</small></dd></div>
+          <div class="reading"><dt>Humidity</dt><dd><span data-hum>…</span> <small>%</small></dd></div>
+        </dl>
+        <div class="g g-foot">
+          <p class="src">Updated <time data-updated>…</time>. Modelled by Copernicus CAMS via <a class="link-u" href="https://open-meteo.com/en/docs/air-quality-api" rel="noopener">Open-Meteo</a>, refreshed every 10 minutes. A regional model, not a sensor on your street. That gap is the first problem below.</p>
+          <p class="air-status" data-status role="status"></p>
+          <button class="btn btn-ghost btn-sm" type="button" id="locate">Use My Location</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ════════ BREATH ════════ -->
-  <section id="breath" class="sec" aria-labelledby="breath-h">
+  <section id="breath" class="sec solid" aria-labelledby="breath-h">
     <div class="wrap">
       <div class="sec-head">
-        <h2 id="breath-h"><span class="reveal-line"><span>What you’ve breathed</span></span><span class="reveal-line"><span>since you got here</span></span></h2>
-        <p>A resting adult breathes about 8 litres of air a minute. Here’s what that means at the PM2.5 level <span data-city>Dhaka</span> has right now.</p>
+        <h2 id="breath-h">What you’ve breathed since you arrived</h2>
+        <p>A resting adult breathes about 8 litres of air a minute. Here’s what came with it, at <span data-city>Dhaka</span>’s PM2.5 level right now.</p>
       </div>
-      <div class="breath-grid">
+      <div class="breath">
         <div class="lungs" id="lungs">
-          <span class="ring"></span><span class="ring"></span><span class="ring"></span>
+          <span class="ring r1"></span><span class="ring r2"></span><span class="ring r3"></span>
           <span class="orb"></span>
           <p class="orb-label" id="orb-label" aria-hidden="true">Breathe in</p>
         </div>
-        <div class="counters">
-          <dl class="counter"><dt>Air through your lungs</dt><dd><span class="num" id="c-litres">0.0</span><small>litres</small></dd></dl>
-          <dl class="counter"><dt>Fine particles (PM2.5) that came with it</dt><dd><span class="num" id="c-micro">0.00</span><small>µg</small></dd></dl>
-          <div class="cig">
-            <p id="cig-text">Waiting for the live PM2.5 reading.</p>
-            <div class="cig-row" id="cig-row" aria-hidden="true"></div>
-          </div>
-          <p class="fine-print">Cigarette equivalence uses Berkeley Earth’s rule of thumb: a day at 22 µg/m³ of PM2.5 is roughly one cigarette. It’s a comparison, not a medical measure.</p>
+        <div>
+          <dl class="counters">
+            <div class="counter"><dt>Air through your lungs</dt><dd><span class="tnum" id="c-litres">0.0</span><small>litres</small></dd></div>
+            <div class="counter"><dt>Fine particles that came with it</dt><dd><span class="tnum" id="c-micro">0.00</span><small>µg of PM2.5</small></dd></div>
+          </dl>
+          <p class="cig" id="cig-text">Waiting for the live PM2.5 reading.</p>
+          <div class="cig-row" id="cig-row" aria-hidden="true"></div>
+          <p class="fine">Uses Berkeley Earth’s rule of thumb: a day at 22 µg/m³ of PM2.5 is roughly one cigarette. It’s a rough comparison for scale only.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ════════ 48 HOURS (pinned, the sky follows the data) ════════ -->
   <section id="day" aria-labelledby="day-h">
-    <div class="day-sticky">
+    <div class="day-pin">
       <div class="wrap day-top">
-        <div class="day-card day-intro">
+        <div class="day-intro">
           <h2 id="day-h">48 hours of <span data-city>Dhaka</span>’s air</h2>
-          <p>Scroll to move through time. The sky, the sun and the smog behind this card follow the real hourly PM2.5, from yesterday into tomorrow’s forecast.</p>
+          <p>Scroll to move through time. The sky, the sun and the smog follow the real hourly PM2.5, from yesterday into tomorrow’s forecast.</p>
         </div>
-        <div class="day-card day-now">
+        <div class="day-now">
           <p class="day-when" id="day-when">Loading…</p>
           <p class="day-clock" id="day-clock">--:--</p>
           <p class="day-val"><span class="dot" id="day-dot"></span><span id="day-val">… µg/m³</span></p>
           <p class="day-note" id="day-note"></p>
         </div>
       </div>
+      <div></div>
       <div class="wrap day-chart">
-        <div class="day-card">
-          <svg id="day-svg" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-labelledby="day-sum">
-            <title id="day-sum">Hourly PM2.5 over 48 hours, loading.</title>
-            <defs><clipPath id="day-clip"><rect id="day-cliprect" x="0" y="-20" width="0" height="240"/></clipPath></defs>
-            <path class="area" id="day-area" clip-path="url(#day-clip)" d="M0 200"/>
-            <path class="base" id="day-past" d="M0 200"/>
-            <path class="base fc" id="day-fc" d="M0 200"/>
-            <path class="lit" id="day-lit" clip-path="url(#day-clip)" d="M0 200"/>
-            <line class="who" id="day-who" x1="0" x2="1000" y1="200" y2="200"/>
-            <line class="nowline" id="day-nowline" x1="0" x2="0" y1="0" y2="200"/>
-            <circle class="scrub" id="day-scrub" r="7" cx="0" cy="200"/>
-          </svg>
-          <div class="day-axis"><span>Yesterday</span><span>Now</span><span>Tomorrow (forecast)</span></div>
+        <svg id="day-svg" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-labelledby="day-sum">
+          <title id="day-sum">Hourly PM2.5 over 48 hours, loading.</title>
+          <defs><clipPath id="day-clip"><rect id="day-cliprect" x="0" y="-20" width="0" height="240"/></clipPath></defs>
+          <path class="area" id="day-area" clip-path="url(#day-clip)" d="M0 200"/>
+          <path class="base" id="day-past" d="M0 200"/>
+          <path class="base fc" id="day-fc" d="M0 200"/>
+          <path class="lit" id="day-lit" clip-path="url(#day-clip)" d="M0 200"/>
+          <line class="who" id="day-who" x1="0" x2="1000" y1="200" y2="200"/>
+          <line class="nowline" id="day-nowline" x1="0" x2="0" y1="0" y2="200"/>
+          <circle class="scrub" id="day-scrub" r="6" cx="0" cy="200"/>
+        </svg>
+        <div class="day-axis"><span>Yesterday</span><span class="safe">Dotted line: WHO 24-hour guideline</span><span>Tomorrow, forecast</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="build" class="sec solid" aria-labelledby="build-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 id="build-h">Three problems to build on</h2>
+        <p>Teams pick one, find the data, and ship something people in Dhaka can use.</p>
+      </div>
+      <div class="tabs" id="tabs">
+        <div class="tablist" role="tablist" aria-label="Problems">
+          <button class="tab" role="tab" id="t-1" aria-controls="p-1" aria-selected="true" tabindex="0"><span class="tab-k">Sense</span><span class="tab-t">Measure the street, not the city</span></button>
+          <button class="tab" role="tab" id="t-2" aria-controls="p-2" aria-selected="false" tabindex="-1"><span class="tab-k">Predict</span><span class="tab-t">See the bad days coming</span></button>
+          <button class="tab" role="tab" id="t-3" aria-controls="p-3" aria-selected="false" tabindex="-1"><span class="tab-k">Act</span><span class="tab-t">Turn readings into action</span></button>
+        </div>
+        <div class="panel" role="tabpanel" id="p-1" aria-labelledby="t-1">
+          <div class="panel-viz" aria-hidden="true">
+            <svg viewBox="0 0 560 220">
+              <path class="viz-line" d="M60 160 170 80 280 150 390 70 500 140M170 80 280 150M60 160 280 150 500 140"/>
+              <g><circle class="viz-ping" style="--i:0" cx="60" cy="160" r="7"/><circle class="viz-hot" cx="60" cy="160" r="5"/></g>
+              <g><circle class="viz-ping" style="--i:1" cx="170" cy="80" r="7"/><circle class="viz-node" cx="170" cy="80" r="5"/></g>
+              <g><circle class="viz-ping" style="--i:2" cx="280" cy="150" r="7"/><circle class="viz-hot" cx="280" cy="150" r="5"/></g>
+              <g><circle class="viz-ping" style="--i:3" cx="390" cy="70" r="7"/><circle class="viz-node" cx="390" cy="70" r="5"/></g>
+              <g><circle class="viz-ping" style="--i:4" cx="500" cy="140" r="7"/><circle class="viz-hot" cx="500" cy="140" r="5"/></g>
+            </svg>
+          </div>
+          <div class="panel-body">
+            <p>A regional model can’t tell a rickshaw stand from a rooftop. Low-cost sensors, calibration against reference monitors and open maps can show what one street breathes.</p>
+            <ul class="sources" aria-label="Open data to start with"><li>OpenAQ</li><li>Open-Meteo</li><li>OpenStreetMap</li></ul>
+          </div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-2" aria-labelledby="t-2" hidden>
+          <div class="panel-viz" aria-hidden="true">
+            <svg viewBox="0 0 560 220">
+              <path class="viz-line" d="M30 190H530"/>
+              <path class="viz-safe" d="M30 165H530" stroke-dasharray="2 4"/>
+              <path class="viz-line" d="M30 150C90 140 120 90 180 100S280 160 320 90"/>
+              <path class="viz-draw" pathLength="1" d="M320 90C370 30 430 40 530 70"/>
+              <circle class="viz-node" cx="320" cy="90" r="5"/>
+            </svg>
+          </div>
+          <div class="panel-body">
+            <p>Dhaka’s air is worst in the dry months, roughly November to March. A forecast that reaches schools, clinics and commuters a day early lets them plan around it.</p>
+            <ul class="sources" aria-label="Open data to start with"><li>CAMS forecasts</li><li>NASA FIRMS fires</li><li>Sentinel-5P NO₂</li></ul>
+          </div>
+        </div>
+        <div class="panel" role="tabpanel" id="p-3" aria-labelledby="t-3" hidden>
+          <div class="panel-viz" aria-hidden="true">
+            <svg viewBox="0 0 560 220">
+              <path class="viz-line" d="M20 200H540M90 200V150h40v50M380 200v-70h30v70"/>
+              <ellipse class="viz-plume" style="--i:0" cx="110" cy="125" rx="28" ry="24"/>
+              <ellipse class="viz-plume" style="--i:1" cx="395" cy="105" rx="24" ry="22"/>
+              <path class="viz-node" d="M230 160a14 14 0 1 1 28 0c0 11-14 26-14 26s-14-15-14-26Z"/>
+              <path class="viz-node" d="M470 150a14 14 0 1 1 28 0c0 11-14 26-14 26s-14-15-14-26Z"/>
+            </svg>
+          </div>
+          <div class="panel-body">
+            <p>Data alone changes little. Build tools that help residents, reporters and agencies trace sources such as brick kilns, traffic and construction dust, and push for fixes.</p>
+            <ul class="sources" aria-label="Open data to start with"><li>Sentinel-2 imagery</li><li>OpenStreetMap</li><li>OpenAQ</li></ul>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ════════ TRACKS ════════ -->
-  <section id="build" class="sec opaque" aria-labelledby="build-h">
+  <section id="plan" class="sec solid" aria-labelledby="plan-h">
     <div class="wrap">
       <div class="sec-head">
-        <h2 id="build-h"><span class="reveal-line"><span>Three problems</span></span><span class="reveal-line"><span>to build on</span></span></h2>
-        <p>Teams pick one, find the data, and ship something people in Dhaka can use.</p>
-      </div>
-      <ul class="tracks" id="tracks">
-        <li class="track" data-open>
-          <h3 class="track-h"><button class="track-btn" type="button" aria-expanded="true" aria-controls="tp-1"><span class="track-tag">Sense</span><span class="track-title">Measure the street, not the city</span></button></h3>
-          <div class="track-panel" id="tp-1">
-            <p>A regional model can’t tell a rickshaw stand from a rooftop. Low-cost sensors, calibration against reference monitors and open maps can show what one street breathes.</p>
-            <ul class="sources" aria-label="Open data to start with"><li>OpenAQ</li><li>Open-Meteo</li><li>OpenStreetMap</li></ul>
-          </div>
-          <div class="viz" aria-hidden="true">
-            <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid meet">
-              <path class="stroke" d="M40 120 120 60 200 110 280 50 360 100M120 60 200 110M40 120 200 110 360 100"/>
-              <g><circle class="ping" style="--i:0" cx="40" cy="120" r="10"/><circle class="node" cx="40" cy="120" r="5"/></g>
-              <g><circle class="ping" style="--i:1" cx="120" cy="60" r="10"/><circle class="node" cx="120" cy="60" r="5"/></g>
-              <g><circle class="ping" style="--i:2" cx="200" cy="110" r="10"/><circle class="node" cx="200" cy="110" r="5"/></g>
-              <g><circle class="ping" style="--i:3" cx="280" cy="50" r="10"/><circle class="node" cx="280" cy="50" r="5"/></g>
-              <g><circle class="ping" style="--i:4" cx="360" cy="100" r="10"/><circle class="node" cx="360" cy="100" r="5"/></g>
-            </svg>
-          </div>
-        </li>
-        <li class="track">
-          <h3 class="track-h"><button class="track-btn" type="button" aria-expanded="false" aria-controls="tp-2"><span class="track-tag">Predict</span><span class="track-title">See the bad days coming</span></button></h3>
-          <div class="track-panel" id="tp-2" inert>
-            <p>Dhaka’s air is worst in the dry months, roughly November to March. A forecast that reaches schools, clinics and commuters a day early lets them plan around it.</p>
-            <ul class="sources" aria-label="Open data to start with"><li>CAMS forecasts</li><li>NASA FIRMS fires</li><li>Sentinel-5P NO₂</li></ul>
-          </div>
-          <div class="viz" aria-hidden="true">
-            <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid meet">
-              <path class="stroke" d="M20 140H380"/>
-              <path class="stroke" d="M20 110C70 100 90 70 140 80S220 120 260 70"/>
-              <path class="draw" pathLength="1" d="M260 70C300 30 330 40 380 60"/>
-              <circle class="node" cx="260" cy="70" r="5"/>
-            </svg>
-          </div>
-        </li>
-        <li class="track">
-          <h3 class="track-h"><button class="track-btn" type="button" aria-expanded="false" aria-controls="tp-3"><span class="track-tag">Act</span><span class="track-title">Turn readings into action</span></button></h3>
-          <div class="track-panel" id="tp-3" inert>
-            <p>Data alone changes little. Build tools that help residents, reporters and agencies trace sources such as brick kilns, traffic and construction dust, and push for fixes.</p>
-            <ul class="sources" aria-label="Open data to start with"><li>Sentinel-2 imagery</li><li>OpenStreetMap</li><li>OpenAQ</li></ul>
-          </div>
-          <div class="viz" aria-hidden="true">
-            <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid meet">
-              <path class="stroke" d="M10 150H390M60 150V110h30v40M250 150V95h22v55"/>
-              <ellipse class="plume" style="--i:0" cx="75" cy="90" rx="22" ry="20"/>
-              <ellipse class="plume" style="--i:1" cx="261" cy="76" rx="18" ry="17"/>
-              <path class="pin" style="--i:0" d="M160 120a12 12 0 1 1 24 0c0 9-12 22-12 22s-12-13-12-22Z"/>
-              <path class="pin" style="--i:1" d="M310 112a12 12 0 1 1 24 0c0 9-12 22-12 22s-12-13-12-22Z"/>
-            </svg>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- ════════ 2027 PLAN ════════ -->
-  <section id="plan" class="sec opaque" aria-labelledby="plan-h">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2 id="plan-h"><span class="reveal-line"><span>Where 2027 stands</span></span></h2>
-        <p>Dates and venue are not set yet. Follow Cedar Initiative and you’ll hear when the call for teams opens.</p>
+        <h2 id="plan-h">Where 2027 stands</h2>
+        <p>This is the first Air Hackathon. Dates and venue aren’t set yet; follow Cedar Initiative to hear when the call for teams opens.</p>
       </div>
       <ol class="steps">
         <li class="step is-now"><span class="when">Now</span><h3>Shaping the problems with partners</h3><p>Researchers, agencies and community groups help pick the questions worth a team’s time.</p></li>
@@ -984,10 +886,10 @@
       </ol>
       <div class="close">
         <p class="bn" lang="bn" aria-hidden="true"><span>নির্মল</span> <span>বাতাস</span></p>
-        <div class="bn-row">
+        <div class="close-row">
           <p>Clean air. <span>Built in Dhaka.</span></p>
-          <a class="btn btn-primary mag" href="https://cedar-initiative.org" rel="noopener">Follow Cedar Initiative
-            <svg class="arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5"/></svg></a>
+          <a class="btn btn-primary" href="https://cedar-initiative.org" rel="noopener">Follow Cedar Initiative
+            <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
         </div>
       </div>
     </div>
@@ -996,21 +898,33 @@
 
 <footer>
   <div class="wrap foot">
-    <a class="foot-logo" href="https://cedar-initiative.org" rel="noopener" aria-label="Cedar Initiative"><svg aria-hidden="true" focusable="false"><use href="#cedar-logo"/></svg></a>
-    <div class="foot-text">
-      <p>Air Hackathon is run by <a class="link-under" href="https://cedar-initiative.org" rel="noopener">Cedar Initiative</a> in Dhaka, Bangladesh.</p>
-      <p>Air data: <a class="link-under" href="https://open-meteo.com" rel="noopener">Open-Meteo</a> (CC BY 4.0), based on Copernicus CAMS. Guideline: <a class="link-under" href="https://www.who.int/publications/i/item/9789240034228" rel="noopener">WHO Global Air Quality Guidelines, 2021</a>, PM2.5 24-hour level of 15&nbsp;µg/m³. Cigarette comparison: <a class="link-under" href="https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/" rel="noopener">Berkeley Earth</a>. Location lookup: OpenStreetMap Nominatim.</p>
+    <div>
+      <a class="foot-logo" href="https://cedar-initiative.org" rel="noopener" aria-label="Cedar Initiative"><svg aria-hidden="true" focusable="false"><use href="#cedar-logo"/></svg></a>
+    </div>
+    <nav aria-label="Footer">
+      <h2>On this page</h2>
+      <ul>
+        <li><a class="link" href="#air">Live air</a></li>
+        <li><a class="link" href="#breath">Your breath</a></li>
+        <li><a class="link" href="#day">48 hours</a></li>
+        <li><a class="link" href="#build">Problems</a></li>
+        <li><a class="link" href="#plan">Plan</a></li>
+      </ul>
+    </nav>
+    <div class="foot-src">
+      <p>Air Hackathon is run by <a class="link-u" href="https://cedar-initiative.org" rel="noopener">Cedar Initiative</a> in Dhaka, Bangladesh.</p>
+      <p>Air data: <a class="link-u" href="https://open-meteo.com" rel="noopener">Open-Meteo</a> (CC BY 4.0), based on Copernicus CAMS. Guideline: <a class="link-u" href="https://www.who.int/publications/i/item/9789240034228" rel="noopener">WHO Global Air Quality Guidelines, 2021</a>. Rankings: <a class="link-u" href="https://www.iqair.com/world-air-quality-report" rel="noopener">IQAir World Air Quality Report</a>. Cigarette comparison: <a class="link-u" href="https://berkeleyearth.org/air-pollution-and-cigarette-equivalence/" rel="noopener">Berkeley Earth</a>. Location lookup: OpenStreetMap Nominatim.</p>
     </div>
   </div>
 </footer>
 
 <dialog class="palette" id="palette" aria-label="Command menu">
   <div class="pal-search">
-    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="m14 14 4 4"/></svg>
-    <input id="pal-input" type="text" role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Type a command or section…" aria-label="Search commands">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/></svg>
+    <input id="pal-input" name="q" type="text" role="combobox" aria-expanded="true" aria-controls="pal-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" placeholder="Search sections and actions…" aria-label="Search commands">
   </div>
   <ul class="pal-list" id="pal-list" role="listbox" aria-label="Commands"></ul>
-  <p class="pal-foot" aria-hidden="true"><span><kbd>↑</kbd> <kbd>↓</kbd> to move</span><span><kbd>Enter</kbd> to run</span><span><kbd>Esc</kbd> to close</span></p>
+  <p class="pal-foot" aria-hidden="true"><span><kbd>↑</kbd> <kbd>↓</kbd> move</span><span><kbd>Enter</kbd> run</span><span><kbd>Esc</kbd> close</span></p>
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1019,7 +933,6 @@
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => r.querySelectorAll(s);
 const reduceMQ = matchMedia('(prefers-reduced-motion: reduce)');
-const finePointer = matchMedia('(pointer: fine)').matches;
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const lang = navigator.language || 'en';
@@ -1032,21 +945,14 @@ function toast(msg) {
   clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-/* ═══════════════════════════════════════════════ MOTION STATE (global pause, WCAG 2.2.2) */
+/* ═══════════════════════════════════════════════ MOTION (global pause, WCAG 2.2.2) */
 const Motion = (() => {
   const subs = [];
   let still = reduceMQ.matches;
-  function set(v) {
-    still = v;
-    document.documentElement.classList.toggle('still', v);
-    $('#still-label').textContent = v ? 'Play' : 'Pause';
-    $('#still-btn').setAttribute('aria-label', v ? 'Play all motion' : 'Pause all motion');
-    subs.forEach((f) => f(v));
-  }
+  const paint = () => { document.documentElement.classList.toggle('still', still); $('#still-label').textContent = still ? 'Play motion' : 'Pause motion'; };
+  function set(v) { still = v; paint(); subs.forEach((f) => f(v)); }
   $('#still-btn').addEventListener('click', () => set(!still));
-  document.documentElement.classList.toggle('still', still);
-  $('#still-label').textContent = still ? 'Play' : 'Pause';
-  $('#still-btn').setAttribute('aria-label', still ? 'Play all motion' : 'Pause all motion');
+  paint();
   return { get still() { return still; }, set, on: (f) => subs.push(f), toggle: () => set(!still) };
 })();
 
@@ -1064,7 +970,6 @@ const Air = (() => {
   const subs = [];
   let place = { ...DHAKA }, timer = 0, tz = 'Asia/Dhaka';
   const state = { pm: null, aqi: null, band: null, hourly: null, wind: null };
-
   const band = (aqi) => BANDS.find((b) => aqi <= b.max);
   const pmBand = (pm) => BANDS[PM_BANDS.findIndex((m) => pm <= m)];
   function aqiPos(aqi) {
@@ -1075,10 +980,8 @@ const Air = (() => {
   }
   const compass = (d) => ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round((d % 360) / 45) % 8];
   async function getJSON(url) { const r = await fetch(url); if (!r.ok) throw new Error(r.status); return r.json(); }
-
-  const clockFmt = () => new Intl.DateTimeFormat(lang, { hour: '2-digit', minute: '2-digit', timeZone: tz });
-  let cf = clockFmt();
-  function clock() { try { set('[data-clock]', cf.format(new Date())); } catch (e) {} }
+  let cf = null;
+  function clock() { try { cf = cf || new Intl.DateTimeFormat(lang, { hour: '2-digit', minute: '2-digit', timeZone: tz, timeZoneName: 'short' }); set('[data-clock]', cf.format(new Date())); } catch (e) {} }
   setInterval(clock, 15000); clock();
 
   async function load() {
@@ -1090,8 +993,8 @@ const Air = (() => {
     const cur = aq.status === 'fulfilled' ? (aq.value.current || {}) : {};
     if (cur.us_aqi != null || cur.pm2_5 != null) render(aq.value);
     else {
-      set('[data-status]', 'Live air readings are unavailable right now. The page will retry in 10 minutes.');
-      set('[data-band-name]', 'No reading'); set('[data-sentence]', 'We couldn’t reach the air-quality service.');
+      set('[data-status]', 'Live readings are unavailable right now. Retrying in 10 minutes.');
+      set('[data-band-name]', 'No reading'); set('[data-sentence]', 'The air-quality service didn’t answer.');
     }
     if (wx.status === 'fulfilled') {
       const c = wx.value.current || {};
@@ -1101,30 +1004,29 @@ const Air = (() => {
       if (c.wind_direction_10m != null) set('[data-wind-dir]', 'from ' + compass(c.wind_direction_10m));
       state.wind = { deg: c.wind_direction_10m, kmh: c.wind_speed_10m };
     }
-    emit();
+    subs.forEach((f) => f(state));
     clearTimeout(timer); timer = setTimeout(load, 10 * 60 * 1000);
   }
 
   function render(d) {
     const c = d.current || {};
-    if (d.timezone && d.timezone !== tz) { tz = d.timezone; cf = clockFmt(); }
-    clock();
-    set('[data-status]', '');
+    if (d.timezone && d.timezone !== tz) { tz = d.timezone; cf = null; }
+    clock(); set('[data-status]', '');
     if (c.us_aqi != null) {
-      const b = band(c.us_aqi);
-      state.aqi = c.us_aqi; state.band = b;
+      const b = band(c.us_aqi); state.aqi = c.us_aqi; state.band = b;
       set('[data-aqi]', nf0.format(c.us_aqi)); set('[data-band-name]', b.name); set('[data-marker-v]', nf0.format(c.us_aqi));
       document.documentElement.style.setProperty('--band', b.c);
       $('[data-marker]').style.setProperty('--pos', aqiPos(c.us_aqi) + '%');
     }
     if (c.pm2_5 != null) {
-      const pm = c.pm2_5, mult = pm / WHO;
-      state.pm = pm;
-      set('[data-pm]', nf1.format(pm));
-      set('[data-multx]', mult >= 1.05 ? nf1.format(mult) + '× guideline' : 'within guideline');
-      set('[data-sentence]', mult >= 1.05
-        ? `PM2.5 is ${nf1.format(pm)} µg/m³: ${nf1.format(mult)} times the WHO 24-hour guideline of 15. Breathe that all day and it adds up.`
-        : `PM2.5 is ${nf1.format(pm)} µg/m³, within the WHO 24-hour guideline of 15. A good hour. Dhaka doesn’t get many in the dry season.`);
+      const pm = c.pm2_5, mult = pm / WHO; state.pm = pm;
+      set('[data-pm]', nf1.format(pm)); set('[data-mult]', nf1.format(mult));
+      set('[data-multx]', mult >= 1.05 ? nf1.format(mult) + '× over' : 'Within');
+      $$('[data-sentence]').forEach((el) => {
+        el.innerHTML = mult >= 1.05
+          ? `PM2.5 is <b>${nf1.format(pm)} µg/m³</b>, ${nf1.format(mult)} times the WHO 24-hour guideline of 15. Breathe that all day and it adds up.`
+          : `PM2.5 is <b>${nf1.format(pm)} µg/m³</b>, within the WHO 24-hour guideline of 15. A good hour for Dhaka.`;
+      });
     }
     if (c.pm10 != null) set('[data-pm10]', nf0.format(c.pm10));
     if (c.nitrogen_dioxide != null) set('[data-no2]', nf0.format(c.nitrogen_dioxide));
@@ -1132,7 +1034,6 @@ const Air = (() => {
     const upd = $('[data-updated]');
     upd.textContent = new Intl.DateTimeFormat(lang, { hour: 'numeric', minute: '2-digit', timeZone: tz, timeZoneName: 'short' }).format(new Date());
     upd.dateTime = new Date().toISOString();
-
     const h = d.hourly;
     if (h && h.time && h.time.length) {
       const nowMs = Date.now() + (d.utc_offset_seconds || 0) * 1000;
@@ -1142,16 +1043,14 @@ const Air = (() => {
       state.hourly = { time: h.time.slice(from, to), pm: h.pm2_5.slice(from, to).map((v) => v ?? null), now: iNow - from, today: new Date(nowMs).toISOString().slice(0, 10) };
     } else state.hourly = null;
   }
-  function emit() { subs.forEach((f) => f(state)); }
 
   async function locate() {
     const btn = $('#locate');
-    if (!navigator.geolocation) { set('[data-status]', 'Your browser can’t share a location. Showing Dhaka.'); return; }
+    if (!navigator.geolocation) { set('[data-status]', 'This browser can’t share a location, so you’re seeing Dhaka.'); return; }
     btn.disabled = true; btn.textContent = 'Locating…';
     navigator.geolocation.getCurrentPosition(async (pos) => {
       place = { lat: +pos.coords.latitude.toFixed(3), lon: +pos.coords.longitude.toFixed(3), name: 'Your area' };
-      set('[data-city]', place.name);
-      await load();
+      set('[data-city]', place.name); await load();
       btn.textContent = 'Show Dhaka'; btn.disabled = false; btn.dataset.mode = 'dhaka';
       toast('Showing the air where you are.');
       try {
@@ -1165,12 +1064,10 @@ const Air = (() => {
       set('[data-status]', 'Location was blocked, so you’re seeing Dhaka. Allow location in your browser to compare.');
     }, { timeout: 10000, maximumAge: 600000 });
   }
-  function useDhaka() {
-    place = { ...DHAKA }; set('[data-city]', 'Dhaka');
-    const b = $('#locate'); b.textContent = 'Use My Location'; delete b.dataset.mode; load();
-  }
-  $('#locate').addEventListener('click', (e) => (e.currentTarget.dataset.mode === 'dhaka' ? useDhaka() : locate()));
-
+  $('#locate').addEventListener('click', (e) => {
+    if (e.currentTarget.dataset.mode === 'dhaka') { place = { ...DHAKA }; set('[data-city]', 'Dhaka'); e.currentTarget.textContent = 'Use My Location'; delete e.currentTarget.dataset.mode; load(); }
+    else locate();
+  });
   return {
     load, locate, state, pmBand, WHO, on: (f) => subs.push(f),
     copyText() {
@@ -1180,38 +1077,7 @@ const Air = (() => {
   };
 })();
 
-/* ═══════════════════════════════════════════════ THEME (2-state over system, View Transition reveal) */
-const Theme = (() => {
-  const meta = $('meta[name="color-scheme"]');
-  const sysDark = matchMedia('(prefers-color-scheme: dark)');
-  const subs = [];
-  const isDark = () => meta.content === 'dark' || (meta.content === 'light dark' && sysDark.matches);
-  const notify = () => { $('#theme-label').textContent = isDark() ? 'Switch to light theme' : 'Switch to dark theme'; subs.forEach((f) => f(isDark())); };
-  function apply(target) {
-    const sys = sysDark.matches ? 'dark' : 'light';
-    try { if (target === sys) localStorage.removeItem('color-scheme'); else localStorage.setItem('color-scheme', target); } catch (e) {}
-    meta.content = target === sys ? 'light dark' : target;
-    notify();
-  }
-  function toggle(origin) {
-    const target = isDark() ? 'light' : 'dark';
-    if (!document.startViewTransition || reduceMQ.matches) { apply(target); return; }
-    const r = (origin || $('#theme')).getBoundingClientRect();
-    const x = r.left + r.width / 2, y = r.top + r.height / 2;
-    const end = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-    const vt = document.startViewTransition(() => apply(target));
-    vt.ready.then(() => document.documentElement.animate(
-      { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
-      { duration: 700, easing: 'cubic-bezier(0.77, 0, 0.175, 1)', pseudoElement: '::view-transition-new(root)' })).catch(() => {});
-  }
-  $('#theme').addEventListener('click', (e) => toggle(e.currentTarget));
-  sysDark.addEventListener('change', notify);
-  addEventListener('storage', (e) => { if (e.key === 'color-scheme') { meta.content = e.newValue || 'light dark'; notify(); } });
-  $('#theme-label').textContent = isDark() ? 'Switch to light theme' : 'Switch to dark theme';
-  return { isDark, toggle, on: (f) => subs.push(f) };
-})();
-
-/* ═══════════════════════════════════════════════ SOUND: opt-in city wind, shaped by live wind speed */
+/* ═══════════════════════════════════════════════ SOUND (opt-in; wind follows live wind speed) */
 const Sound = (() => {
   let ctx, gain, filt, on = false;
   const btn = $('#sound');
@@ -1232,30 +1098,29 @@ const Sound = (() => {
     if (v) ctx.resume();
     const w = Air.state.wind && Air.state.wind.kmh != null ? Air.state.wind.kmh : 8;
     filt.frequency.setTargetAtTime(380 + w * 45, ctx.currentTime, .5);
-    gain.gain.setTargetAtTime(v ? .32 : 0, ctx.currentTime, .4);
+    gain.gain.setTargetAtTime(v ? .3 : 0, ctx.currentTime, .4);
   }
   btn.addEventListener('click', () => { set(!on); toast(on ? 'City sound on. The wind follows the live wind speed.' : 'Sound off.'); });
   return {
-    whoosh() {
+    pulse() {
       if (!on || !ctx) return;
       const o = ctx.createOscillator(), g = ctx.createGain();
-      o.type = 'sine'; o.frequency.setValueAtTime(520, ctx.currentTime); o.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + .6);
-      g.gain.setValueAtTime(.18, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .7);
+      o.type = 'sine'; o.frequency.setValueAtTime(480, ctx.currentTime); o.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + .6);
+      g.gain.setValueAtTime(.16, ctx.currentTime); g.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .7);
       o.connect(g).connect(ctx.destination); o.start(); o.stop(ctx.currentTime + .75);
     },
   };
 })();
 
-/* ═══════════════════════════════════════════════ STAGE: WebGL Dhaka under smog */
+/* ═══════════════════════════════════════════════ STAGE: WebGL Dhaka under live smog */
 const Stage = (() => {
   const canvas = $('#stage');
-  const api = { blast() {}, setJourney() {}, ok: false };
+  const api = { blast() {}, setJourney() {}, reveal() {} };
   const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' });
   if (!gl) return api;
-
   const VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
   const FS = `precision highp float;
-uniform vec2 uRes; uniform float uTime, uSmog, uDark;
+uniform vec2 uRes; uniform float uTime, uSmog, uDark, uReveal;
 uniform vec2 uWind, uSun; uniform vec3 uP[10]; uniform vec3 uBlast;
 float h1(float n){return fract(sin(n*12.9898)*43758.5453);}
 float h2(vec2 p){p=fract(p*vec2(.1031,.1030));p+=dot(p,p.yx+33.33);return fract((p.x+p.y)*p.x);}
@@ -1266,20 +1131,18 @@ float bh(float x,float w,float seed,float base,float amp,out float id,out float 
   if(h1(id*3.7+seed)>.9)hgt+=amp*.85; if(h1(id*1.3+seed*2.)>.8)hgt*=.55; return hgt;}
 void main(){
   vec2 frag=gl_FragCoord.xy; vec2 p=frag/uRes.y; float asp=uRes.x/uRes.y; float y=p.y;
-  vec3 sky=mix(mix(vec3(.80,.86,.90),vec3(.40,.60,.82),smoothstep(.15,1.,y)),mix(vec3(.09,.17,.24),vec3(.03,.06,.14),smoothstep(.1,1.,y)),uDark);
-  float ds=length(p-uSun);
+  vec3 sky=mix(mix(vec3(.80,.86,.90),vec3(.40,.60,.82),smoothstep(.15,1.,y)),mix(vec3(.07,.12,.19),vec3(.02,.035,.08),smoothstep(.1,1.,y)),uDark);
+  float ds=length(p-uSun); float vis=clamp(abs(uDark-.5)*2.6,0.,1.); float isN=step(.5,uDark);
   vec3 sunC=mix(vec3(1.,.97,.86),vec3(1.,.52,.22),clamp(uSmog*1.1,0.,1.));
-  float disc=smoothstep(.052,.046,ds);
-  float vis=clamp(abs(uDark-.5)*2.6,0.,1.); float isN=step(.5,uDark);
+  float disc=smoothstep(.05,.044,ds);
   sky+=(1.-isN)*vis*(sunC*disc*1.2+sunC*(exp(-ds*ds/.03)*.45+exp(-ds*6.)*.2));
-  float moon=disc*(1.-smoothstep(.05,.043,length(p-uSun-vec2(.024,.014))));
-  sky=mix(sky,vec3(.9,.92,.97),isN*vis*moon); sky+=isN*vis*vec3(.45,.55,.8)*exp(-ds*ds/.012)*.18;
+  float moon=disc*(1.-smoothstep(.048,.041,length(p-uSun-vec2(.022,.013))));
+  sky=mix(sky,vec3(.88,.9,.95),isN*vis*moon); sky+=isN*vis*vec3(.4,.5,.75)*exp(-ds*ds/.012)*.14;
   vec2 sg=p*90.;vec2 sc=floor(sg);vec2 so=vec2(h2(sc+1.7),h2(sc+5.3))-.5;
   float star=step(.965,h2(sc))*smoothstep(.08,0.,length(fract(sg)-.5-so*.6))*(.55+.45*sin(uTime*(1.+h2(sc)*2.)+h2(sc)*6.28));
   sky+=uDark*star*smoothstep(.3,.6,y)*vec3(.9,.95,1.);
-  vec2 pp=vec2(mod(uTime*.03,asp+.6)-.3,.86+.015*sin(uTime*.2));
-  vec2 dpp=p-pp; float strobe=step(.9,fract(uTime*.8));
-  sky+=vec3(1.)*strobe*exp(-dot(dpp,dpp)/.000006);
+  vec2 pp=vec2(mod(uTime*.03,asp+.6)-.3,.86+.015*sin(uTime*.2)); vec2 dpp=p-pp;
+  sky+=vec3(1.)*step(.9,fract(uTime*.8))*exp(-dot(dpp,dpp)/.000006);
   vec2 dpr=dpp+vec2(.006,0.); sky+=vec3(1.,.2,.15)*(.5+.5*sin(uTime*5.))*exp(-dot(dpr,dpr)/.000004);
   float tall=mix(1.35,1.,smoothstep(.6,1.2,asp)); float sc2=clamp(asp,.95,1.6);
   float idF,fxF,idN,fxN; float wN=.05*sc2;
@@ -1287,48 +1150,46 @@ void main(){
   float hn=bh(p.x,wN,3.,.04*tall,.2*tall,idN,fxN);
   float far=step(y,hf)*step(.04,fxF), near=step(y,hn)*step(.03,fxN);
   vec3 col=sky;
-  col=mix(col,mix(vec3(.58,.63,.70),vec3(.05,.06,.10),uDark),far);
-  col=mix(col,mix(vec3(.26,.29,.35),vec3(.018,.022,.04),uDark),near);
+  col=mix(col,mix(vec3(.58,.63,.70),vec3(.045,.055,.085),uDark),far);
+  col=mix(col,mix(vec3(.26,.29,.35),vec3(.016,.02,.035),uDark),near);
   vec2 wg=vec2(fxN*5.,y/.016);vec2 wc=floor(wg);vec2 wf=fract(wg);
   float win=step(.28,wf.x)*step(wf.x,.72)*step(.3,wf.y)*step(wf.y,.72);
-  float lit=step(mix(.93,.62,uDark),h2(wc+idN*17.));
+  float lit=step(mix(.93,.64,uDark),h2(wc+idN*17.));
   float flick=.85+.15*step(.5,h2(wc+floor(uTime*.25+h2(wc)*10.)));
   win*=near*lit*step(y,hn-.012)*step(.034,y);
-  col=mix(col,mix(vec3(.85,.9,.95),vec3(1.,.78,.45)*flick,uDark),win*mix(.35,1.,uDark));
-  float isT=step(.9,h1(idN*3.7+3.));
-  vec2 db=p-vec2((idN+.5)*wN,hn+.007);
+  col=mix(col,mix(vec3(.85,.9,.95),vec3(1.,.8,.5)*flick,uDark),win*mix(.35,.95,uDark));
+  float isT=step(.9,h1(idN*3.7+3.)); vec2 db=p-vec2((idN+.5)*wN,hn+.007);
   col+=vec3(1.,.15,.1)*isT*step(.45,fract(uTime*.6+h1(idN)))*exp(-dot(db,db)/.000012)*(.6+.8*uDark);
-  float road=step(y,.03);
-  col=mix(col,mix(vec3(.33,.34,.38),vec3(.02,.022,.03),uDark),road);
+  col=mix(col,mix(vec3(.33,.34,.38),vec3(.02,.022,.03),uDark),step(y,.03));
   float u1=p.x*12.-uTime*1.4; float c1=floor(u1); float dx1=(fract(u1)-.5)/12.; float dy1=y-.021;
   col+=vec3(1.,.9,.7)*step(.45,h1(c1*1.7))*exp(-(dx1*dx1/.00003+dy1*dy1/.000005))*(.35+.9*uDark);
   float u2=p.x*10.+uTime*1.1; float c2=floor(u2); float dx2=(fract(u2)-.5)/10.; float dy2=y-.01;
   col+=vec3(1.,.15,.1)*step(.5,h1(c2*2.3+4.))*exp(-(dx2*dx2/.00002+dy2*dy2/.000004))*(.3+.8*uDark);
-  col+=uDark*vec3(.55,.32,.12)*.35*smoothstep(.14,0.,y);
+  col+=uDark*vec3(.55,.32,.12)*.3*smoothstep(.14,0.,y);
   float clr=0.;
   for(int i=0;i<10;i++){vec2 d=p-uP[i].xy;clr+=uP[i].z*exp(-dot(d,d)/.016);}
   clr=1.-exp(-clr*1.4);
   float ring=0.;
   if(uBlast.z>=0.){float r=uBlast.z*.85;float d=length(p-uBlast.xy);float life=1.-smoothstep(1.4,3.2,uBlast.z);
-    clr=max(clr,(1.-smoothstep(r-.12,r,d))*life); ring=exp(-pow((d-r)/.02,2.))*life;}
+    clr=max(clr,(1.-smoothstep(r-.12,r,d))*life); ring=exp(-pow((d-r)/.018,2.))*life;}
   vec2 drift=uWind*uTime*.012; vec2 q=vec2(p.x*1.1,y*2.2)+drift;
   float n=fbm(q*2.2+vec2(fbm(q*1.3-uTime*.008),0.)*1.4); float n2=fbm(q*5.5+drift*2.);
   float dens=uSmog*mix(.45,1.15,smoothstep(.95,0.,y))*(.55+.75*n+.2*n2);
   dens=clamp(dens*(1.-clr*.94),0.,.97);
-  vec3 smog=mix(vec3(.80,.72,.58),vec3(.36,.25,.17)+vec3(.25,.12,.04)*smoothstep(.6,0.,y),uDark)*(.92+.16*n2);
+  vec3 smog=mix(vec3(.80,.72,.58),vec3(.32,.22,.15)+vec3(.24,.11,.04)*smoothstep(.6,0.,y),uDark)*(.92+.16*n2);
   col=mix(col,smog,dens);
   float specks=0.;
   for(int k=0;k<2;k++){float s=k==0?70.:140.;vec2 g=(p+drift*(1.5+float(k))+vec2(0.,uTime*.004))*s;vec2 c=floor(g),f=fract(g)-.5;
     float r=h2(c+float(k)*9.1);vec2 o=vec2(h2(c+3.3),h2(c+7.7))-.5;float d=length(f-o*.6);
     specks+=step(1.-uSmog*.55,r)*smoothstep(.09-float(k)*.03,0.,d)*(k==0?.7:.45);}
   specks*=1.-clr;
-  col=mix(col,mix(vec3(.35,.30,.24),vec3(.95,.78,.55),uDark),clamp(specks,0.,1.)*.55);
-  vec3 mint=mix(vec3(.05,.45,.38),vec3(.3,.95,.78),uDark);
-  col+=mint*(clr*(1.-clr)*4.*.12+ring*.55);
+  col=mix(col,mix(vec3(.35,.30,.24),vec3(.92,.76,.54),uDark),clamp(specks,0.,1.)*.5);
+  col+=vec3(.56,.86,.76)*ring*.35;
+  col*=uReveal;
   col+=(h2(frag+fract(uTime))-.5)/255.;
   gl_FragColor=vec4(col,1.);
 }`;
-  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(o)); return o; };
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; };
   const prog = gl.createProgram();
   gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return api;
@@ -1336,52 +1197,47 @@ void main(){
   gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-  const U = {}; ['uRes', 'uTime', 'uSmog', 'uDark', 'uWind', 'uSun', 'uP', 'uBlast'].forEach((n) => { U[n] = gl.getUniformLocation(prog, n); });
+  const U = {}; ['uRes', 'uTime', 'uSmog', 'uDark', 'uReveal', 'uWind', 'uSun', 'uP', 'uBlast'].forEach((n) => { U[n] = gl.getUniformLocation(prog, n); });
 
   const N = 10, pts = new Float32Array(N * 3); let head = 0;
-  const S = { smog: .55, dark: Theme.isDark() ? 1 : 0, sunX: 0, sunY: 0, wind: [.8, .15] };
-  const T = { smog: .55, dark: S.dark, sunX: 0, sunY: 0 };
+  const startHidden = document.documentElement.classList.contains('has-intro');
+  const S = { smog: .55, dark: 1, sunX: 0, sunY: 0, wind: [.8, .15], reveal: startHidden ? 0 : 1 };
+  const T = { smog: .55, dark: 1, sunX: 0, sunY: 0, reveal: S.reveal };
   let liveSmog = .55, journey = null, blast = [-9, -9, -1], t = 0, last = performance.now(), raf = 0, lastPtr = 0, autoT = 0, visible = true;
-
   const aspect = () => canvas.width / canvas.height;
-  const heroSun = () => [aspect() * (innerWidth < 760 ? .8 : .74), .8];
-  // CSS px → shader space (y up, units of canvas height)
+  const heroSun = () => [aspect() * (innerWidth < 720 ? .8 : .78), .8];
   const toUV = (x, y) => [x / canvas.clientHeight, 1 - y / canvas.clientHeight];
 
-  Theme.on((d) => { if (!journey) T.dark = d ? 1 : 0; kick(); });
   Air.on((s) => {
     if (s.pm != null) liveSmog = clamp(s.pm / 110, .1, 1);
     if (s.wind && s.wind.deg != null) { const rad = (s.wind.deg + 180) * Math.PI / 180, k = .5 + Math.min(1.5, (s.wind.kmh || 6) / 10); S.wind = [Math.sin(rad) * k, Math.cos(rad) * .25 * k]; }
     if (!journey) T.smog = liveSmog; kick();
   });
-
   function resize() {
     const dpr = Math.min(devicePixelRatio || 1, 1.5) * .6;
     const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); }
-    if (!journey) { [T.sunX, T.sunY] = heroSun(); }
+    if (!journey) [T.sunX, T.sunY] = heroSun();
   }
   addEventListener('resize', () => { resize(); kick(); });
   function addPoint(x, y, s) { const [u, v] = toUV(x, y); pts[head * 3] = u; pts[head * 3 + 1] = v; pts[head * 3 + 2] = s; head = (head + 1) % N; }
   let lastAdd = 0;
   addEventListener('pointermove', (e) => {
-    if (!visible) return;
+    if (!visible || e.pointerType === 'touch') return;
     const now = performance.now(); lastPtr = now;
     if (now - lastAdd < 40) return; lastAdd = now; addPoint(e.clientX, e.clientY, 1); kick();
   }, { passive: true });
-  function doBlast(x, y) { const [u, v] = toUV(x, y); blast = [u, v, 0]; kick(); Sound.whoosh(); }
-  // Click open sky (not a control or text) in the hero or the 48h section to purify it
-  addEventListener('pointerdown', (e) => {
-    if (!visible || e.button > 0) return;
-    if (e.target.closest('a,button,input,dialog,.day-card,.ticker,.ship,p,h1,h2,.opaque,#breath,footer,.nav')) return;
+  function doBlast(x, y) { const [u, v] = toUV(x, y); blast = [u, v, 0]; kick(); Sound.pulse(); }
+  addEventListener('click', (e) => {
+    if (!visible) return;
+    if (e.target.closest('a,button,input,dialog,.ship,p,h1,h2,dl,svg,.solid,footer,.nav,.livebar')) return;
     doBlast(e.clientX, e.clientY);
   });
-
   const shown = new Set();
   const io = new IntersectionObserver((es) => { es.forEach((e) => e.isIntersecting ? shown.add(e.target) : shown.delete(e.target)); visible = shown.size > 0 && !document.hidden; if (visible) kick(); });
   io.observe($('#top')); io.observe($('#day'));
   document.addEventListener('visibilitychange', () => { visible = shown.size > 0 && !document.hidden; if (visible) kick(); });
-  Motion.on(() => kick());
+  Motion.on(kick);
 
   function frame(now) {
     raf = 0;
@@ -1390,71 +1246,58 @@ void main(){
     if (anim) t += dt;
     S.smog = lerp(S.smog, T.smog, Math.min(1, dt * 2.2)); S.dark = lerp(S.dark, T.dark, Math.min(1, dt * 3));
     S.sunX = lerp(S.sunX, T.sunX, Math.min(1, dt * 5)); S.sunY = lerp(S.sunY, T.sunY, Math.min(1, dt * 5));
+    S.reveal = lerp(S.reveal, T.reveal, Math.min(1, dt * 1.8));
     let alive = 0; for (let i = 0; i < N; i++) { pts[i * 3 + 2] *= Math.pow(.42, dt); alive += pts[i * 3 + 2]; }
     if (blast[2] >= 0) { blast[2] += dt; if (blast[2] > 3.4) blast[2] = -1; }
     if (anim && now - lastPtr > 4000 && !journey) {
       autoT += dt;
-      if (autoT > .12) { autoT = 0; const tt = t * .18; addPoint(canvas.clientWidth * (.58 + .3 * Math.sin(tt)), canvas.clientHeight * (.5 + .14 * Math.sin(tt * 1.7)), .5); }
+      if (autoT > .12) { autoT = 0; const tt = t * .18; addPoint(canvas.clientWidth * (.62 + .26 * Math.sin(tt)), canvas.clientHeight * (.48 + .12 * Math.sin(tt * 1.7)), .45); }
     }
     gl.uniform2f(U.uRes, canvas.width, canvas.height); gl.uniform1f(U.uTime, t);
-    gl.uniform1f(U.uSmog, S.smog); gl.uniform1f(U.uDark, S.dark);
+    gl.uniform1f(U.uSmog, S.smog); gl.uniform1f(U.uDark, S.dark); gl.uniform1f(U.uReveal, S.reveal);
     gl.uniform2f(U.uWind, S.wind[0], S.wind[1]); gl.uniform2f(U.uSun, S.sunX, S.sunY);
     gl.uniform3fv(U.uP, pts); gl.uniform3f(U.uBlast, blast[0], blast[1], blast[2]);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-    const settling = Math.abs(T.smog - S.smog) > .002 || Math.abs(T.dark - S.dark) > .002 || Math.abs(T.sunX - S.sunX) > .001 || Math.abs(T.sunY - S.sunY) > .001 || alive > .01 || blast[2] >= 0;
+    const settling = Math.abs(T.smog - S.smog) > .002 || Math.abs(T.dark - S.dark) > .002 || Math.abs(T.sunX - S.sunX) > .001 || Math.abs(T.sunY - S.sunY) > .001 || Math.abs(T.reveal - S.reveal) > .002 || alive > .01 || blast[2] >= 0;
     if (visible && (anim || settling)) raf = requestAnimationFrame(frame);
   }
   function kick() { if (!raf && visible) { last = performance.now(); raf = requestAnimationFrame(frame); } }
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); cancelAnimationFrame(raf); raf = 0; });
   resize(); [S.sunX, S.sunY] = [T.sunX, T.sunY]; kick();
 
-  api.ok = true;
-  api.blast = (x = innerWidth * .62, y = innerHeight * .42) => doBlast(x, y);
+  api.reveal = () => { T.reveal = 1; kick(); };
+  api.blast = (x = innerWidth * .66, y = innerHeight * .42) => doBlast(x, y);
   api.setJourney = (j) => {
     journey = j;
     if (j) { T.smog = j.smog; T.dark = j.dark; T.sunX = j.sun[0] * aspect(); T.sunY = j.sun[1]; if (Math.abs(T.sunX - S.sunX) > .35 * aspect()) { S.sunX = T.sunX; S.sunY = T.sunY; } }
-    else { T.smog = liveSmog; T.dark = Theme.isDark() ? 1 : 0; [T.sunX, T.sunY] = heroSun(); }
+    else { T.smog = liveSmog; T.dark = 1; [T.sunX, T.sunY] = heroSun(); }
     kick();
   };
   return api;
 })();
 
-/* ═══════════════════════════════════════════════ HERO: split headline, airship, ticker, nav, magnets */
+/* ═══════════════════════════════════════════════ HERO: headline split, airship, nav state */
 (() => {
   const h1 = $('#hero-h1'); let i = 0;
-  const split = (node) => {
-    [...node.childNodes].forEach((n) => {
-      if (n.nodeType === 3) {
-        const frag = document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach((word) => {
-          if (!word) return;
-          if (/^\s+$/.test(word)) { frag.append(word); return; }
-          const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
-          [...word].forEach((c) => { const s = document.createElement('span'); s.className = 'ch'; s.style.setProperty('--i', i++); s.textContent = c; w.append(s); });
-          frag.append(w);
-        });
-        n.replaceWith(frag);
-      } else split(n);
-    });
-  };
-  split(h1);
+  const frag = document.createDocumentFragment();
+  h1.textContent.split(/(\s+)/).forEach((word) => {
+    if (!word) return;
+    if (/^\s+$/.test(word)) { frag.append(word); return; }
+    const w = document.createElement('span'); w.className = 'w'; w.setAttribute('aria-hidden', 'true');
+    [...word].forEach((c) => { const s = document.createElement('span'); s.className = 'ch'; s.style.setProperty('--i', i++); s.textContent = c; w.append(s); });
+    frag.append(w);
+  });
+  h1.replaceChildren(frag);
 
-  // Ticker: a clone of the readings row loops the marquee; kept in sync with live values
-  const rows = $$('.tick-row');
-  let syncQueued = false;
-  const syncTicker = () => { syncQueued = false; rows[1].innerHTML = rows[0].innerHTML; };
-  syncTicker();
-  new MutationObserver(() => { if (!syncQueued) { syncQueued = true; requestAnimationFrame(syncTicker); } }).observe(rows[0], { subtree: true, characterData: true, childList: true, attributes: true });
-
-  // Airship: lazy loop, drag and throw, springs back to its route
+  // Airship: lazy route; drag and throw with pointer capture; springs back to its route
   const ship = $('#ship'), hero = $('#top');
   let x = 0, y = 140, vx = 0, vy = 0, dragging = false, offX = 0, offY = 0, t = 0, last = performance.now(), dir = 1, raf = 0, onScreen = true;
   const route = (tt) => {
     const w = hero.clientWidth, sw = ship.getBoundingClientRect().width;
-    const lo = innerWidth >= 1080 ? w * .5 : 0, span = w - sw - lo;
-    return [lo + span * (.5 + .5 * Math.sin(tt * .045)), (innerWidth < 760 ? .64 : .14) * hero.clientHeight + 14 * Math.sin(tt * .7)];
+    const lo = innerWidth >= 1000 ? w * .52 : 0, span = w - sw - lo - 16;
+    return [lo + span * (.5 + .5 * Math.sin(tt * .045)), (innerWidth < 720 ? .72 : .17) * hero.clientHeight + 12 * Math.sin(tt * .7)];
   };
-  [x, y] = route(Motion.still ? 4 : -28); // start off to the left so it sails in
+  [x, y] = route(Motion.still ? 2 : -30);
   function frame(now) {
     raf = 0;
     const dt = Math.min(.05, (now - last) / 1000); last = now;
@@ -1466,46 +1309,64 @@ void main(){
       const ndir = Math.cos(t * .045) >= 0 ? 1 : -1;
       if (ndir !== dir && !Motion.still) { dir = ndir; ship.style.setProperty('--flip', dir); }
     }
-    ship.style.setProperty('--x', x.toFixed(1) + 'px'); ship.style.setProperty('--y', y.toFixed(1) + 'px');
-    ship.style.setProperty('--rot', clamp(vx * .02, -10, 10).toFixed(2) + 'deg');
+    ship.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
+    ship.style.rotate = clamp(vx * .02, -8, 8).toFixed(2) + 'deg';
     if (onScreen && (!Motion.still || dragging || Math.abs(vx) + Math.abs(vy) > .5)) raf = requestAnimationFrame(frame);
   }
   const kick = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
   new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; if (onScreen) kick(); }).observe(hero);
   Motion.on(kick);
-  let px = 0, py = 0, pt = 0;
+  let px = 0, py = 0, pt = 0, pid = null;
   ship.addEventListener('pointerdown', (e) => {
-    dragging = true; ship.classList.add('drag'); ship.setPointerCapture(e.pointerId);
+    if (dragging) return;
+    dragging = true; pid = e.pointerId; ship.classList.add('drag'); ship.setPointerCapture(e.pointerId);
     const r = hero.getBoundingClientRect(); offX = e.clientX - r.left - x; offY = e.clientY - r.top - y;
     px = e.clientX; py = e.clientY; pt = performance.now(); vx = vy = 0; kick();
   });
   ship.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
+    if (!dragging || e.pointerId !== pid) return;
     const r = hero.getBoundingClientRect(), now = performance.now(), dt = Math.max(8, now - pt);
     x = e.clientX - r.left - offX; y = e.clientY - r.top - offY;
     vx = (e.clientX - px) / dt * 1000; vy = (e.clientY - py) / dt * 1000; px = e.clientX; py = e.clientY; pt = now;
     if (Math.abs(vx) > 60) { dir = vx > 0 ? 1 : -1; ship.style.setProperty('--flip', dir); }
   });
-  const end = () => { if (!dragging) return; dragging = false; ship.classList.remove('drag'); kick(); };
+  const end = (e) => { if (!dragging || e.pointerId !== pid) return; dragging = false; pid = null; ship.classList.remove('drag'); kick(); };
   ship.addEventListener('pointerup', end); ship.addEventListener('pointercancel', end);
   addEventListener('resize', kick);
   kick();
 
-  // Nav turns solid once you leave the hero copy
   const nav = $('#nav');
-  new IntersectionObserver(([e]) => nav.classList.toggle('solid', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' }).observe($('.hero-body'));
-
-  // Magnetic buttons (fine pointers only)
-  if (finePointer && !reduceMQ.matches) $$('.mag').forEach((b) => {
-    b.addEventListener('pointermove', (e) => { const r = b.getBoundingClientRect(); b.style.setProperty('--mx', ((e.clientX - r.left - r.width / 2) * .18).toFixed(1) + 'px'); b.style.setProperty('--my', ((e.clientY - r.top - r.height / 2) * .25).toFixed(1) + 'px'); });
-    b.addEventListener('pointerleave', () => { b.style.setProperty('--mx', '0px'); b.style.setProperty('--my', '0px'); });
-  });
+  const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
 })();
 
-/* ═══════════════════════════════════════════════ BREATH: live inhalation counter + guided breathing */
+/* ═══════════════════════════════════════════════ STATEMENT: words light up with scroll */
+(() => {
+  const p = $('#statement');
+  [...p.childNodes].forEach((n) => {
+    if (n.nodeType === 3) {
+      const frag = document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach((w) => { if (!w) return; if (/^\s+$/.test(w)) { frag.append(w); return; } const s = document.createElement('span'); s.className = 'wd'; s.textContent = w; frag.append(s); });
+      n.replaceWith(frag);
+    } else if (n.nodeType === 1) n.classList.add('wd');
+  });
+  const words = [...p.querySelectorAll('.wd')];
+  let raf = 0;
+  function update() {
+    raf = 0;
+    const r = p.getBoundingClientRect();
+    const prog = clamp((innerHeight * .82 - r.top) / (r.height + innerHeight * .35), 0, 1);
+    const n = Math.round(prog * words.length);
+    words.forEach((w, i) => w.classList.toggle('on', i < n));
+  }
+  addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
+  update();
+})();
+
+/* ═══════════════════════════════════════════════ BREATH: live inhalation counter */
 (() => {
   const start = performance.now();
-  const L = $('#c-litres'), M = $('#c-micro'), lungs = $('#lungs'), label = $('#orb-label');
+  const L = $('#c-litres'), M = $('#c-micro'), lungs = $('#lungs'), label = $('#orb-label'), orb = $('.orb');
   let on = false, raf = 0, last = 0;
   function tick(now) {
     raf = 0;
@@ -1514,48 +1375,35 @@ void main(){
       const litres = (now - start) / 60000 * 8;
       L.textContent = nf1.format(litres);
       M.textContent = Air.state.pm == null ? '–' : nf2.format(litres / 1000 * Air.state.pm);
-      const ph = ((now - start) / 1000) % 10; // 4 s in, 1 s hold, 5 s out (matches the CSS keyframes)
+      const ph = ((now - start) / 1000) % 10;
       const txt = Motion.still ? 'Breathe' : ph < 4 ? 'Breathe in' : ph < 5 ? 'Hold' : 'Breathe out';
       if (label.textContent !== txt) label.textContent = txt;
     }
     if (on) raf = requestAnimationFrame(tick);
   }
-  const sync = () => {
-    lungs.classList.toggle('breathing', on && !Motion.still);
-    // restart the CSS breath in phase with the label clock
-    const orb = $('.orb'); orb.style.animationDelay = `-${((performance.now() - start) / 1000) % 10}s`;
-  };
+  const sync = () => { lungs.classList.toggle('breathing', on && !Motion.still); orb.style.animationDelay = `-${((performance.now() - start) / 1000) % 10}s`; };
   new IntersectionObserver(([e]) => { on = e.isIntersecting; sync(); if (on && !raf) raf = requestAnimationFrame(tick); }, { threshold: .1 }).observe($('#breath'));
   Motion.on(sync);
-
-  const cigRow = $('#cig-row');
   let shownPm = null;
   Air.on((s) => {
     if (s.pm == null || s.pm === shownPm) return;
     shownPm = s.pm;
     const cigs = s.pm / 22;
-    $('#cig-text').innerHTML = cigs >= 0.5
-      ? `Breathing this all day is like smoking about <b>${nf1.format(cigs)} cigarettes</b>.`
-      : `At this level, a day of breathing is well under one cigarette. <b>Enjoy it.</b>`;
+    $('#cig-text').innerHTML = cigs >= 0.5 ? `Breathing this for a whole day is like smoking about <b>${nf1.format(cigs)} cigarettes</b>.` : 'At this level, a day of breathing is well under one cigarette.';
     const n = Math.min(24, Math.max(1, Math.round(cigs)));
-    cigRow.replaceChildren(...Array.from({ length: n }, (_, i) => { const el = document.createElement('i'); el.style.setProperty('--i', i); return el; }));
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { cigRow.querySelectorAll('i').forEach((el) => el.classList.add('on')); io.disconnect(); } });
-    io.observe(cigRow);
+    $('#cig-row').replaceChildren(...Array.from({ length: n }, () => document.createElement('i')));
   });
 })();
 
 /* ═══════════════════════════════════════════════ 48 HOURS: scroll scrubs time, the sky follows */
 (() => {
-  const sec = $('#day');
-  const W = 1000, H = 200;
+  const sec = $('#day'); const W = 1000, H = 200;
   let data = null, pts = [], vals = [], hiI = 0, loI = 0, active = false, raf = 0;
   const el = { when: $('#day-when'), clock: $('#day-clock'), val: $('#day-val'), dot: $('#day-dot'), note: $('#day-note'), clip: $('#day-cliprect'), scrub: $('#day-scrub') };
   const path = (arr) => arr.map(([x, y], i) => (i ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1)).join('');
-
   Air.on((s) => {
     if (!s.hourly) { el.when.textContent = 'Hourly data unavailable right now'; return; }
-    data = s.hourly;
-    vals = data.pm.map((v) => v ?? 0);
+    data = s.hourly; vals = data.pm.map((v) => v ?? 0);
     const max = Math.max(60, ...vals) * 1.12;
     pts = vals.map((v, i) => [i / (vals.length - 1) * W, H - v / max * H]);
     const n = data.now;
@@ -1563,25 +1411,19 @@ void main(){
     $('#day-fc').setAttribute('d', path(pts.slice(n)));
     $('#day-lit').setAttribute('d', path(pts));
     $('#day-area').setAttribute('d', path(pts) + `L${W} ${H}L0 ${H}Z`);
-    const wy = H - Air.WHO / max * H; ['y1', 'y2'].forEach((a) => $('#day-who').setAttribute(a, wy.toFixed(1)));
-    ['x1', 'x2'].forEach((a) => $('#day-nowline').setAttribute(a, pts[n][0].toFixed(1)));
+    const wy = (H - Air.WHO / max * H).toFixed(1); $('#day-who').setAttribute('y1', wy); $('#day-who').setAttribute('y2', wy);
+    const nx = pts[n][0].toFixed(1); $('#day-nowline').setAttribute('x1', nx); $('#day-nowline').setAttribute('x2', nx);
     hiI = vals.indexOf(Math.max(...vals)); loI = vals.indexOf(Math.min(...vals));
     $('#day-sum').textContent = `Hourly PM2.5 over 48 hours: lowest ${nf0.format(vals[loI])}, highest ${nf0.format(vals[hiI])} µg/m³. The WHO 24-hour guideline is 15.`;
     update();
   });
-
-  function dayLabel(dateStr) {
-    const diff = Math.round((Date.parse(dateStr) - Date.parse(data.today)) / 864e5);
-    return diff === 0 ? 'Today' : diff === -1 ? 'Yesterday' : diff === 1 ? 'Tomorrow' : new Intl.DateTimeFormat(lang, { weekday: 'long', timeZone: 'UTC' }).format(new Date(dateStr));
-  }
+  const dayLabel = (d) => { const diff = Math.round((Date.parse(d) - Date.parse(data.today)) / 864e5); return diff === 0 ? 'Today' : diff === -1 ? 'Yesterday' : diff === 1 ? 'Tomorrow' : new Intl.DateTimeFormat(lang, { weekday: 'long', timeZone: 'UTC' }).format(new Date(d)); };
   function skyFor(hour) {
-    // Dhaka: first light ~5:30, sunset ~17:15 at this time of year
     const day = clamp((hour - 5.3) / 1.2, 0, 1) * clamp((18.2 - hour) / 1.2, 0, 1);
     const tSun = clamp((hour - 6) / 12, 0, 1), tMoon = clamp((((hour - 18) + 24) % 24) / 12, 0, 1);
     const tt = day > .5 ? tSun : tMoon;
-    return { dark: 1 - day, sun: [.1 + .8 * tt, .42 + .42 * Math.sin(Math.PI * tt)] };
+    return { dark: 1 - day, sun: [.1 + .8 * tt, .42 + .38 * Math.sin(Math.PI * tt)] };
   }
-
   function update() {
     raf = 0;
     const r = sec.getBoundingClientRect();
@@ -1592,64 +1434,56 @@ void main(){
     const fi = p * (pts.length - 1), i0 = Math.floor(fi), i1 = Math.min(pts.length - 1, i0 + 1), f = fi - i0, k = Math.round(fi);
     const v = lerp(vals[i0], vals[i1], f);
     const x = lerp(pts[i0][0], pts[i1][0], f), y = lerp(pts[i0][1], pts[i1][1], f);
-    el.clip.setAttribute('width', x.toFixed(1));
-    el.scrub.setAttribute('cx', x.toFixed(1)); el.scrub.setAttribute('cy', y.toFixed(1));
+    el.clip.setAttribute('width', x.toFixed(1)); el.scrub.setAttribute('cx', x.toFixed(1)); el.scrub.setAttribute('cy', y.toFixed(1));
     const ts = data.time[k];
     el.clock.textContent = ts.slice(11, 16);
-    el.when.textContent = dayLabel(ts.slice(0, 10)) + (k > data.now ? ' · forecast' : '');
+    el.when.textContent = dayLabel(ts.slice(0, 10)) + (k > data.now ? ', forecast' : '');
     el.val.textContent = `${nf1.format(v)} µg/m³ · ${nf1.format(v / Air.WHO)}× WHO`;
     el.dot.style.background = Air.pmBand(v).c;
-    el.note.textContent = Math.abs(k - data.now) <= 1 ? 'This is now. Everything after is forecast.'
-      : Math.abs(k - hiI) <= 1 ? 'The dirtiest hour in this window.'
-      : Math.abs(k - loI) <= 1 ? 'The cleanest hour in this window.'
-      : v <= Air.WHO ? 'Within the WHO guideline.' : '';
-    if (inside) {
-      const hour = (+data.time[i0].slice(11, 13) + f) % 24, sky = skyFor(hour);
-      Stage.setJourney({ smog: clamp(v / 110, .08, 1), dark: sky.dark, sun: sky.sun });
-    }
+    el.note.textContent = Math.abs(k - data.now) <= 1 ? 'This is now. Everything after is forecast.' : Math.abs(k - hiI) <= 1 ? 'The dirtiest hour in this window.' : Math.abs(k - loI) <= 1 ? 'The cleanest hour in this window.' : v <= Air.WHO ? 'Within the WHO guideline.' : '';
+    if (inside) { const hour = (+data.time[i0].slice(11, 13) + f) % 24, sky = skyFor(hour); Stage.setJourney({ smog: clamp(v / 110, .08, 1), dark: sky.dark, sun: sky.sun }); }
   }
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
   addEventListener('resize', update);
 })();
 
-/* ═══════════════════════════════════════════════ TRACKS: expanding panels */
+/* ═══════════════════════════════════════════════ PROBLEMS: ARIA tabs (arrow keys, Home/End) */
 (() => {
-  const items = [...$$('.track')];
-  const narrow = matchMedia('(max-width: 960px)');
-  function open(li) {
-    items.forEach((t) => {
-      const on = t === li; t.toggleAttribute('data-open', on);
-      t.querySelector('.track-btn').setAttribute('aria-expanded', String(on || narrow.matches));
-      t.querySelector('.track-panel').inert = !(on || narrow.matches);
-    });
+  const tabs = [...$$('[role="tab"]')];
+  function select(tab, focus) {
+    tabs.forEach((t) => { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; $('#' + t.getAttribute('aria-controls')).hidden = !on; });
+    if (focus) tab.focus();
   }
-  items.forEach((t) => {
-    t.querySelector('.track-btn').addEventListener('click', () => open(t));
-    if (finePointer) t.addEventListener('pointerenter', () => open(t));
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => {
+      const k = e.key; let n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = tabs[(i + 1) % tabs.length];
+      else if (k === 'ArrowLeft' || k === 'ArrowUp') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      else if (k === 'Home') n = tabs[0]; else if (k === 'End') n = tabs[tabs.length - 1];
+      if (n) { e.preventDefault(); select(n, true); }
+    });
   });
-  narrow.addEventListener('change', () => open(items.find((t) => t.hasAttribute('data-open')) || items[0]));
-  open(items[0]);
-  new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle('in-view', e.isIntersecting)), { threshold: .2 }).observe($('#tracks'));
+  new IntersectionObserver(([e]) => $('#tabs').classList.toggle('in-view', e.isIntersecting), { threshold: .2 }).observe($('#tabs'));
 })();
 
-/* ═══════════════════════════════════════════════ COMMAND PALETTE (⌘K / Ctrl+K) */
+/* ═══════════════════════════════════════════════ COMMAND MENU (⌘K / Ctrl K): no open/close animation */
 (() => {
   const dlg = $('#palette'), input = $('#pal-input'), list = $('#pal-list');
   const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
   $('#kbd-hint').textContent = isMac ? '⌘K' : 'Ctrl K';
   const go = (id) => () => $(id).scrollIntoView({ behavior: reduceMQ.matches ? 'auto' : 'smooth' });
   const cmds = [
-    { t: 'Purify the sky', k: 'clean clear blast smog effect', hint: 'Effect', run: () => { scrollTo({ top: 0, behavior: reduceMQ.matches ? 'auto' : 'smooth' }); setTimeout(() => Stage.blast(), 450); } },
-    { t: () => Theme.isDark() ? 'Switch to light theme' : 'Switch to dark theme', k: 'theme dark light mode night day', hint: 'View', run: () => Theme.toggle() },
-    { t: () => Motion.still ? 'Play motion' : 'Pause all motion', k: 'pause play motion animation stop', hint: 'View', run: () => Motion.toggle() },
-    { t: 'Toggle city sound', k: 'sound audio wind mute', hint: 'View', run: () => $('#sound').click() },
-    { t: 'Use my location', k: 'location gps where my city', hint: 'Data', run: () => { go('#air')(); Air.locate(); } },
-    { t: 'Copy the live reading', k: 'copy share clipboard aqi', hint: 'Data', run: async () => { const s = Air.copyText(); if (!s) { toast('No live reading yet.'); return; } try { await navigator.clipboard.writeText(s); toast('Copied. Paste it anywhere.'); } catch (e) { toast('Copy was blocked by the browser.'); } } },
     { t: 'Go to live air', k: 'aqi now readings section', hint: 'Section', run: go('#air') },
     { t: 'Go to your breath', k: 'breath lungs counter cigarettes section', hint: 'Section', run: go('#breath') },
     { t: 'Go to 48 hours', k: 'forecast history chart time section', hint: 'Section', run: go('#day') },
     { t: 'Go to the problems', k: 'tracks build sense predict act section', hint: 'Section', run: go('#build') },
     { t: 'Go to the 2027 plan', k: 'plan timeline dates section', hint: 'Section', run: go('#plan') },
+    { t: 'Purify the sky', k: 'clean clear blast smog effect', hint: 'Action', run: () => { scrollTo({ top: 0, behavior: reduceMQ.matches ? 'auto' : 'smooth' }); setTimeout(() => Stage.blast(), 450); } },
+    { t: () => Motion.still ? 'Play motion' : 'Pause motion', k: 'pause play motion animation stop', hint: 'Action', run: () => Motion.toggle() },
+    { t: 'Toggle city sound', k: 'sound audio wind mute', hint: 'Action', run: () => $('#sound').click() },
+    { t: 'Use my location', k: 'location gps where my city', hint: 'Action', run: () => { go('#air')(); Air.locate(); } },
+    { t: 'Copy the live reading', k: 'copy share clipboard aqi', hint: 'Action', run: async () => { const s = Air.copyText(); if (!s) { toast('No live reading yet.'); return; } try { await navigator.clipboard.writeText(s); toast('Copied the live reading.'); } catch (e) { toast('The browser blocked copying.'); } } },
     { t: 'Follow Cedar Initiative', k: 'cedar updates follow organiser link', hint: 'Link', run: () => { location.href = 'https://cedar-initiative.org'; } },
   ];
   let shown = [], sel = 0, opener = null;
@@ -1666,7 +1500,7 @@ void main(){
       li.addEventListener('click', () => run(i)); li.addEventListener('pointermove', () => { if (sel !== i) { sel = i; mark(); } });
       return li;
     }));
-    if (!shown.length) { const li = document.createElement('li'); li.className = 'pal-empty'; li.textContent = 'No matching command. Try “theme” or “air”.'; list.append(li); }
+    if (!shown.length) { const li = document.createElement('li'); li.className = 'pal-empty'; li.textContent = 'Nothing matches. Try “air” or “sound”.'; list.append(li); }
     mark();
   }
   function mark() {
@@ -1687,30 +1521,25 @@ void main(){
   addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); dlg.open ? dlg.close() : openP(); } });
 })();
 
-/* ═══════════════════════════════════════════════ INTRO: inhale, then the city opens up */
+/* ═══════════════════════════════════════════════ INTRO (once per session, skippable) */
 (() => {
   const root = document.documentElement, intro = $('#intro');
-  const ready = () => root.classList.add('ready');
+  const ready = () => { root.classList.add('ready'); Stage.reveal(); };
   if (!root.classList.contains('has-intro')) { intro.remove(); ready(); return; }
   try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
-  const cnt = $('#intro-count'), t0 = performance.now();
-  let done = false, dataIn = false, fontsIn = false, pct = 0;
+  const bar = $('#intro-bar'), t0 = performance.now();
+  let done = false, dataIn = false;
   Air.on(() => { dataIn = true; });
-  document.fonts.ready.then(() => { fontsIn = true; });
-  const cleanup = () => { root.classList.remove('has-intro'); intro.remove(); };
   function finish() {
     if (done) return; done = true;
-    $('#intro-word').textContent = 'Exhale.';
     intro.classList.add('go'); ready();
-    intro.addEventListener('animationend', cleanup, { once: true });
-    setTimeout(cleanup, 1500);
+    setTimeout(() => { root.classList.remove('has-intro'); intro.remove(); }, 650);
   }
   (function loop(now) {
     if (done) return;
-    const el = now - t0, target = (dataIn ? 50 : 0) + (fontsIn ? 30 : 0) + Math.min(20, el / 60);
-    pct = Math.min(100, Math.max(pct, Math.round(Math.min(target, el / 18))));
-    cnt.textContent = `READING DHAKA’S AIR · ${String(pct).padStart(2, '0')}%`;
-    if ((pct >= 100 && el > 1100) || el > 2600) { setTimeout(finish, 180); return; }
+    const el = now - t0, p = Math.min(1, dataIn ? Math.max(.6, el / 1100) : el / 2400);
+    bar.style.setProperty('--p', p.toFixed(3));
+    if ((dataIn && el > 900) || el > 2400) { $('#intro-txt').textContent = Air.state.aqi != null ? `Dhaka, US AQI ${nf0.format(Air.state.aqi)}` : 'Dhaka'; setTimeout(finish, 350); return; }
     requestAnimationFrame(loop);
   })(t0);
   intro.addEventListener('click', finish);
