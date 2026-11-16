@@ -205,21 +205,18 @@
     @media (pointer: fine) { .hint .coarse { display: none; } }
 
     .ship {
-      position: absolute; left: 0; top: 0; z-index: 2; width: clamp(130px, 13vw, 200px);
+      position: absolute; left: 0; top: 0; z-index: 2; width: clamp(150px, 15vw, 240px);
       translate: -400px 140px;
       cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
       &.drag { cursor: grabbing; }
       & .body { transform-box: fill-box; transform-origin: center; scale: var(--flip, 1) 1; transition: scale 600ms var(--ease-in-out); }
       & .prop { transform-box: fill-box; transform-origin: center; }
-      & .cloth { transform-box: fill-box; transform-origin: 50% 0; }
-      @media (prefers-reduced-motion: no-preference) {
+            @media (prefers-reduced-motion: no-preference) {
         & .prop { animation: spin 0.3s linear infinite; }
-        & .cloth { animation: wave 3.2s ease-in-out infinite; }
       }
     }
     @keyframes spin { to { rotate: 360deg; } }
-    @keyframes wave { 0%, 100% { rotate: -2deg; } 50% { rotate: 2deg; } }
-
+    
     /* Live readings bar */
     .livebar { min-width: 0; border-top: 1px solid var(--line); background: rgb(8 9 10 / 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .livebar .wrap { display: flex; align-items: stretch; overflow-x: auto; scrollbar-width: none; }
@@ -323,20 +320,20 @@
     .day-chart .who { stroke: var(--safe); stroke-width: 1; vector-effect: non-scaling-stroke; stroke-dasharray: 2 4; }
     .day-chart .nowline { stroke: rgb(255 255 255 / 0.5); stroke-width: 1; vector-effect: non-scaling-stroke; }
     .scrub { fill: var(--bg); stroke: var(--ink); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+    .chart-box { position: relative; }
+    .ylab { position: absolute; right: 0; translate: 0 -120%; font-size: 0.75rem; color: var(--ink-2); background: rgb(8 9 10 / 0.6); padding: 1px 4px; border-radius: 3px; }
+    .ylab-safe { color: var(--safe); }
     .day-axis { display: flex; justify-content: space-between; gap: 16px; margin-top: 10px; font-size: 0.75rem; color: var(--ink-2); }
     .day-axis .safe { color: var(--safe); }
 
     /* ── Problems: tabs ── */
     .tabs { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); min-height: 480px; }
-    .tablist { display: grid; align-content: start; border-right: 1px solid var(--line); }
-    .tab { all: unset; box-sizing: border-box; display: grid; gap: 6px; padding: 24px clamp(20px, 2.4vw, 28px); border-bottom: 1px solid var(--line); cursor: pointer; color: var(--ink-2); transition: color 160ms ease, background-color 160ms ease; position: relative; }
-    .tab::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--ink); scale: 1 0; transition: scale 240ms var(--ease-out); transform-origin: 50% 0; }
+    .tablist { display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); border-right: 1px solid var(--line); }
+    .tab { all: unset; box-sizing: border-box; display: grid; align-content: center; gap: 6px; padding: 24px clamp(20px, 2.4vw, 28px); border-bottom: 1px solid var(--line); cursor: pointer; color: var(--ink-2); transition: color 160ms ease, background-color 160ms ease; position: relative; }
     .tab[aria-selected="true"] { color: var(--ink); background: var(--bg-2); }
-    .tab[aria-selected="true"]::before { scale: 1 1; }
     .tab:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
     @media (hover: hover) and (pointer: fine) { .tab:hover { color: var(--ink); } }
-    .tab-k { font-size: 0.8125rem; }
-    .tab-t { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
+        .tab-t { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
     .panel { display: grid; grid-template-rows: 1fr auto; min-width: 0; }
     .panel[hidden] { display: none; }
     .panel-viz { position: relative; border-bottom: 1px solid var(--line); min-height: 260px; display: grid; place-items: center; padding: 24px; overflow: clip; }
@@ -345,6 +342,21 @@
     .panel-body p { color: var(--ink-2); max-width: 58ch; }
     .sources { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; }
     .sources li { font-size: 0.8125rem; padding: 6px 10px; border: 1px solid var(--line-2); border-radius: var(--r-pill); color: var(--ink-2); }
+    .cellpair { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: min(100%, 400px); margin: 0; }
+    .cellpair p { margin-top: 10px; font-size: 0.8125rem; color: var(--ink-2); }
+    .cellbox { aspect-ratio: 1; border-radius: var(--r-s); border: 1px solid var(--line-2); }
+    .cell-model { background: color-mix(in oklch, var(--band) 75%, var(--bg-1)); }
+    .cell-streets { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; padding: 3px; }
+    .cell-streets i { border-radius: 2px; background: var(--c); opacity: .9; }
+    .viz-predict { align-content: center; gap: 8px; }
+    .fc-past { fill: none; stroke: var(--ink); stroke-width: 2; }
+    .fc-next { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 5 5; opacity: .7; }
+    .fc-note { font-size: 0.8125rem; color: var(--ink-2); text-align: center; }
+    .alert { width: min(100%, 380px); padding: 16px 18px; border-radius: var(--r-l); background: var(--bg-2); border: 1px solid var(--line-2); box-shadow: 0 16px 40px -20px rgb(0 0 0 / .8); }
+    .alert-top { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--ink-2); }
+    .alert-ex { margin-left: auto; color: var(--ink-2); }
+    .alert-t { margin-top: 10px; font-weight: 600; font-size: 1.0625rem; letter-spacing: -0.01em; }
+    .alert-b { margin-top: 4px; color: var(--ink-2); font-size: 0.9375rem; }
     .viz-line { fill: none; stroke: rgb(255 255 255 / 0.22); stroke-width: 1.25; vector-effect: non-scaling-stroke; }
     .viz-node { fill: var(--ink); }
     .viz-hot { fill: var(--smog); }
@@ -362,13 +374,14 @@
     @keyframes plume { 0%, 100% { scale: 0.85 0.8; opacity: 0.6; } 50% { scale: 1.1 1.25; opacity: 1; } }
 
     /* ── Plan + close ── */
-    .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); }
-    .step { padding: clamp(20px, 2.4vw, 32px); border-right: 1px solid var(--line); min-width: 0; }
-    .step:last-child { border-right: 0; }
-    .when { display: inline-flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: var(--ink-2); }
-    .is-now .when { color: var(--safe); }
-    .is-now .when::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--safe); }
-    .step h3 { margin-top: 18px; font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.02em; }
+    .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); position: relative; }
+    .steps::before { content: ""; position: absolute; left: 0; right: 0; top: 5px; height: 1px; background: var(--line-2); }
+    .steps::after { content: ""; position: absolute; left: 0; width: calc(100% / 6); top: 5px; height: 1px; background: var(--ink); }
+    .step { position: relative; padding: 40px clamp(16px, 3vw, 40px) 0 0; min-width: 0; }
+    .step::before { content: ""; position: absolute; left: 0; top: 0; width: 11px; height: 11px; border-radius: 50%; background: var(--bg); border: 1px solid var(--line-3); }
+    .step.is-now::before { background: var(--ink); border-color: var(--ink); }
+    .step:not(.is-now) h3 { color: var(--ink-2); }
+    .step h3 { margin-top: 0; font-size: 1.375rem; line-height: 1.15; letter-spacing: -0.02em; }
     .step p { margin-top: 10px; color: var(--ink-2); font-size: 0.9375rem; }
     .close { margin-top: clamp(96px, 16vh, 180px); display: grid; gap: 32px; }
     .bn { font: 600 min(12.5rem, 17vw)/1.05 var(--bangla); color: var(--ink); }
@@ -420,13 +433,20 @@
       .tablist { grid-template-columns: repeat(3, minmax(0, 1fr)); border-right: 0; border-bottom: 1px solid var(--line); }
       .tab { border-bottom: 0; border-right: 1px solid var(--line); padding: 16px; }
       .tab:last-child { border-right: 0; }
-      .tab::before { left: 0; right: 0; top: auto; bottom: 0; width: auto; height: 2px; scale: 0 1; transform-origin: 0 50%; }
-      .tab[aria-selected="true"]::before { scale: 1 1; }
+      .tablist { grid-template-rows: none; }
+      .tab[aria-selected="true"] { box-shadow: inset 0 -2px 0 var(--ink); }
       .tab-t { font-size: 0.9375rem; }
       .foot { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
       .foot-src { grid-column: 1 / -1; }
     }
     @media (max-width: 720px) {
+      .livebar .wrap { flex-direction: column; overflow: visible; }
+      .livebar dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .cell:nth-child(1), .cell:nth-child(5) { display: none; }
+      .cell { padding: 12px 10px; white-space: normal; }
+      .cell:nth-child(2) { padding-left: 0; border-left: 0; }
+      .cell dd { font-size: 0.875rem; }
+      .still-btn { margin-left: 0; padding: 0; border-left: 0; border-top: 1px solid var(--line); justify-content: center; }
       .cmdk .lbl, .cmdk kbd, .nav-cta { display: none; }
       .cmdk { width: 36px; padding: 0; justify-content: center; }
       .cta-row .btn { flex: 1 1 100%; min-height: 48px; }
@@ -435,15 +455,13 @@
       .g-reads > div:nth-child(2n) { border-right: 0; }
       .g-reads > div:nth-last-child(-n+3) { border-bottom: 1px solid var(--line); }
       .g-reads > div:nth-last-child(-n+2) { border-bottom: 0; }
-      .steps { grid-template-columns: minmax(0, 1fr); }
-      .step { border-right: 0; border-bottom: 1px solid var(--line); }
-      .step:last-child { border-bottom: 0; }
+      .steps { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+      .steps::before { left: 5px; right: auto; top: 0; bottom: 0; width: 1px; height: auto; }
+      .steps::after { left: 5px; top: 0; width: 1px; height: 40px; }
+      .step { padding: 0 0 0 32px; }
       .day-top { flex-direction: column; gap: 16px; }
-      .day-intro p { display: none; }
       .day-now { text-align: left; }
       .day-val { justify-content: flex-start; }
-      .day-axis .safe { display: none; }
-      .tab-k { display: none; }
     }
   </style>
 </head>
@@ -644,36 +662,36 @@
         <svg class="i-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m22 9-6 6M16 9l6 6"/></svg>
         <svg class="i-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>
       </button>
-      <a class="btn btn-primary btn-sm nav-cta" href="https://cedar-initiative.org" rel="noopener">Get Updates</a>
+      <a class="btn btn-primary btn-sm nav-cta" href="https://cedar-initiative.org" rel="noopener">Follow Cedar</a>
     </div>
   </div>
 </nav>
 
 <header class="hero" id="top">
-  <svg class="ship" id="ship" viewBox="0 0 280 170" aria-hidden="true" focusable="false">
+  <svg class="ship" id="ship" viewBox="0 0 280 112" aria-hidden="true" focusable="false">
     <defs>
-      <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f5f86"/><stop offset=".55" stop-color="#26405f"/><stop offset="1" stop-color="#152538"/></linearGradient>
+      <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a7192"/><stop offset=".18" stop-color="#2b3a50"/><stop offset=".7" stop-color="#18212e"/><stop offset="1" stop-color="#4a3326"/></linearGradient>
+      <linearGradient id="ag-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d6ea" stop-opacity=".75"/><stop offset=".35" stop-color="#c9d6ea" stop-opacity="0"/></linearGradient>
+      <linearGradient id="ag-glow" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e4a660" stop-opacity=".45"/><stop offset=".4" stop-color="#e4a660" stop-opacity="0"/></linearGradient>
+      <clipPath id="ag-clip"><ellipse cx="142" cy="44" rx="116" ry="38"/></clipPath>
     </defs>
     <g class="body">
-      <polygon points="26,46 45,24 45,68" fill="#1b2b3f"/>
-      <polygon points="42,28 58,6 64,28" fill="#1b2b3f"/>
-      <polygon points="42,64 58,86 64,64" fill="#1b2b3f"/>
-      <path d="M94 87 100 73M142 88V73M190 87l-6-14" stroke="#4b6584" stroke-width=".8"/>
-      <rect x="82" y="73" width="120" height="26" rx="7" fill="#1a2738"/>
-      <g fill="#ffcf7a" opacity=".9"><rect x="92" y="79" width="16" height="11" rx="2.5"/><rect x="114" y="79" width="16" height="11" rx="2.5"/><rect x="136" y="79" width="16" height="11" rx="2.5"/><rect x="158" y="79" width="16" height="11" rx="2.5"/></g>
-      <rect x="196" y="80" width="16" height="5" rx="2.5" fill="#152538"/>
-      <g class="prop"><ellipse cx="214" cy="82.5" rx="2.2" ry="9" fill="#3b5576"/><ellipse cx="214" cy="82.5" rx="9" ry="2.2" fill="#3b5576"/></g>
-      <ellipse cx="142" cy="46" rx="116" ry="41" fill="url(#ag-env)"/>
-      <path d="M40 46h204" stroke="#fff" stroke-opacity=".08"/>
-      <ellipse cx="258" cy="46" rx="6" ry="5" fill="#152538"/>
-      <circle cx="258" cy="43" r="2" fill="#ff5a4e"/>
-      <circle cx="258" cy="49" r="2" fill="#4ee07a"/>
-    </g>
-    <path d="M114 99v5M170 99v5" stroke="#9fb3cc" stroke-width="1.1"/>
-    <rect x="98" y="102" width="88" height="3" rx="1.5" fill="#9fb3cc"/>
-    <g class="cloth">
-      <rect x="98" y="105" width="88" height="58" rx="3" fill="#f4f5f6"/>
-      <use href="#cedar-logo" x="104" y="110" width="76" height="48" style="color:#0b0c0e;--cedar-green:#1a5029"/>
+      <path d="M30 44 46 20h14l-6 24 6 24H46Z" fill="#141c27"/>
+      <ellipse cx="142" cy="44" rx="116" ry="38" fill="url(#ag-env)"/>
+      <g clip-path="url(#ag-clip)">
+        <ellipse cx="142" cy="44" rx="116" ry="38" fill="url(#ag-glow)"/>
+        <path d="M26 44h232" stroke="#fff" stroke-opacity=".05"/>
+        <path d="M90 6v76M142 6v76M194 6v76" stroke="#000" stroke-opacity=".18"/>
+      </g>
+      <ellipse cx="142" cy="44" rx="116" ry="38" fill="none" stroke="url(#ag-rim)" stroke-width="2"/>
+      <use href="#cedar-logo" x="152" y="22" width="68" height="38" style="color:#e9edf2;--cedar-green:#3f9a5e"/>
+      <path d="M104 80 110 90M142 82v8M180 80l-6 10" stroke="#3a4a5e" stroke-width=".8"/>
+      <rect x="100" y="89" width="84" height="16" rx="5" fill="#121923"/>
+      <g fill="#ffcf7a"><rect x="108" y="94" width="10" height="6" rx="1.5"/><rect x="124" y="94" width="10" height="6" rx="1.5"/><rect x="140" y="94" width="10" height="6" rx="1.5" opacity=".5"/><rect x="156" y="94" width="10" height="6" rx="1.5"/></g>
+      <rect x="182" y="94" width="12" height="4" rx="2" fill="#121923"/>
+      <g class="prop"><ellipse cx="196" cy="96" rx="1.8" ry="8" fill="#3a4a5e"/><ellipse cx="196" cy="96" rx="8" ry="1.8" fill="#3a4a5e"/></g>
+      <circle cx="257" cy="41" r="1.8" fill="#ff5a4e"/>
+      <circle cx="257" cy="48" r="1.8" fill="#4ee07a"/>
     </g>
   </svg>
 
@@ -694,7 +712,7 @@
         <div class="cell"><dt><span class="dot" data-band></span><span><span data-city>Dhaka</span>, live</span></dt><dd data-clock>…</dd></div>
         <div class="cell"><dt>US AQI</dt><dd><span data-aqi>…</span> <small data-band-name></small></dd></div>
         <div class="cell"><dt>PM2.5</dt><dd><span data-pm>…</span> <small>µg/m³</small></dd></div>
-        <div class="cell"><dt>WHO 24-hour guideline</dt><dd data-multx>…</dd></div>
+        <div class="cell"><dt>WHO 24-h limit</dt><dd data-multx>…</dd></div>
         <div class="cell"><dt>Wind</dt><dd><span data-wind>…</span> <small>km/h <span data-wind-dir></span></small></dd></div>
       </dl>
       <button class="still-btn" type="button" id="still-btn">
@@ -784,7 +802,7 @@
       <div class="wrap day-top">
         <div class="day-intro">
           <h2 id="day-h">48 hours of <span data-city>Dhaka</span>’s air</h2>
-          <p>Scroll to move through time. The sky, the sun and the smog follow the real hourly PM2.5, from yesterday into tomorrow’s forecast.</p>
+          <p>Scroll to move through time. The sky follows the real hourly PM2.5.</p>
         </div>
         <div class="day-now">
           <p class="day-when" id="day-when">Loading…</p>
@@ -795,6 +813,8 @@
       </div>
       <div></div>
       <div class="wrap day-chart">
+        <div class="chart-box">
+        <span class="ylab" id="y-peak">–</span><span class="ylab ylab-safe" id="y-who">15</span>
         <svg id="day-svg" viewBox="0 0 1000 200" preserveAspectRatio="none" role="img" aria-labelledby="day-sum">
           <title id="day-sum">Hourly PM2.5 over 48 hours, loading.</title>
           <defs><clipPath id="day-clip"><rect id="day-cliprect" x="0" y="-20" width="0" height="240"/></clipPath></defs>
@@ -806,7 +826,8 @@
           <line class="nowline" id="day-nowline" x1="0" x2="0" y1="0" y2="200"/>
           <circle class="scrub" id="day-scrub" r="6" cx="0" cy="200"/>
         </svg>
-        <div class="day-axis"><span>Yesterday</span><span class="safe">Dotted line: WHO 24-hour guideline</span><span>Tomorrow, forecast</span></div>
+        </div>
+        <div class="day-axis"><span>Yesterday</span><span class="safe">Dotted: WHO limit</span><span>Tomorrow, forecast</span></div>
       </div>
     </div>
   </section>
@@ -819,20 +840,16 @@
       </div>
       <div class="tabs" id="tabs">
         <div class="tablist" role="tablist" aria-label="Problems">
-          <button class="tab" role="tab" id="t-1" aria-controls="p-1" aria-selected="true" tabindex="0"><span class="tab-k">Sense</span><span class="tab-t">Measure the street, not the city</span></button>
-          <button class="tab" role="tab" id="t-2" aria-controls="p-2" aria-selected="false" tabindex="-1"><span class="tab-k">Predict</span><span class="tab-t">See the bad days coming</span></button>
-          <button class="tab" role="tab" id="t-3" aria-controls="p-3" aria-selected="false" tabindex="-1"><span class="tab-k">Act</span><span class="tab-t">Turn readings into action</span></button>
+          <button class="tab" role="tab" id="t-1" aria-controls="p-1" aria-selected="true" tabindex="0"><span class="tab-t">Measure the street, not the city</span></button>
+          <button class="tab" role="tab" id="t-2" aria-controls="p-2" aria-selected="false" tabindex="-1"><span class="tab-t">See the bad days coming</span></button>
+          <button class="tab" role="tab" id="t-3" aria-controls="p-3" aria-selected="false" tabindex="-1"><span class="tab-t">Turn readings into action</span></button>
         </div>
         <div class="panel" role="tabpanel" id="p-1" aria-labelledby="t-1">
-          <div class="panel-viz" aria-hidden="true">
-            <svg viewBox="0 0 560 220">
-              <path class="viz-line" d="M60 160 170 80 280 150 390 70 500 140M170 80 280 150M60 160 280 150 500 140"/>
-              <g><circle class="viz-ping" style="--i:0" cx="60" cy="160" r="7"/><circle class="viz-hot" cx="60" cy="160" r="5"/></g>
-              <g><circle class="viz-ping" style="--i:1" cx="170" cy="80" r="7"/><circle class="viz-node" cx="170" cy="80" r="5"/></g>
-              <g><circle class="viz-ping" style="--i:2" cx="280" cy="150" r="7"/><circle class="viz-hot" cx="280" cy="150" r="5"/></g>
-              <g><circle class="viz-ping" style="--i:3" cx="390" cy="70" r="7"/><circle class="viz-node" cx="390" cy="70" r="5"/></g>
-              <g><circle class="viz-ping" style="--i:4" cx="500" cy="140" r="7"/><circle class="viz-hot" cx="500" cy="140" r="5"/></g>
-            </svg>
+          <div class="panel-viz viz-sense" aria-hidden="true">
+            <figure class="cellpair">
+              <div><div class="cellbox cell-model" id="cell-model"></div><p>What the model reports: one number for a cell about 10&nbsp;km across</p></div>
+              <div><div class="cellbox cell-streets" id="cell-streets"></div><p>What the streets inside it might breathe (illustrative)</p></div>
+            </figure>
           </div>
           <div class="panel-body">
             <p>A regional model can’t tell a rickshaw stand from a rooftop. Low-cost sensors, calibration against reference monitors and open maps can show what one street breathes.</p>
@@ -840,14 +857,14 @@
           </div>
         </div>
         <div class="panel" role="tabpanel" id="p-2" aria-labelledby="t-2" hidden>
-          <div class="panel-viz" aria-hidden="true">
-            <svg viewBox="0 0 560 220">
-              <path class="viz-line" d="M30 190H530"/>
-              <path class="viz-safe" d="M30 165H530" stroke-dasharray="2 4"/>
-              <path class="viz-line" d="M30 150C90 140 120 90 180 100S280 160 320 90"/>
-              <path class="viz-draw" pathLength="1" d="M320 90C370 30 430 40 530 70"/>
-              <circle class="viz-node" cx="320" cy="90" r="5"/>
+          <div class="panel-viz viz-predict">
+            <svg id="fc-svg" viewBox="0 0 560 220" role="img" aria-labelledby="fc-sum"><title id="fc-sum">Forecast loading.</title>
+              <line class="viz-safe" id="fc-who" x1="20" x2="540" y1="200" y2="200" stroke-dasharray="2 4"/>
+              <path class="fc-past" id="fc-past" d="M20 200"/><path class="fc-next" id="fc-next" d="M20 200"/>
+              <line id="fc-now" x1="0" x2="0" y1="16" y2="204" stroke="rgb(255 255 255 / .35)"/>
+              <circle id="fc-peak" r="5" cx="-10" cy="-10" class="viz-hot"/>
             </svg>
+            <p class="fc-note" id="fc-note">Loading the forecast…</p>
           </div>
           <div class="panel-body">
             <p>Dhaka’s air is worst in the dry months, roughly November to March. A forecast that reaches schools, clinics and commuters a day early lets them plan around it.</p>
@@ -855,14 +872,12 @@
           </div>
         </div>
         <div class="panel" role="tabpanel" id="p-3" aria-labelledby="t-3" hidden>
-          <div class="panel-viz" aria-hidden="true">
-            <svg viewBox="0 0 560 220">
-              <path class="viz-line" d="M20 200H540M90 200V150h40v50M380 200v-70h30v70"/>
-              <ellipse class="viz-plume" style="--i:0" cx="110" cy="125" rx="28" ry="24"/>
-              <ellipse class="viz-plume" style="--i:1" cx="395" cy="105" rx="24" ry="22"/>
-              <path class="viz-node" d="M230 160a14 14 0 1 1 28 0c0 11-14 26-14 26s-14-15-14-26Z"/>
-              <path class="viz-node" d="M470 150a14 14 0 1 1 28 0c0 11-14 26-14 26s-14-15-14-26Z"/>
-            </svg>
+          <div class="panel-viz viz-act">
+            <div class="alert" aria-label="Example alert written from the live reading">
+              <p class="alert-top"><span class="dot"></span><span>Air alert · <span data-city>Dhaka</span></span><span class="alert-ex">Example, live data</span></p>
+              <p class="alert-t" id="alert-t">Waiting for the live reading</p>
+              <p class="alert-b" id="alert-b">The alert writes itself from the current AQI.</p>
+            </div>
           </div>
           <div class="panel-body">
             <p>Data alone changes little. Build tools that help residents, reporters and agencies trace sources such as brick kilns, traffic and construction dust, and push for fixes.</p>
@@ -880,9 +895,9 @@
         <p>This is the first Air Hackathon. Dates and venue aren’t set yet; follow Cedar Initiative to hear when the call for teams opens.</p>
       </div>
       <ol class="steps">
-        <li class="step is-now"><span class="when">Now</span><h3>Shaping the problems with partners</h3><p>Researchers, agencies and community groups help pick the questions worth a team’s time.</p></li>
-        <li class="step"><span class="when">Next</span><h3>Call for teams</h3><p>Opens once dates and venue are confirmed. Developers, designers and scientists welcome.</p></li>
-        <li class="step"><span class="when">2027</span><h3>Build days in Dhaka</h3><p>Teams build on open data and show working prototypes.</p></li>
+        <li class="step is-now" aria-current="step"><h3>Shaping the problems with partners</h3><p>Under way now. Researchers, agencies and community groups help pick the questions worth a team’s time.</p></li>
+        <li class="step"><h3>Call for teams</h3><p>Opens once dates and venue are confirmed. Developers, designers and scientists welcome.</p></li>
+        <li class="step"><h3>Build days in Dhaka, 2027</h3><p>Teams build on open data and show working prototypes.</p></li>
       </ol>
       <div class="close">
         <p class="bn" lang="bn" aria-hidden="true"><span>নির্মল</span> <span>বাতাস</span></p>
@@ -1129,9 +1144,18 @@ float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.02+ve
 float bh(float x,float w,float seed,float base,float amp,out float id,out float fx){
   float u=x/w;id=floor(u);fx=fract(u);float hgt=base+amp*pow(h1(id+seed),1.7);
   if(h1(id*3.7+seed)>.9)hgt+=amp*.85; if(h1(id*1.3+seed*2.)>.8)hgt*=.55; return hgt;}
+float roof(vec2 p,float w,float seed,float hgt,float amp,float id,float fx){
+  float m=step(p.y,hgt)*step(.03,fx)*step(fx,.97);
+  float tank=step(.5,h1(id*5.1+seed))*step(p.y,hgt+.012)*step(.56,fx)*step(fx,.8);
+  float rail=step(.7,h1(id*2.9+seed))*step(p.y,hgt+.006)*step(hgt,p.y)*(step(fx,.06)+step(.94,fx)+step(abs(fract(fx*6.)-.5),.06));
+  float isM=step(.95,h1(id*9.7+seed)); float top=hgt+amp*.95;
+  float spire=isM*step(abs(fx-.5)*w,.0035)*step(p.y,top);
+  float bulb=isM*step(length(vec2((fx-.5)*w,p.y-top)),.0075);
+  float tip=isM*step(abs(fx-.5)*w,.0012)*step(p.y,top+.02);
+  return max(max(m,tank),max(max(spire,bulb),max(tip,rail)));}
 void main(){
   vec2 frag=gl_FragCoord.xy; vec2 p=frag/uRes.y; float asp=uRes.x/uRes.y; float y=p.y;
-  vec3 sky=mix(mix(vec3(.80,.86,.90),vec3(.40,.60,.82),smoothstep(.15,1.,y)),mix(vec3(.07,.12,.19),vec3(.02,.035,.08),smoothstep(.1,1.,y)),uDark);
+  vec3 sky=mix(mix(vec3(.80,.86,.90),vec3(.40,.60,.82),smoothstep(.15,1.,y)),mix(vec3(.10,.17,.27),vec3(.035,.065,.13),smoothstep(.1,1.,y)),uDark);
   float ds=length(p-uSun); float vis=clamp(abs(uDark-.5)*2.6,0.,1.); float isN=step(.5,uDark);
   vec3 sunC=mix(vec3(1.,.97,.86),vec3(1.,.52,.22),clamp(uSmog*1.1,0.,1.));
   float disc=smoothstep(.05,.044,ds);
@@ -1140,23 +1164,27 @@ void main(){
   sky=mix(sky,vec3(.88,.9,.95),isN*vis*moon); sky+=isN*vis*vec3(.4,.5,.75)*exp(-ds*ds/.012)*.14;
   vec2 sg=p*90.;vec2 sc=floor(sg);vec2 so=vec2(h2(sc+1.7),h2(sc+5.3))-.5;
   float star=step(.965,h2(sc))*smoothstep(.08,0.,length(fract(sg)-.5-so*.6))*(.55+.45*sin(uTime*(1.+h2(sc)*2.)+h2(sc)*6.28));
-  sky+=uDark*star*smoothstep(.3,.6,y)*vec3(.9,.95,1.);
+  float clr0=0.; for(int i=0;i<10;i++){vec2 d=p-uP[i].xy;clr0+=uP[i].z*exp(-dot(d,d)/.03);} clr0=1.-exp(-clr0*1.2);
+  sky+=uDark*star*smoothstep(.3,.6,y)*(.35+1.6*clr0)*vec3(.9,.95,1.);
   vec2 pp=vec2(mod(uTime*.03,asp+.6)-.3,.86+.015*sin(uTime*.2)); vec2 dpp=p-pp;
   sky+=vec3(1.)*step(.9,fract(uTime*.8))*exp(-dot(dpp,dpp)/.000006);
   vec2 dpr=dpp+vec2(.006,0.); sky+=vec3(1.,.2,.15)*(.5+.5*sin(uTime*5.))*exp(-dot(dpr,dpr)/.000004);
   float tall=mix(1.35,1.,smoothstep(.6,1.2,asp)); float sc2=clamp(asp,.95,1.6);
-  float idF,fxF,idN,fxN; float wN=.05*sc2;
-  float hf=bh(p.x+7.3,.028*sc2,11.,.12*tall,.17*tall,idF,fxF);
+  float idF,fxF,idM,fxM,idN,fxN; float wF=.022*sc2, wM=.034*sc2, wN=.05*sc2;
+  float hf=bh(p.x+7.3,wF,11.,.15*tall,.15*tall,idF,fxF);
+  float hm=bh(p.x+3.1,wM,7.,.09*tall,.18*tall,idM,fxM);
   float hn=bh(p.x,wN,3.,.04*tall,.2*tall,idN,fxN);
-  float far=step(y,hf)*step(.04,fxF), near=step(y,hn)*step(.03,fxN);
+  float far=roof(p,wF,11.,hf,.15*tall,idF,fxF), mid=roof(p,wM,7.,hm,.18*tall,idM,fxM), near=roof(p,wN,3.,hn,.2*tall,idN,fxN);
+  vec3 silD=vec3(.26,.29,.35), silN=vec3(.016,.02,.035); vec3 sil=mix(silD,silN,uDark);
   vec3 col=sky;
-  col=mix(col,mix(vec3(.58,.63,.70),vec3(.045,.055,.085),uDark),far);
-  col=mix(col,mix(vec3(.26,.29,.35),vec3(.016,.02,.035),uDark),near);
+  col=mix(col,mix(sky,sil,.38),far);
+  col=mix(col,mix(sky,sil,.68),mid);
+  col=mix(col,sil,near);
   vec2 wg=vec2(fxN*5.,y/.016);vec2 wc=floor(wg);vec2 wf=fract(wg);
   float win=step(.28,wf.x)*step(wf.x,.72)*step(.3,wf.y)*step(wf.y,.72);
-  float lit=step(mix(.93,.64,uDark),h2(wc+idN*17.));
+  float lit=step(mix(.95,.74,uDark),h2(wc+idN*17.))*step(.25,h1(idN*4.3));
   float flick=.85+.15*step(.5,h2(wc+floor(uTime*.25+h2(wc)*10.)));
-  win*=near*lit*step(y,hn-.012)*step(.034,y);
+  win*=step(y,hn)*step(.03,fxN)*lit*step(y,hn-.012)*step(.034,y);
   col=mix(col,mix(vec3(.85,.9,.95),vec3(1.,.8,.5)*flick,uDark),win*mix(.35,.95,uDark));
   float isT=step(.9,h1(idN*3.7+3.)); vec2 db=p-vec2((idN+.5)*wN,hn+.007);
   col+=vec3(1.,.15,.1)*isT*step(.45,fract(uTime*.6+h1(idN)))*exp(-dot(db,db)/.000012)*(.6+.8*uDark);
@@ -1167,15 +1195,15 @@ void main(){
   col+=vec3(1.,.15,.1)*step(.5,h1(c2*2.3+4.))*exp(-(dx2*dx2/.00002+dy2*dy2/.000004))*(.3+.8*uDark);
   col+=uDark*vec3(.55,.32,.12)*.3*smoothstep(.14,0.,y);
   float clr=0.;
-  for(int i=0;i<10;i++){vec2 d=p-uP[i].xy;clr+=uP[i].z*exp(-dot(d,d)/.016);}
-  clr=1.-exp(-clr*1.4);
+  for(int i=0;i<10;i++){vec2 d=p-uP[i].xy;clr+=uP[i].z*exp(-dot(d,d)/.03);}
+  clr=1.-exp(-clr*1.2);
   float ring=0.;
   if(uBlast.z>=0.){float r=uBlast.z*.85;float d=length(p-uBlast.xy);float life=1.-smoothstep(1.4,3.2,uBlast.z);
     clr=max(clr,(1.-smoothstep(r-.12,r,d))*life); ring=exp(-pow((d-r)/.018,2.))*life;}
   vec2 drift=uWind*uTime*.012; vec2 q=vec2(p.x*1.1,y*2.2)+drift;
   float n=fbm(q*2.2+vec2(fbm(q*1.3-uTime*.008),0.)*1.4); float n2=fbm(q*5.5+drift*2.);
   float dens=uSmog*mix(.45,1.15,smoothstep(.95,0.,y))*(.55+.75*n+.2*n2);
-  dens=clamp(dens*(1.-clr*.94),0.,.97);
+  dens=clamp(dens*(1.-clr*.72),0.,.97);
   vec3 smog=mix(vec3(.80,.72,.58),vec3(.32,.22,.15)+vec3(.24,.11,.04)*smoothstep(.6,0.,y),uDark)*(.92+.16*n2);
   col=mix(col,smog,dens);
   float specks=0.;
@@ -1184,6 +1212,7 @@ void main(){
     specks+=step(1.-uSmog*.55,r)*smoothstep(.09-float(k)*.03,0.,d)*(k==0?.7:.45);}
   specks*=1.-clr;
   col=mix(col,mix(vec3(.35,.30,.24),vec3(.92,.76,.54),uDark),clamp(specks,0.,1.)*.5);
+  col+=uDark*vec3(.05,.08,.12)*clr*(1.-dens);
   col+=vec3(.56,.86,.76)*ring*.35;
   col*=uReveal;
   col+=(h2(frag+fract(uTime))-.5)/255.;
@@ -1295,7 +1324,7 @@ void main(){
   const route = (tt) => {
     const w = hero.clientWidth, sw = ship.getBoundingClientRect().width;
     const lo = innerWidth >= 1000 ? w * .52 : 0, span = w - sw - lo - 16;
-    return [lo + span * (.5 + .5 * Math.sin(tt * .045)), (innerWidth < 720 ? .72 : .17) * hero.clientHeight + 12 * Math.sin(tt * .7)];
+    return [lo + span * (.5 + .5 * Math.sin(tt * .045)), (innerWidth < 720 ? .7 : .34) * hero.clientHeight + 12 * Math.sin(tt * .7)];
   };
   [x, y] = route(Motion.still ? 2 : -30);
   function frame(now) {
@@ -1414,6 +1443,8 @@ void main(){
     const wy = (H - Air.WHO / max * H).toFixed(1); $('#day-who').setAttribute('y1', wy); $('#day-who').setAttribute('y2', wy);
     const nx = pts[n][0].toFixed(1); $('#day-nowline').setAttribute('x1', nx); $('#day-nowline').setAttribute('x2', nx);
     hiI = vals.indexOf(Math.max(...vals)); loI = vals.indexOf(Math.min(...vals));
+    $('#y-who').style.top = (wy / H * 100) + '%'; $('#y-who').textContent = 'WHO 15 µg/m³';
+    $('#y-peak').style.top = (pts[hiI][1] / H * 100) + '%'; $('#y-peak').textContent = 'Peak ' + nf0.format(vals[hiI]) + ' µg/m³';
     $('#day-sum').textContent = `Hourly PM2.5 over 48 hours: lowest ${nf0.format(vals[loI])}, highest ${nf0.format(vals[hiI])} µg/m³. The WHO 24-hour guideline is 15.`;
     update();
   });
@@ -1465,6 +1496,44 @@ void main(){
     });
   });
   new IntersectionObserver(([e]) => $('#tabs').classList.toggle('in-view', e.isIntersecting), { threshold: .2 }).observe($('#tabs'));
+})();
+
+/* ═══════════════════════════════════════════════ PROBLEM VISUALS: drawn from the live data */
+(() => {
+  const band = (aqi) => aqi <= 50 ? 'var(--aqi-1)' : aqi <= 100 ? 'var(--aqi-2)' : aqi <= 150 ? 'var(--aqi-3)' : aqi <= 200 ? 'var(--aqi-4)' : aqi <= 300 ? 'var(--aqi-5)' : 'var(--aqi-6)';
+  const ADVICE = [
+    [50, 'Good air right now', 'Air quality is fine. A good hour to be outside.'],
+    [100, 'Moderate air right now', 'Unusually sensitive people should consider cutting back on long or hard exercise outdoors.'],
+    [150, 'Unhealthy for sensitive groups', 'Children, older adults and people with heart or lung disease should cut back on long or hard exercise outdoors.'],
+    [200, 'Unhealthy air right now', 'Everyone should cut back on long or hard exercise outdoors.'],
+    [300, 'Very unhealthy air right now', 'Everyone should avoid long or hard exercise outdoors.'],
+    [Infinity, 'Hazardous air right now', 'Everyone should avoid all physical activity outdoors.'],
+  ];
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  Air.on((s) => {
+    if (s.aqi != null) {
+      const box = $('#cell-streets');
+      if (!box.children.length) box.replaceChildren(...Array.from({ length: 64 }, () => document.createElement('i')));
+      seed = 7;
+      [...box.children].forEach((el) => el.style.setProperty('--c', band(clamp(s.aqi * (0.55 + rnd() * 0.9), 0, 500))));
+      const a = ADVICE.find((x) => s.aqi <= x[0]);
+      $('#alert-t').textContent = a[1];
+      $('#alert-b').textContent = `US AQI ${nf0.format(s.aqi)}${s.pm != null ? `, PM2.5 ${nf1.format(s.pm / Air.WHO)}× the WHO guideline` : ''}. ${a[2]}`;
+    }
+    const h = s.hourly;
+    if (!h) { $('#fc-note').textContent = 'The forecast is unavailable right now.'; return; }
+    const v = h.pm.map((x) => x ?? 0), max = Math.max(60, ...v) * 1.15, X0 = 20, X1 = 540, Y0 = 16, Y1 = 204;
+    const P = v.map((x, i) => [X0 + i / (v.length - 1) * (X1 - X0), Y1 - x / max * (Y1 - Y0)]);
+    const d = (a) => a.map(([x, y], i) => (i ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1)).join('');
+    $('#fc-past').setAttribute('d', d(P.slice(0, h.now + 1))); $('#fc-next').setAttribute('d', d(P.slice(h.now)));
+    const wy = (Y1 - Air.WHO / max * (Y1 - Y0)).toFixed(1); $('#fc-who').setAttribute('y1', wy); $('#fc-who').setAttribute('y2', wy);
+    $('#fc-now').setAttribute('x1', P[h.now][0]); $('#fc-now').setAttribute('x2', P[h.now][0]);
+    let k = h.now; for (let i = h.now; i < v.length; i++) if (v[i] > v[k]) k = i;
+    $('#fc-peak').setAttribute('cx', P[k][0]); $('#fc-peak').setAttribute('cy', P[k][1]);
+    const msg = `Worst hour in the next 24: ${h.time[k].slice(11, 16)}, ${nf0.format(v[k])} µg/m³, ${nf1.format(v[k] / Air.WHO)}× the WHO guideline.`;
+    $('#fc-note').textContent = msg + ' Dashed line: forecast. Dotted line: WHO guideline.';
+    $('#fc-sum').textContent = 'PM2.5 over 48 hours with forecast. ' + msg;
+  });
 })();
 
 /* ═══════════════════════════════════════════════ COMMAND MENU (⌘K / Ctrl K): no open/close animation */
