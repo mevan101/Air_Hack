@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-16T20:30:00Z",
+  "title": "Design System: Air Hackathon 2027",
+  "extensions": {
+    "colorMeta": {
+      "bg": { "role": "neutral", "displayName": "Night Ground", "canonical": "#08090a", "tonalRamp": ["#08090a", "#0e0f11", "#141518"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#f4f5f6", "tonalRamp": ["#f4f5f6", "#9ba1ab", "#737983"] },
+      "smog": { "role": "data", "displayName": "Smog Amber", "canonical": "#e4a660" },
+      "safe": { "role": "data", "displayName": "WHO-Safe Mint", "canonical": "#8fdcc2" },
+      "cedar": { "role": "brand", "displayName": "Cedar Green", "canonical": "#2e7a46" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headline only, two lines." },
+      "headline": { "displayName": "Section headline", "purpose": "One per section, first in the section." },
+      "statement": { "displayName": "Statement", "purpose": "The scroll-lit paragraph after the hero." },
+      "bangla-display": { "displayName": "Bangla display", "purpose": "The closing line only." }
+    },
+    "shadows": [
+      { "name": "float", "value": "0 24px 64px -16px rgb(0 0 0 / 0.7)", "purpose": "Command menu dialog." },
+      { "name": "alert", "value": "0 16px 40px -20px rgb(0 0 0 / 0.8)", "purpose": "Example alert card in the Act panel." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "UI feedback and state changes, 160 to 240 ms." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.77, 0, 0.175, 1)", "purpose": "On-screen movement such as the breathing orb and the airship turning." },
+      { "name": "ease-arrive", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "The one authored entrance: headline characters and hero copy." },
+      { "name": "press", "value": "scale(0.96) 160ms", "purpose": "Every pressable control." }
+    ],
+    "breakpoints": [
+      { "name": "tablet", "value": "1000px", "purpose": "Grids collapse to one column; tabs go horizontal; nav links hide." },
+      { "name": "phone", "value": "720px", "purpose": "Live bar becomes a 3-cell grid with Pause on its own row; buttons go full width." }
+    ],
+    "rules": [
+      "Colour encodes data only.",
+      "Hairlines separate; surfaces step; no in-page shadows.",
+      "No eyebrow labels above headings.",
+      "No animation on keyboard-triggered UI.",
+      "All motion pausable; reduced motion starts paused."
+    ]
+  }
+}

@@ -6,15 +6,11 @@ A single static page (`index.html`), no build step. It deploys to GitHub Pages f
 
 ## How it works
 
-- **Intro:** a short "inhale" loader that opens into the city, shown once per session. Click or any key skips it.
-- **The sky** is one WebGL shader behind the page: a procedural Dhaka skyline with traffic, tower beacons, a plane, and a sun or moon that the smog dims and reddens. Smog density follows the live PM2.5 reading and drifts with the live wind. The pointer clears it (and reveals stars at night), and clicking the sky fires a purifier shockwave.
-- **Airship:** flies the Cedar Initiative banner. Drag and throw it; it springs back to its route.
-- **Live air:** [Open-Meteo](https://open-meteo.com) air-quality and weather APIs, no key needed, refreshed every 10 minutes. There's a scrolling ticker in the header plus a full panel. Location is only requested when the visitor presses **Use My Location**.
-- **Your breath:** counts the litres of air and micrograms of PM2.5 inhaled since the page opened, with a guided breathing orb and a cigarette comparison (Berkeley Earth's 22 µg/m³ ≈ 1 cigarette/day rule).
-- **48 hours:** a pinned scroll section. Scrolling scrubs through the real hourly PM2.5 from yesterday into tomorrow's forecast, and the sky, sun, moon and smog change with it.
-- **Command menu:** ⌘K / Ctrl K opens it (it's also the menu button on phones). Commands cover theme, motion, sound, location, copying the reading and jumping to sections.
-- **Accessibility:** the sun/moon theme toggle follows the system setting by default. A Pause button stops all motion (WCAG 2.2.2), and with `prefers-reduced-motion` everything starts paused. City sound is opt-in.
+- **Design:** a dark product page at Linear/Vercel/Apple craft, built through the Impeccable workflow. `PRODUCT.md` holds the product facts, `DESIGN.md` the design system, and `.impeccable/surfaces/` the direction contract.
+- **The sky:** a WebGL Dhaka skyline (layered, with water tanks and a minaret) under smog whose density comes from the live PM2.5 reading. The pointer thins the smog, and clicking the sky fires a purifier pulse. An airship flies the Cedar Initiative livery; you can drag and throw it.
+- **Live data:** [Open-Meteo](https://open-meteo.com) air-quality and weather APIs, refreshed every 10 minutes. It feeds the readings bar, the data panel, the breath counter, the pinned 48-hour scrub (the sky follows each hour), the forecast chart and the example alert.
+- **Controls:** the Cmd/Ctrl+K command menu, opt-in city sound tied to wind speed, and a Pause button that stops all motion. `prefers-reduced-motion` starts the page paused.
 
 ## Editing
 
-Copy for the problems and the 2027 plan sits in plain HTML in `index.html`. Change the plan steps once dates and venue are confirmed.
+Copy lives in plain HTML in `index.html`. Update the 2027 plan once dates and venue are confirmed, and keep `PRODUCT.md` in step.

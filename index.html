@@ -329,10 +329,10 @@
     .day-axis .safe { color: var(--safe); }
 
     /* ── Problems: tabs ── */
-    .tabs { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); min-height: 480px; }
-    .tablist { display: grid; grid-template-rows: auto auto auto 1fr; border-right: 1px solid var(--line); }
+    .tabs { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); border: 1px solid var(--line); border-radius: var(--r-l); overflow: clip; background: var(--bg-1); }
+    .tablist { display: grid; align-content: start; border-right: 1px solid var(--line); }
     .tab-d { font-size: 0.875rem; color: var(--ink-2); line-height: 1.4; }
-    .tab-note { align-self: end; padding: 24px clamp(20px, 2.4vw, 28px); font-size: 0.8125rem; color: var(--ink-2); }
+    .tab-note { padding: 20px clamp(20px, 2.4vw, 28px); font-size: 0.8125rem; color: var(--ink-2); }
     .tab { all: unset; box-sizing: border-box; display: grid; align-content: center; gap: 6px; padding: 24px clamp(20px, 2.4vw, 28px); border-bottom: 1px solid var(--line); cursor: pointer; color: var(--ink-2); transition: color 160ms ease, background-color 160ms ease; position: relative; }
     .tab[aria-selected="true"] { color: var(--ink); background: var(--bg-2); }
     .tab:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
