@@ -19,6 +19,6 @@ STORY: The visitor sees the city choking, live; reads in one line what the event
 
 FIRST VIEWPORT: Full-bleed WebGL Dhaka skyline under live smog fills the screen. Thin sticky nav. Headline "Hack the air Dhaka breathes." left, ~7rem, upper third, with one-line lede and two buttons (Follow Cedar Initiative primary). Airship crosses the right half. Bottom edge: a hairline live-readings bar (AQI, PM2.5, ×WHO, time). Pointer clears smog; click fires a purifier pulse.
 
-FORM: canon (standing exit chosen by the user over the rolled broadcast world and the rickshaw-art pick). seed: none (unavailable): the roll ran degraded (roll service unreachable from the sandbox) and its local reference cannot be verified. Signature interaction: clearing the smog by hand. Motion grammar: one authored focal sequence (sky resolves from black, headline settles), scroll-lit statement, pinned 48-hour scrub; everything else is quiet feedback (≤200 ms, ease-out).
+FORM: canon (standing exit chosen by the user over the rolled broadcast world and the rickshaw-art pick). seed:7d9497b7849e31ef (roll ran degraded: no catalog challengers; reference verified with --check-seed). Signature interaction: clearing the smog by hand. Motion grammar: one authored focal sequence (sky resolves from black, headline settles), scroll-lit statement, pinned 48-hour scrub; everything else is quiet feedback (≤200 ms, ease-out).
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
