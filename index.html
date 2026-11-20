@@ -156,9 +156,33 @@
     .intro-txt { font-size: 0.8125rem; color: var(--ink-2); }
 
     /* ═══════════════════════════════════════════ STAGE */
-    #stage { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100lvh; background: linear-gradient(#0a0e18, #2a1d16 70%, #05070c 70%); }
+    #fx { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100lvh; background: var(--bg); }
     main, footer { position: relative; z-index: 1; }
-    .solid { background: var(--bg); position: relative; z-index: 1; }
+    .solid { position: relative; z-index: 1; }
+
+    /* ═══════════════════════════════════════════ PARTICLE WORLD */
+    .grid { background: rgb(14 15 17 / 0.9); }
+    .tabs { background: transparent; }
+    .tablist, .panel-body { background: rgb(14 15 17 / 0.9); }
+    .statement-grid { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+    .fx-aqi { position: relative; aspect-ratio: 1.25; display: grid; place-items: center; }
+    .fx-aqi-num { font-size: clamp(6rem, 3rem + 10vw, 13rem); font-weight: 650; letter-spacing: -0.05em; color: var(--band); line-height: 1; }
+    .fx-aqi-cap { position: absolute; left: 0; right: 0; bottom: 0; text-align: center; font-size: 0.875rem; color: var(--ink-2); }
+    #plan .wrap { position: relative; }
+    .fx-2027 { position: absolute; right: 0; top: -12px; width: min(44%, 520px); aspect-ratio: 2.3; display: grid; place-items: center; pointer-events: none; }
+    .fx-2027 span { font-size: clamp(5rem, 2rem + 8vw, 10rem); font-weight: 700; letter-spacing: -0.05em; color: transparent; -webkit-text-stroke: 1px var(--line-3); }
+    html.fx .fx-aqi-num, html.fx .fx-2027 span { visibility: hidden; }
+    html.fx .orb { display: none; }
+    html.fx .tabs { background: transparent; }
+    html.fx .bn { color: transparent; }
+    html.fx .cellbox { opacity: 0; }
+    html.fx #fc-svg > :not(title) { opacity: 0; }
+    html.fx .day-chart .area, html.fx .day-chart .lit, html.fx .day-chart .base, html.fx .day-chart .who { opacity: 0; }
+    @media (max-width: 1000px) {
+      .statement-grid { grid-template-columns: minmax(0, 1fr); }
+      .fx-aqi { order: -1; width: min(100%, 420px); }
+      .fx-2027 { position: relative; top: 0; width: 100%; margin-bottom: 16px; }
+    }
 
     /* ═══════════════════════════════════════════ NAV */
     .nav {
@@ -204,18 +228,7 @@
     @media (pointer: coarse) { .hint .fine { display: none; } }
     @media (pointer: fine) { .hint .coarse { display: none; } }
 
-    .ship {
-      position: absolute; left: 0; top: 0; z-index: 2; width: clamp(150px, 15vw, 240px);
-      translate: -400px 140px;
-      cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
-      &.drag { cursor: grabbing; }
-      & .body { transform-box: fill-box; transform-origin: center; scale: var(--flip, 1) 1; transition: scale 600ms var(--ease-in-out); }
-      & .prop { transform-box: fill-box; transform-origin: center; }
-            @media (prefers-reduced-motion: no-preference) {
-        & .prop { animation: spin 0.3s linear infinite; }
-      }
-    }
-    @keyframes spin { to { rotate: 360deg; } }
+
     
     /* Live readings bar */
     .livebar { min-width: 0; border-top: 1px solid var(--line); background: rgb(8 9 10 / 0.78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
@@ -648,7 +661,7 @@
   </div>
 </div>
 
-<canvas id="stage" aria-hidden="true"></canvas>
+<canvas id="fx" aria-hidden="true"></canvas>
 
 <nav class="nav" id="nav" aria-label="Primary">
   <div class="wrap">
@@ -675,32 +688,7 @@
 </nav>
 
 <header class="hero" id="top">
-  <svg class="ship" id="ship" viewBox="0 0 280 112" aria-hidden="true" focusable="false">
-    <defs>
-      <linearGradient id="ag-env" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a7192"/><stop offset=".18" stop-color="#2b3a50"/><stop offset=".7" stop-color="#18212e"/><stop offset="1" stop-color="#4a3326"/></linearGradient>
-      <linearGradient id="ag-rim" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9d6ea" stop-opacity=".75"/><stop offset=".35" stop-color="#c9d6ea" stop-opacity="0"/></linearGradient>
-      <linearGradient id="ag-glow" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#e4a660" stop-opacity=".45"/><stop offset=".4" stop-color="#e4a660" stop-opacity="0"/></linearGradient>
-      <clipPath id="ag-clip"><ellipse cx="142" cy="44" rx="116" ry="38"/></clipPath>
-    </defs>
-    <g class="body">
-      <path d="M30 44 46 20h14l-6 24 6 24H46Z" fill="#141c27"/>
-      <ellipse cx="142" cy="44" rx="116" ry="38" fill="url(#ag-env)"/>
-      <g clip-path="url(#ag-clip)">
-        <ellipse cx="142" cy="44" rx="116" ry="38" fill="url(#ag-glow)"/>
-        <path d="M26 44h232" stroke="#fff" stroke-opacity=".05"/>
-        <path d="M90 6v76M142 6v76M194 6v76" stroke="#000" stroke-opacity=".18"/>
-      </g>
-      <ellipse cx="142" cy="44" rx="116" ry="38" fill="none" stroke="url(#ag-rim)" stroke-width="2"/>
-      <use href="#cedar-logo" x="152" y="22" width="68" height="38" style="color:#e9edf2;--cedar-green:#3f9a5e"/>
-      <path d="M104 80 110 90M142 82v8M180 80l-6 10" stroke="#3a4a5e" stroke-width=".8"/>
-      <rect x="100" y="89" width="84" height="16" rx="5" fill="#121923"/>
-      <g fill="#ffcf7a"><rect x="108" y="94" width="10" height="6" rx="1.5"/><rect x="124" y="94" width="10" height="6" rx="1.5"/><rect x="140" y="94" width="10" height="6" rx="1.5" opacity=".5"/><rect x="156" y="94" width="10" height="6" rx="1.5"/></g>
-      <rect x="182" y="94" width="12" height="4" rx="2" fill="#121923"/>
-      <g class="prop"><ellipse cx="196" cy="96" rx="1.8" ry="8" fill="#3a4a5e"/><ellipse cx="196" cy="96" rx="8" ry="1.8" fill="#3a4a5e"/></g>
-      <circle cx="257" cy="41" r="1.8" fill="#ff5a4e"/>
-      <circle cx="257" cy="48" r="1.8" fill="#4ee07a"/>
-    </g>
-  </svg>
+  
 
   <div class="hero-body wrap">
     <h1 id="hero-h1" aria-label="Hack the air Dhaka breathes.">Hack the air Dhaka breathes.</h1>
@@ -710,7 +698,7 @@
         <svg class="arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
       <a class="btn btn-ghost" href="#air">See the Air Now</a>
     </div>
-    <p class="hint rise" style="--d:840ms"><span class="fine">Move your pointer to clear the smog. Click the sky to purify it.</span><span class="coarse">Tap the sky to purify it.</span></p>
+    <p class="hint rise" style="--d:840ms">Every dot on this page is a speck of PM2.5, and how many you see follows Dhaka’s live reading. <span class="fine">Move your pointer to vacuum them up. Click to blow them apart.</span><span class="coarse">Tap to blow them apart.</span></p>
   </div>
 
   <div class="livebar rise" style="--d:900ms">
@@ -733,9 +721,12 @@
 
 <main id="main">
   <section class="statement solid" aria-label="Why this hackathon">
-    <div class="wrap">
+    <div class="wrap statement-grid">
+      <div>
       <p id="statement">Dhaka breathes some of the dirtiest air of any major city. Right now its PM2.5 sits at <span class="num-hi" data-pm>…</span> µg/m³, <span class="num-hi" data-mult>…</span> times what the WHO calls safe for a day. Air Hackathon 2027 asks developers, designers and scientists to build what changes that.</p>
       <p class="statement-src">Bangladesh has ranked first in IQAir’s World Air Quality Report in several recent years.</p>
+      </div>
+      <div class="fx-aqi"><span class="fx-aqi-num" data-aqi aria-hidden="true">…</span><p class="fx-aqi-cap">US AQI in <span data-city>Dhaka</span> right now</p></div>
     </div>
   </section>
 
@@ -809,7 +800,7 @@
       <div class="wrap day-top">
         <div class="day-intro">
           <h2 id="day-h">48 hours of <span data-city>Dhaka</span>’s air</h2>
-          <p>Scroll to move through time. The sky follows the real hourly PM2.5.</p>
+          <p>Scroll to move through time. The particles pile up as high as each hour’s real PM2.5.</p>
         </div>
         <div class="day-now">
           <p class="day-when" id="day-when">Loading…</p>
@@ -902,6 +893,7 @@
         <h2 id="plan-h">Where 2027 stands</h2>
         <p>This is the first Air Hackathon. Dates and venue aren’t set yet; follow Cedar Initiative to hear when the call for teams opens.</p>
       </div>
+      <div class="fx-2027" aria-hidden="true"><span>2027</span></div>
       <ol class="steps">
         <li class="step is-now" aria-current="step"><h3>Shaping the problems with partners</h3><p>Under way now. Researchers, agencies and community groups help pick the questions worth a team’s time.</p></li>
         <li class="step"><h3>Call for teams</h3><p>Opens once dates and venue are confirmed. Developers, designers and scientists welcome.</p></li>
@@ -1135,181 +1127,366 @@ const Sound = (() => {
   };
 })();
 
-/* ═══════════════════════════════════════════════ STAGE: WebGL Dhaka under live smog */
-const Stage = (() => {
-  const canvas = $('#stage');
-  const api = { blast() {}, setJourney() {}, reveal() {} };
-  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, powerPreference: 'low-power' });
+/* ═══════════════════════════════════════════════ FX: the whole page is made of PM2.5
+   One WebGL2 point cloud. Every visual is a "formation" (target positions in a float texture);
+   scroll morphs the same particles from one formation to the next. No per-particle CPU work. */
+const T0 = performance.now();
+const FX = (() => {
+  const api = { reveal() {}, blast() {}, setScrub() {}, ok: false };
+  const canvas = $('#fx');
+  const gl = canvas.getContext('webgl2', { antialias: false, alpha: false, powerPreference: 'high-performance' });
   if (!gl) return api;
-  const VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
-  const FS = `precision highp float;
-uniform vec2 uRes; uniform float uTime, uSmog, uDark, uReveal;
-uniform vec2 uWind, uSun; uniform vec3 uP[10]; uniform vec3 uBlast;
-float h1(float n){return fract(sin(n*12.9898)*43758.5453);}
-float h2(vec2 p){p=fract(p*vec2(.1031,.1030));p+=dot(p,p.yx+33.33);return fract((p.x+p.y)*p.x);}
-float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h2(i),h2(i+vec2(1,0)),f.x),mix(h2(i+vec2(0,1)),h2(i+vec2(1,1)),f.x),f.y);}
-float fbm(vec2 p){float v=0.,a=.5;for(int i=0;i<5;i++){v+=a*noise(p);p=p*2.02+vec2(3.1,1.7);a*=.5;}return v;}
-float bh(float x,float w,float seed,float base,float amp,out float id,out float fx){
-  float u=x/w;id=floor(u);fx=fract(u);float hgt=base+amp*pow(h1(id+seed),1.7);
-  if(h1(id*3.7+seed)>.9)hgt+=amp*.85; if(h1(id*1.3+seed*2.)>.8)hgt*=.55; return hgt;}
-float roof(vec2 p,float w,float seed,float hgt,float amp,float id,float fx){
-  float m=step(p.y,hgt)*step(.03,fx)*step(fx,.97);
-  float tank=step(.5,h1(id*5.1+seed))*step(p.y,hgt+.012)*step(.56,fx)*step(fx,.8);
-  float rail=step(.7,h1(id*2.9+seed))*step(p.y,hgt+.006)*step(hgt,p.y)*(step(fx,.06)+step(.94,fx)+step(abs(fract(fx*6.)-.5),.06));
-  float isM=step(.95,h1(id*9.7+seed)); float top=hgt+amp*.95;
-  float spire=isM*step(abs(fx-.5)*w,.0035)*step(p.y,top);
-  float bulb=isM*step(length(vec2((fx-.5)*w,p.y-top)),.0075);
-  float tip=isM*step(abs(fx-.5)*w,.0012)*step(p.y,top+.02);
-  return max(max(m,tank),max(max(spire,bulb),max(tip,rail)));}
+  const small = Math.min(screen.width, screen.height) < 700 || (navigator.hardwareConcurrency || 8) <= 4;
+  const COLS = 256, ROWS = small ? 128 : 256, N = COLS * ROWS, NF = 10;
+  const F = { CLOUD: 0, AQI: 1, DUST: 2, RING: 3, CHART: 4, SENSE: 5, PREDICT: 6, ACT: 7, Y2027: 8, BANGLA: 9 };
+
+  const VS = `#version 300 es
+precision highp float; precision highp int;
+uniform highp sampler2D uForm;
+uniform int uA, uB, uRows;
+uniform float uMix, uTime, uAsp, uPx, uReveal, uFlip;
+uniform vec4 uRectA, uRectB, uParA, uParB;
+uniform vec3 uMouse, uBlast, uBand;
+uniform vec2 uShip;
+out vec4 vCol;
+float hash(float n){ return fract(sin(n * 12.9898) * 43758.5453); }
+vec3 pal(float w){
+  if (w < .25) return vec3(.89, .63, .36);
+  if (w < .5)  return vec3(.92, .93, .95);
+  if (w < .75) return vec3(.56, .86, .76);
+  if (w < 1.)  return uBand;
+  if (w < 1.5) return vec3(.62, .74, .95);
+  return vec3(1., .82, .52);
+}
+vec2 place(vec4 f, vec4 rect, vec4 par, float id, out float a){
+  float ph = hash(id * 1.7) * 6.283;
+  vec2 dr = vec2(sin(uTime * (.3 + hash(id) * .5) + ph), cos(uTime * (.25 + hash(id * 3.1) * .5) + ph)) * par.y;
+  a = step(hash(id * 5.3), par.x);
+  if (f.w >= 1.) { a = 1.; return vec2(f.x * uFlip, f.y) + uShip + dr * .1; }
+  vec2 q = rect.xy + f.xy * par.z * rect.zw + dr;
+  if (par.y > .015) {
+    float span = rect.z * 2.3;
+    q.x = rect.x - span * .5 + mod(q.x - rect.x + span * .5 + uTime * .012 * (.4 + hash(id * 2.3)), span);
+  }
+  if (par.w < 1.5) a *= mix(.25, 1., step(f.x, par.w));
+  return q;
+}
 void main(){
-  vec2 frag=gl_FragCoord.xy; vec2 p=frag/uRes.y; float asp=uRes.x/uRes.y; float y=p.y;
-  vec3 sky=mix(mix(vec3(.80,.86,.90),vec3(.40,.60,.82),smoothstep(.15,1.,y)),mix(vec3(.10,.17,.27),vec3(.035,.065,.13),smoothstep(.1,1.,y)),uDark);
-  float ds=length(p-uSun); float vis=clamp(abs(uDark-.5)*2.6,0.,1.); float isN=step(.5,uDark);
-  vec3 sunC=mix(vec3(1.,.97,.86),vec3(1.,.52,.22),clamp(uSmog*1.1,0.,1.));
-  float disc=smoothstep(.05,.044,ds);
-  sky+=(1.-isN)*vis*(sunC*disc*1.2+sunC*(exp(-ds*ds/.03)*.45+exp(-ds*6.)*.2));
-  float moon=disc*(1.-smoothstep(.048,.041,length(p-uSun-vec2(.022,.013))));
-  sky=mix(sky,vec3(.88,.9,.95),isN*vis*moon); sky+=isN*vis*vec3(.4,.5,.75)*exp(-ds*ds/.012)*.14;
-  vec2 sg=p*90.;vec2 sc=floor(sg);vec2 so=vec2(h2(sc+1.7),h2(sc+5.3))-.5;
-  float star=step(.965,h2(sc))*smoothstep(.08,0.,length(fract(sg)-.5-so*.6))*(.55+.45*sin(uTime*(1.+h2(sc)*2.)+h2(sc)*6.28));
-  float clr0=0.; for(int i=0;i<10;i++){vec2 d=p-uP[i].xy;clr0+=uP[i].z*exp(-dot(d,d)/.03);} clr0=1.-exp(-clr0*1.2);
-  sky+=uDark*star*smoothstep(.3,.6,y)*(.35+1.6*clr0)*vec3(.9,.95,1.);
-  vec2 pp=vec2(mod(uTime*.03,asp+.6)-.3,.86+.015*sin(uTime*.2)); vec2 dpp=p-pp;
-  sky+=vec3(1.)*step(.9,fract(uTime*.8))*exp(-dot(dpp,dpp)/.000006);
-  vec2 dpr=dpp+vec2(.006,0.); sky+=vec3(1.,.2,.15)*(.5+.5*sin(uTime*5.))*exp(-dot(dpr,dpr)/.000004);
-  float tall=mix(1.35,1.,smoothstep(.6,1.2,asp)); float sc2=clamp(asp,.95,1.6);
-  float idF,fxF,idM,fxM,idN,fxN; float wF=.022*sc2, wM=.034*sc2, wN=.05*sc2;
-  float hf=bh(p.x+7.3,wF,11.,.15*tall,.15*tall,idF,fxF);
-  float hm=bh(p.x+3.1,wM,7.,.09*tall,.18*tall,idM,fxM);
-  float hn=bh(p.x,wN,3.,.04*tall,.2*tall,idN,fxN);
-  float far=roof(p,wF,11.,hf,.15*tall,idF,fxF), mid=roof(p,wM,7.,hm,.18*tall,idM,fxM), near=roof(p,wN,3.,hn,.2*tall,idN,fxN);
-  vec3 silD=vec3(.26,.29,.35), silN=vec3(.016,.02,.035); vec3 sil=mix(silD,silN,uDark);
-  vec3 col=sky;
-  col=mix(col,mix(sky,sil,.38),far);
-  col=mix(col,mix(sky,sil,.68),mid);
-  col=mix(col,sil,near);
-  vec2 wg=vec2(fxN*5.,y/.016);vec2 wc=floor(wg);vec2 wf=fract(wg);
-  float win=step(.28,wf.x)*step(wf.x,.72)*step(.3,wf.y)*step(wf.y,.72);
-  float lit=step(mix(.95,.74,uDark),h2(wc+idN*17.))*step(.25,h1(idN*4.3));
-  float flick=.85+.15*step(.5,h2(wc+floor(uTime*.25+h2(wc)*10.)));
-  win*=step(y,hn)*step(.03,fxN)*lit*step(y,hn-.012)*step(.034,y);
-  col=mix(col,mix(vec3(.85,.9,.95),vec3(1.,.8,.5)*flick,uDark),win*mix(.35,.95,uDark));
-  float isT=step(.9,h1(idN*3.7+3.)); vec2 db=p-vec2((idN+.5)*wN,hn+.007);
-  col+=vec3(1.,.15,.1)*isT*step(.45,fract(uTime*.6+h1(idN)))*exp(-dot(db,db)/.000012)*(.6+.8*uDark);
-  col=mix(col,mix(vec3(.33,.34,.38),vec3(.02,.022,.03),uDark),step(y,.03));
-  float u1=p.x*12.-uTime*1.4; float c1=floor(u1); float dx1=(fract(u1)-.5)/12.; float dy1=y-.021;
-  col+=vec3(1.,.9,.7)*step(.45,h1(c1*1.7))*exp(-(dx1*dx1/.00003+dy1*dy1/.000005))*(.35+.9*uDark);
-  float u2=p.x*10.+uTime*1.1; float c2=floor(u2); float dx2=(fract(u2)-.5)/10.; float dy2=y-.01;
-  col+=vec3(1.,.15,.1)*step(.5,h1(c2*2.3+4.))*exp(-(dx2*dx2/.00002+dy2*dy2/.000004))*(.3+.8*uDark);
-  col+=uDark*vec3(.55,.32,.12)*.3*smoothstep(.14,0.,y);
-  float clr=0.;
-  for(int i=0;i<10;i++){vec2 d=p-uP[i].xy;clr+=uP[i].z*exp(-dot(d,d)/.03);}
-  clr=1.-exp(-clr*1.2);
-  float ring=0.;
-  if(uBlast.z>=0.){float r=uBlast.z*.85;float d=length(p-uBlast.xy);float life=1.-smoothstep(1.4,3.2,uBlast.z);
-    clr=max(clr,(1.-smoothstep(r-.12,r,d))*life); ring=exp(-pow((d-r)/.018,2.))*life;}
-  vec2 drift=uWind*uTime*.012; vec2 q=vec2(p.x*1.1,y*2.2)+drift;
-  float n=fbm(q*2.2+vec2(fbm(q*1.3-uTime*.008),0.)*1.4); float n2=fbm(q*5.5+drift*2.);
-  float dens=uSmog*mix(.45,1.15,smoothstep(.95,0.,y))*(.55+.75*n+.2*n2);
-  dens=clamp(dens*(1.-clr*.72),0.,.97);
-  vec3 smog=mix(vec3(.80,.72,.58),vec3(.32,.22,.15)+vec3(.24,.11,.04)*smoothstep(.6,0.,y),uDark)*(.92+.16*n2);
-  col=mix(col,smog,dens);
-  float specks=0.;
-  for(int k=0;k<2;k++){float s=k==0?70.:140.;vec2 g=(p+drift*(1.5+float(k))+vec2(0.,uTime*.004))*s;vec2 c=floor(g),f=fract(g)-.5;
-    float r=h2(c+float(k)*9.1);vec2 o=vec2(h2(c+3.3),h2(c+7.7))-.5;float d=length(f-o*.6);
-    specks+=step(1.-uSmog*.55,r)*smoothstep(.09-float(k)*.03,0.,d)*(k==0?.7:.45);}
-  specks*=1.-clr;
-  col=mix(col,mix(vec3(.35,.30,.24),vec3(.92,.76,.54),uDark),clamp(specks,0.,1.)*.5);
-  col+=uDark*vec3(.05,.08,.12)*clr*(1.-dens);
-  col+=vec3(.56,.86,.76)*ring*.35;
-  col*=uReveal;
-  col+=(h2(frag+fract(uTime))-.5)/255.;
-  gl_FragColor=vec4(col,1.);
+  int i = gl_VertexID; float id = float(i);
+  vec4 fa = texelFetch(uForm, ivec2(i % 256, uA * uRows + i / 256), 0);
+  vec4 fb = texelFetch(uForm, ivec2(i % 256, uB * uRows + i / 256), 0);
+  float r = hash(id * .731);
+  float m = smoothstep(0., 1., clamp(uMix * 1.6 - r * .6, 0., 1.));
+  float aa, ab;
+  vec2 p = mix(place(fa, uRectA, uParA, id, aa), place(fb, uRectB, uParB, id, ab), m);
+  float tr = sin(m * 3.14159) * float(uA != uB);
+  p += tr * .16 * vec2(sin(id * .013 + uTime * .7), cos(id * .017 + uTime * .6)) * (.4 + r);
+  vec2 d = p - uMouse.xy; float dl = length(d) + 1e-4;
+  p += d / dl * uMouse.z * .17 * exp(-dl * dl / .03);
+  if (uBlast.z >= 0.) {
+    float R = uBlast.z * 1.5; vec2 e = p - uBlast.xy; float el = length(e) + 1e-4;
+    p += e / el * .3 * exp(-pow((el - R) / .14, 2.)) * (1. - clamp(uBlast.z / 1.6, 0., 1.));
+  }
+  gl_Position = vec4(p.x / uAsp, p.y, 0., 1.);
+  float z = mix(fa.z, fb.z, m);
+  gl_PointSize = uPx * (.6 + z * 1.2);
+  float a = mix(aa, ab, m) * (.45 + .55 * hash(id * 9.1)) * uReveal;
+  vCol = vec4(mix(pal(fa.w), pal(fb.w), m), a);
 }`;
-  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; };
+  const FS = `#version 300 es
+precision mediump float;
+in vec4 vCol; out vec4 o;
+void main(){ vec2 c = gl_PointCoord - .5; float d = dot(c, c); if (d > .25) discard; float a = vCol.a * smoothstep(.25, .0, d); o = vec4(vCol.rgb * a, a); }`;
+  const sh = (t, src) => { const o = gl.createShader(t); gl.shaderSource(o, src); gl.compileShader(o); if (!gl.getShaderParameter(o, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(o)); return o; };
   const prog = gl.createProgram();
   gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS)); gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return api;
   gl.useProgram(prog);
-  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-  const U = {}; ['uRes', 'uTime', 'uSmog', 'uDark', 'uReveal', 'uWind', 'uSun', 'uP', 'uBlast'].forEach((n) => { U[n] = gl.getUniformLocation(prog, n); });
+  const vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+  const U = {}; ['uForm', 'uA', 'uB', 'uRows', 'uMix', 'uTime', 'uAsp', 'uPx', 'uReveal', 'uFlip', 'uRectA', 'uRectB', 'uParA', 'uParB', 'uMouse', 'uBlast', 'uBand', 'uShip'].forEach((n) => { U[n] = gl.getUniformLocation(prog, n); });
+  const tex = gl.createTexture();
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex);
+  [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER].forEach((p) => gl.texParameteri(gl.TEXTURE_2D, p, gl.NEAREST));
+  [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach((p) => gl.texParameteri(gl.TEXTURE_2D, p, gl.CLAMP_TO_EDGE));
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA32F, COLS, ROWS * NF, 0, gl.RGBA, gl.FLOAT, null);
+  gl.uniform1i(U.uForm, 0); gl.uniform1i(U.uRows, ROWS);
+  gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE);
+  const upload = (f, data) => { gl.bindTexture(gl.TEXTURE_2D, tex); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, f * ROWS, COLS, ROWS, gl.RGBA, gl.FLOAT, data); kick(); };
 
-  const N = 10, pts = new Float32Array(N * 3); let head = 0;
-  const startHidden = document.documentElement.classList.contains('has-intro');
-  const S = { smog: .55, dark: 1, sunX: 0, sunY: 0, wind: [.8, .15], reveal: startHidden ? 0 : 1 };
-  const T = { smog: .55, dark: 1, sunX: 0, sunY: 0, reveal: S.reveal };
-  let liveSmog = .55, journey = null, blast = [-9, -9, -1], t = 0, last = performance.now(), raf = 0, lastPtr = 0, autoT = 0, visible = true;
-  const aspect = () => canvas.width / canvas.height;
-  const heroSun = () => [aspect() * (innerWidth < 720 ? .8 : .78), .8];
-  const toUV = (x, y) => [x / canvas.clientHeight, 1 - y / canvas.clientHeight];
-
-  Air.on((s) => {
-    if (s.pm != null) liveSmog = clamp(s.pm / 110, .1, 1);
-    if (s.wind && s.wind.deg != null) { const rad = (s.wind.deg + 180) * Math.PI / 180, k = .5 + Math.min(1.5, (s.wind.kmh || 6) / 10); S.wind = [Math.sin(rad) * k, Math.cos(rad) * .25 * k]; }
-    if (!journey) T.smog = liveSmog; kick();
-  });
-  function resize() {
-    const dpr = Math.min(devicePixelRatio || 1, 1.5) * .6;
-    const w = Math.max(1, Math.round(canvas.clientWidth * dpr)), h = Math.max(1, Math.round(canvas.clientHeight * dpr));
-    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; gl.viewport(0, 0, w, h); }
-    if (!journey) [T.sunX, T.sunY] = heroSun();
+  // ── formations ─────────────────────────────────────────────
+  const rnd = Math.random;
+  const CODE = { smog: .125, ink: .375, mint: .625, band: .875 };
+  const COL = { smog: '#ff0000', ink: '#00ff00', mint: '#0000ff', band: '#ffff00', hull: '#ff00ff', light: '#ffffff' };
+  const code = (r, g, b) => (r > 128 && g > 128 && b > 128) ? 1.7 : (r > 128 && g > 128) ? CODE.band : (r > 128 && b > 128) ? 1.2 : r > 128 ? CODE.smog : g > 128 ? CODE.ink : CODE.mint;
+  function raster(cw, ch, draw, count = N, keep = null) {
+    cw = Math.max(48, Math.round(cw)); ch = Math.max(48, Math.round(ch));
+    const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch;
+    const c = cv.getContext('2d', { willReadFrequently: true });
+    draw(c, cw, ch);
+    const d = c.getImageData(0, 0, cw, ch).data, pts = [];
+    for (let y = 0; y < ch; y++) for (let x = 0; x < cw; x++) { const k = (y * cw + x) * 4; if (d[k + 3] > 120) { const cd = code(d[k], d[k + 1], d[k + 2]); if (!keep || rnd() < (keep[cd] ?? 1)) pts.push(x, y, cd); } }
+    const out = new Float32Array(count * 4), M = pts.length / 3;
+    for (let i = 0; i < count; i++) {
+      const o = i * 4;
+      if (!M) { out[o] = rnd() * 2 - 1; out[o + 1] = rnd() * 2 - 1; out[o + 2] = rnd(); out[o + 3] = CODE.smog; continue; }
+      const j = (rnd() * M | 0) * 3;
+      out[o] = (pts[j] + rnd()) / cw * 2 - 1; out[o + 1] = 1 - (pts[j + 1] + rnd()) / ch * 2; out[o + 2] = rnd(); out[o + 3] = pts[j + 2];
+    }
+    return out;
   }
-  addEventListener('resize', () => { resize(); kick(); });
-  function addPoint(x, y, s) { const [u, v] = toUV(x, y); pts[head * 3] = u; pts[head * 3 + 1] = v; pts[head * 3 + 2] = s; head = (head + 1) % N; }
-  let lastAdd = 0;
-  addEventListener('pointermove', (e) => {
-    if (!visible || e.pointerType === 'touch') return;
-    const now = performance.now(); lastPtr = now;
-    if (now - lastAdd < 40) return; lastAdd = now; addPoint(e.clientX, e.clientY, 1); kick();
-  }, { passive: true });
-  function doBlast(x, y) { const [u, v] = toUV(x, y); blast = [u, v, 0]; kick(); Sound.pulse(); }
-  addEventListener('click', (e) => {
-    if (!visible) return;
-    if (e.target.closest('a,button,input,dialog,.ship,p,h1,h2,dl,svg,.solid,footer,.nav,.livebar')) return;
-    doBlast(e.clientX, e.clientY);
-  });
-  const shown = new Set();
-  const io = new IntersectionObserver((es) => { es.forEach((e) => e.isIntersecting ? shown.add(e.target) : shown.delete(e.target)); visible = shown.size > 0 && !document.hidden; if (visible) kick(); });
-  io.observe($('#top')); io.observe($('#day'));
-  document.addEventListener('visibilitychange', () => { visible = shown.size > 0 && !document.hidden; if (visible) kick(); });
-  Motion.on(kick);
+  const dims = (el, base = 640) => {
+    const r = el && el.getBoundingClientRect();
+    const a = r && r.width > 2 && r.height > 2 ? r.width / r.height : 1.6;
+    return a >= 1 ? [base, base / a, r] : [base * a, base, r];
+  };
+  function fitText(c, text, cw, ch, color, font, fill = .92) {
+    c.fillStyle = color; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+    let size = ch; c.font = font(size);
+    let m = c.measureText(text);
+    size = Math.min(size * cw * fill / m.width, size * ch * fill / (m.actualBoundingBoxAscent + m.actualBoundingBoxDescent || size));
+    c.font = font(size); m = c.measureText(text);
+    c.fillText(text, cw / 2, ch / 2 + (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2);
+  }
+  const mona = (w) => (s) => `${w} ${s}px "Mona Sans", system-ui, sans-serif`;
 
+  function buildCloud() {
+    const out = new Float32Array(N * 4);
+    const shipN = Math.round(N * .08);
+    const sw = innerWidth < 720 ? .7 : .85;
+    const ship = raster(560, 230, (c) => {
+      c.fillStyle = COL.hull;
+      c.beginPath(); c.ellipse(290, 95, 230, 80, 0, 0, 7); c.fill();
+      c.beginPath(); c.moveTo(60, 95); c.lineTo(20, 30); c.lineTo(80, 60); c.closePath(); c.fill();
+      c.beginPath(); c.moveTo(60, 95); c.lineTo(20, 160); c.lineTo(80, 130); c.closePath(); c.fill();
+      c.fillRect(220, 172, 150, 34);
+      c.fillStyle = COL.light; for (let k = 0; k < 5; k++) c.fillRect(234 + k * 26, 182, 14, 12);
+      c.fillRect(500, 80, 10, 10);
+    }, shipN);
+    for (let i = 0; i < N; i++) {
+      const o = i * 4;
+      if (i < shipN) { out[o] = ship[o] * sw * .5; out[o + 1] = ship[o + 1] * sw * .5 * (230 / 560); out[o + 2] = .4 + ship[o + 2] * .4; out[o + 3] = ship[o + 3]; continue; }
+      let u = 0, v = 0;
+      for (let t = 0; t < 8; t++) {
+        u = rnd() * 2 - 1; v = rnd() * 2 - 1;
+        const low = Math.pow(1 - (v + 1) / 2, 2.2);
+        const clump = .55 + .45 * Math.sin(u * 3.1 + v * 5.3) * Math.sin(u * 7.7 - v * 2.9);
+        if (rnd() < low * clump * 1.3 + .02) break;
+      }
+      out[o] = u * 1.15; out[o + 1] = v; out[o + 2] = rnd(); out[o + 3] = rnd() < .1 ? CODE.ink : CODE.smog;
+    }
+    upload(F.CLOUD, out);
+  }
+  function buildDust() {
+    const out = new Float32Array(N * 4);
+    for (let i = 0; i < N; i++) { const o = i * 4; out[o] = rnd() * 2.3 - 1.15; out[o + 1] = rnd() * 2 - 1; out[o + 2] = rnd() * .6; out[o + 3] = rnd() < .2 ? CODE.ink : CODE.smog; }
+    upload(F.DUST, out);
+  }
+  function buildRing() {
+    const out = new Float32Array(N * 4);
+    for (let i = 0; i < N; i++) {
+      const o = i * 4, ang = rnd() * 6.2832, g = (rnd() + rnd() + rnd() - 1.5) * .07;
+      const inner = rnd() < .14, rr = inner ? .25 + rnd() * .3 : .62 + g;
+      out[o] = Math.cos(ang) * rr; out[o + 1] = Math.sin(ang) * rr; out[o + 2] = rnd(); out[o + 3] = inner ? CODE.smog : rnd() < .18 ? CODE.ink : CODE.band;
+    }
+    upload(F.RING, out);
+  }
+  function buildAqi() {
+    const el = $('.fx-aqi'), [cw, ch] = dims(el);
+    const txt = Air.state.aqi != null ? nf0.format(Air.state.aqi) : '—';
+    upload(F.AQI, raster(cw, ch, (c, w, h) => fitText(c, txt, w, h * .86, COL.band, mona(650), .9)));
+  }
+  function buildChart() {
+    const el = $('#day-svg'), [cw, ch] = dims(el, 1400), hr = Air.state.hourly;
+    upload(F.CHART, raster(cw, ch, (c, w, h) => {
+      if (!hr) { c.fillStyle = COL.smog; c.fillRect(0, h * .9, w, h * .1); return; }
+      const v = hr.pm.map((x) => x ?? 0), max = Math.max(60, ...v) * 1.12, n = v.length, cwid = w / (n - 1);
+      v.forEach((x, i) => {
+        const bh = x / max * h, bw = cwid * .5;
+        c.fillStyle = i <= hr.now ? COL.smog : COL.ink;
+        c.fillRect(i * cwid - bw / 2, h - bh, bw, bh);
+      });
+      const wy = h - Air.WHO / max * h; c.strokeStyle = COL.mint; c.lineWidth = Math.max(2, h * .025); c.setLineDash([h * .05, h * .05]); c.beginPath(); c.moveTo(0, wy); c.lineTo(w, wy); c.stroke();
+    }));
+  }
+  function buildSense() {
+    const el = $('#p-1 .cellpair'); if (!el) return;
+    const [cw, ch, r] = dims(el); const boxes = el.querySelectorAll('.cellbox');
+    upload(F.SENSE, raster(cw, ch, (c, w, h) => {
+      if (!r || !boxes.length) return;
+      const sx = w / r.width, sy = h / r.height;
+      const b0 = boxes[0].getBoundingClientRect(), b1 = boxes[1].getBoundingClientRect();
+      c.fillStyle = COL.band; c.fillRect((b0.left - r.left) * sx, (b0.top - r.top) * sy, b0.width * sx, b0.height * sy);
+      const ox = (b1.left - r.left) * sx, oy = (b1.top - r.top) * sy, bw = b1.width * sx, bh = b1.height * sy;
+      c.save(); c.translate(ox, oy); c.scale(bw / 100, bh / 100);
+      c.strokeStyle = COL.ink; c.lineCap = 'round';
+      [['M0 38 C30 34 60 46 100 40', 3.4], ['M28 0 L34 100', 2], ['M66 0 L62 100', 2], ['M0 72 L100 76', 1.8], ['M0 14 L100 18', 1.4]].forEach(([d, lw]) => { c.lineWidth = lw; c.stroke(new Path2D(d)); });
+      c.fillStyle = COL.smog; [[12, 37], [45, 39], [80, 42], [31, 20], [30, 60], [64, 30], [63, 88], [20, 73], [88, 76], [50, 16]].forEach(([x, y]) => { c.beginPath(); c.arc(x, y, 3.4, 0, 7); c.fill(); });
+      c.restore();
+    }));
+  }
+  function buildPredict() {
+    const el = $('#fc-svg'), hr = Air.state.hourly; if (!el) return;
+    const [cw, ch] = dims(el);
+    upload(F.PREDICT, raster(cw, ch, (c, w, h) => {
+      const s = Math.min(w / 560, h / 220), ox = (w - 560 * s) / 2, oy = (h - 220 * s) / 2;
+      c.translate(ox, oy); c.scale(s, s);
+      if (!hr) { c.strokeStyle = COL.mint; c.lineWidth = 3; c.beginPath(); c.moveTo(20, 180); c.lineTo(540, 180); c.stroke(); return; }
+      const v = hr.pm.map((x) => x ?? 0), max = Math.max(60, ...v) * 1.15, X0 = 20, X1 = 540, Y0 = 16, Y1 = 204;
+      const P = v.map((x, i) => [X0 + i / (v.length - 1) * (X1 - X0), Y1 - x / max * (Y1 - Y0)]);
+      c.lineJoin = 'round'; c.strokeStyle = COL.ink; c.lineWidth = 6;
+      c.beginPath(); P.slice(0, hr.now + 1).forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y))); c.stroke();
+      c.setLineDash([10, 10]); c.beginPath(); P.slice(hr.now).forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y))); c.stroke();
+      const wy = Y1 - Air.WHO / max * (Y1 - Y0); c.strokeStyle = COL.mint; c.lineWidth = 3; c.setLineDash([3, 7]); c.beginPath(); c.moveTo(X0, wy); c.lineTo(X1, wy); c.stroke();
+      let k = hr.now; for (let i = hr.now; i < v.length; i++) if (v[i] > v[k]) k = i;
+      c.setLineDash([]); c.fillStyle = COL.smog; c.beginPath(); c.arc(P[k][0], P[k][1], 12, 0, 7); c.fill();
+    }));
+  }
+  function buildAct() {
+    const el = $('#p-3 .viz-act'); if (!el) return;
+    const [cw, ch] = dims(el);
+    upload(F.ACT, raster(cw, ch, (c, w, h) => {
+      const m = Math.min(w, h);
+      c.strokeStyle = COL.smog; c.lineWidth = m * .02;
+      [.32, .48, .64, .8].forEach((k) => { c.globalAlpha = 1; c.beginPath(); c.arc(w / 2, h / 2, m * k / 2 + m * .15, 0, 7); c.stroke(); });
+    }));
+  }
+  function build2027() { const el = $('.fx-2027'), [cw, ch] = dims(el); upload(F.Y2027, raster(cw, ch, (c, w, h) => fitText(c, '2027', w, h, COL.ink, mona(700), .96))); }
+  function buildBangla() {
+    const el = $('.bn'); if (!el) return;
+    const [cw, ch, r] = dims(el);
+    upload(F.BANGLA, raster(cw, ch, (c, w, h) => {
+      if (!r) return;
+      const sx = w / r.width, sy = h / r.height;
+      el.querySelectorAll('span').forEach((sp) => {
+        const b = sp.getBoundingClientRect(), bw = b.width * sx, bh = b.height * sy;
+        const cv = document.createElement('canvas'); cv.width = Math.max(8, bw); cv.height = Math.max(8, bh);
+        fitText(cv.getContext('2d'), sp.textContent, bw, bh, COL.mint, (s) => `600 ${s}px "Anek Bangla", "Noto Sans Bengali", sans-serif`, .98);
+        c.drawImage(cv, (b.left - r.left) * sx, (b.top - r.top) * sy);
+      });
+    }));
+  }
+  function buildAll() { buildCloud(); buildDust(); buildRing(); buildAqi(); buildChart(); buildSense(); buildPredict(); buildAct(); build2027(); buildBangla(); }
+
+  // ── scenes, in page order: which formation owns which part of the scroll ─
+  const tabIndex = () => Math.max(0, [...$$('[role="tab"]')].findIndex((t) => t.getAttribute('aria-selected') === 'true'));
+  const tabAnchors = () => [$('#p-1 .cellpair'), $('#fc-svg'), $('#p-3 .viz-act')];
+  let liveActive = .5, scrub = 2;
+  const breath = () => {
+    if (Motion.still) return .95;
+    const ph = ((performance.now() - T0) / 1000) % 10, e = (x) => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    return ph < 4 ? .82 + .22 * e(ph / 4) : ph < 5 ? 1.04 : 1.04 - .22 * e((ph - 5) / 5);
+  };
+  const scenes = [
+    { pos: '#top', f: () => F.CLOUD, anchor: () => null, par: () => [liveActive, .03, 1, 2] },
+    { pos: '#statement', f: () => F.AQI, anchor: () => $('.fx-aqi'), par: () => [1, .004, 1, 2] },
+    { pos: '#air .grid', f: () => F.DUST, anchor: () => null, par: () => [.14, .02, 1, 2] },
+    { pos: '#lungs', f: () => F.RING, anchor: () => $('#lungs'), par: () => [1, .005, breath(), 2] },
+    { pos: '#day', f: () => F.CHART, anchor: () => $('#day-svg'), par: () => [1, .003, 1, scrub], long: true },
+    { pos: '#tabs', f: () => F.SENSE + tabIndex(), anchor: () => tabAnchors()[tabIndex()], par: () => [1, .004, 1, 2], tabs: true },
+    { pos: '.steps', f: () => F.Y2027, anchor: () => $('.fx-2027'), par: () => [1, .004, 1, 2] },
+    { pos: '.bn', f: () => F.BANGLA, anchor: () => $('.bn'), par: () => [1, .003, 1, 2] },
+  ];
+  let H = 1, asp = 1;
+  const rectOf = (el) => {
+    if (!el) return [0, 0, asp, 1];
+    const r = el.getBoundingClientRect();
+    if (r.width < 1) return [0, -3, asp, 1];
+    return [((r.left + r.width / 2) / innerWidth * 2 - 1) * asp, 1 - (r.top + r.height / 2) / H * 2, r.width / innerWidth * asp, r.height / H];
+  };
+  function sceneMix() {
+    const c = innerHeight / 2, list = [];
+    scenes.forEach((sc, i) => {
+      const el = $(sc.pos); if (!el) return;
+      const r = el.getBoundingClientRect();
+      if (sc.long) { list.push([r.top + innerHeight / 2, i], [r.bottom - innerHeight / 2, i]); }
+      else list.push([i === 0 ? r.top + innerHeight / 2 : r.top + r.height / 2, i]);
+    });
+    if (c <= list[0][0]) return [list[0][1], list[0][1], 0];
+    for (let k = 0; k < list.length - 1; k++) {
+      const [y0, a] = list[k], [y1, b] = list[k + 1];
+      if (c >= y0 && c <= y1) { if (a === b) return [a, a, 0]; const t = (c - y0) / Math.max(1, y1 - y0); return [a, b, t < .3 ? 0 : t > .7 ? 1 : (t - .3) / .4]; }
+    }
+    const l = list[list.length - 1][1]; return [l, l, 0];
+  }
+
+  // ── interaction ─────────────────────────────────────────────
+  let mouse = [9, 9], mouseOn = 0, lastPtr = -1e9, blast = [0, 0, -1], reveal = document.documentElement.classList.contains('has-intro') ? 0 : 1, revealT = reveal;
+  const toView = (x, y) => [(x / innerWidth * 2 - 1) * asp, 1 - y / H * 2];
+  addEventListener('pointermove', (e) => { mouse = toView(e.clientX, e.clientY); lastPtr = performance.now(); kick(); }, { passive: true });
+  addEventListener('click', (e) => {
+    if (e.target.closest('a,button,input,dialog,[role="tab"],.grid,.tabs,.nav,.livebar,footer,.alert,.counters')) return;
+    const [x, y] = toView(e.clientX, e.clientY); blast = [x, y, 0]; Sound.pulse(); kick();
+  });
+  let tabFrom = 0, tabTo = 0, tabT = 1;
+  $$('[role="tab"]').forEach((t) => t.addEventListener('click', () => { const ni = tabIndex(); if (ni !== tabTo) { tabFrom = tabTo; tabTo = ni; tabT = 0; kick(); } }));
+
+  // ── loop ────────────────────────────────────────────────────
+  let raf = 0, last = performance.now(), t = 0, shipT = -18, flip = 1;
+  function resize() {
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    H = canvas.clientHeight || innerHeight; asp = innerWidth / H;
+    canvas.width = Math.round(innerWidth * dpr); canvas.height = Math.round(H * dpr);
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.uniform1f(U.uPx, (small ? 2.1 : 1.9) * dpr);
+  }
   function frame(now) {
     raf = 0;
     const dt = Math.min(.05, (now - last) / 1000); last = now;
-    const anim = !Motion.still;
-    if (anim) t += dt;
-    S.smog = lerp(S.smog, T.smog, Math.min(1, dt * 2.2)); S.dark = lerp(S.dark, T.dark, Math.min(1, dt * 3));
-    S.sunX = lerp(S.sunX, T.sunX, Math.min(1, dt * 5)); S.sunY = lerp(S.sunY, T.sunY, Math.min(1, dt * 5));
-    S.reveal = lerp(S.reveal, T.reveal, Math.min(1, dt * 1.8));
-    let alive = 0; for (let i = 0; i < N; i++) { pts[i * 3 + 2] *= Math.pow(.42, dt); alive += pts[i * 3 + 2]; }
-    if (blast[2] >= 0) { blast[2] += dt; if (blast[2] > 3.4) blast[2] = -1; }
-    if (anim && now - lastPtr > 4000 && !journey) {
-      autoT += dt;
-      if (autoT > .12) { autoT = 0; const tt = t * .18; addPoint(canvas.clientWidth * (.62 + .26 * Math.sin(tt)), canvas.clientHeight * (.48 + .12 * Math.sin(tt * 1.7)), .45); }
+    const anim = !Motion.still && !document.hidden;
+    if (anim) { t += dt; shipT += dt; }
+    revealT += (reveal - revealT) * Math.min(1, dt * 1.6);
+    let [a, b, m] = sceneMix();
+    let fa = scenes[a].f(), fb = scenes[b].f(), ra = rectOf(scenes[a].anchor()), rb = rectOf(scenes[b].anchor()), pa = scenes[a].par(), pb = scenes[b].par();
+    if (tabT < 1) {
+      tabT = Math.min(1, tabT + dt / 1.1);
+      const dom = m < .5 ? a : b;
+      if (scenes[dom].tabs) { const anc = rectOf(tabAnchors()[tabTo]); fa = F.SENSE + tabFrom; fb = F.SENSE + tabTo; ra = anc; rb = anc; pa = pb = scenes[dom].par(); m = tabT; }
     }
-    gl.uniform2f(U.uRes, canvas.width, canvas.height); gl.uniform1f(U.uTime, t);
-    gl.uniform1f(U.uSmog, S.smog); gl.uniform1f(U.uDark, S.dark); gl.uniform1f(U.uReveal, S.reveal);
-    gl.uniform2f(U.uWind, S.wind[0], S.wind[1]); gl.uniform2f(U.uSun, S.sunX, S.sunY);
-    gl.uniform3fv(U.uP, pts); gl.uniform3f(U.uBlast, blast[0], blast[1], blast[2]);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-    const settling = Math.abs(T.smog - S.smog) > .002 || Math.abs(T.dark - S.dark) > .002 || Math.abs(T.sunX - S.sunX) > .001 || Math.abs(T.sunY - S.sunY) > .001 || Math.abs(T.reveal - S.reveal) > .002 || alive > .01 || blast[2] >= 0;
-    if (visible && (anim || settling)) raf = requestAnimationFrame(frame);
+    // pointer: live vacuum, or a slow autopilot breath of clean air in the hero when idle
+    const idle = now - lastPtr;
+    let mx = mouse[0], my = mouse[1], target = idle < 1500 ? 1 : 0;
+    if (idle > 4000 && a === 0 && b === 0 && anim) { mx = asp * (.25 + .35 * Math.sin(t * .2)); my = -.2 + .25 * Math.sin(t * .33); target = .75; }
+    mouseOn += (target - mouseOn) * Math.min(1, dt * 4);
+    if (blast[2] >= 0) { blast[2] += dt; if (blast[2] > 1.7) blast[2] = -1; }
+    const sx = innerWidth < 720 ? asp * .6 * Math.sin(shipT * .045) : asp * (.52 + .26 * Math.sin(shipT * .045));
+    const sy = innerWidth < 720 ? -.6 + .02 * Math.sin(shipT * .7) : .36 + .03 * Math.sin(shipT * .7);
+    flip += ((Math.cos(shipT * .045) >= 0 ? 1 : -1) - flip) * Math.min(1, dt * 2);
+    const band = getComputedStyle(document.documentElement).getPropertyValue('--band').trim();
+    gl.clearColor(.031, .035, .039, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.uniform1i(U.uA, fa); gl.uniform1i(U.uB, fb); gl.uniform1f(U.uMix, m);
+    gl.uniform1f(U.uTime, t); gl.uniform1f(U.uAsp, asp); gl.uniform1f(U.uReveal, revealT); gl.uniform1f(U.uFlip, flip);
+    gl.uniform4fv(U.uRectA, ra); gl.uniform4fv(U.uRectB, rb); gl.uniform4fv(U.uParA, pa); gl.uniform4fv(U.uParB, pb);
+    gl.uniform3f(U.uMouse, mx, my, mouseOn); gl.uniform3f(U.uBlast, blast[0], blast[1], blast[2]);
+    gl.uniform3fv(U.uBand, bandRGB(band)); gl.uniform2f(U.uShip, sx, sy);
+    gl.drawArrays(gl.POINTS, 0, N);
+    const busy = anim || mouseOn > .01 || blast[2] >= 0 || Math.abs(reveal - revealT) > .005 || tabT < 1;
+    if (busy) raf = requestAnimationFrame(frame);
   }
-  function kick() { if (!raf && visible) { last = performance.now(); raf = requestAnimationFrame(frame); } }
-  canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); cancelAnimationFrame(raf); raf = 0; });
-  resize(); [S.sunX, S.sunY] = [T.sunX, T.sunY]; kick();
-
-  api.reveal = () => { T.reveal = 1; kick(); };
-  api.blast = (x = innerWidth * .66, y = innerHeight * .42) => doBlast(x, y);
-  api.setJourney = (j) => {
-    journey = j;
-    if (j) { T.smog = j.smog; T.dark = j.dark; T.sunX = j.sun[0] * aspect(); T.sunY = j.sun[1]; if (Math.abs(T.sunX - S.sunX) > .35 * aspect()) { S.sunX = T.sunX; S.sunY = T.sunY; } }
-    else { T.smog = liveSmog; T.dark = 1; [T.sunX, T.sunY] = heroSun(); }
-    kick();
-  };
+  const bandCache = {};
+  function bandRGB(c) {
+    if (bandCache[c]) return bandCache[c];
+    const cv = document.createElement('canvas').getContext('2d'); cv.fillStyle = c.startsWith('var') ? '#737983' : c; cv.fillRect(0, 0, 1, 1);
+    const d = cv.getImageData(0, 0, 1, 1).data; return (bandCache[c] = [d[0] / 255, d[1] / 255, d[2] / 255]);
+  }
+  function kick() { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+  addEventListener('scroll', kick, { passive: true });
+  document.addEventListener('visibilitychange', kick);
+  Motion.on(kick);
+  let rt = 0;
+  addEventListener('resize', () => { resize(); kick(); clearTimeout(rt); rt = setTimeout(buildAll, 250); });
+  Air.on((st) => {
+    if (st.pm != null) liveActive = clamp(st.pm / 110, .2, 1);
+    buildAqi(); buildChart(); buildPredict(); buildSense(); kick();
+  });
+  document.fonts.ready.then(() => { buildAqi(); build2027(); buildBangla(); buildSense(); });
+  document.fonts.load('600 64px "Anek Bangla"', 'নির্মল বাতাস').then(buildBangla).catch(() => {});
+  resize(); buildAll();
+  document.documentElement.classList.add('fx');
+  kick();
+  api.ok = true;
+  api.reveal = () => { reveal = 1; kick(); };
+  api.blast = (x = innerWidth * .66, y = innerHeight * .45) => { const [vx, vy] = toView(x, y); blast = [vx, vy, 0]; Sound.pulse(); kick(); };
+  api.setScrub = (v) => { scrub = v; kick(); };
   return api;
 })();
 
@@ -1325,52 +1502,6 @@ void main(){
     frag.append(w);
   });
   h1.replaceChildren(frag);
-
-  // Airship: lazy route; drag and throw with pointer capture; springs back to its route
-  const ship = $('#ship'), hero = $('#top');
-  let x = 0, y = 140, vx = 0, vy = 0, dragging = false, offX = 0, offY = 0, t = 0, last = performance.now(), dir = 1, raf = 0, onScreen = true;
-  const route = (tt) => {
-    const w = hero.clientWidth, sw = ship.getBoundingClientRect().width;
-    const lo = innerWidth >= 1000 ? w * .52 : 0, span = w - sw - lo - 16;
-    return [lo + span * (.5 + .5 * Math.sin(tt * .045)), (innerWidth < 720 ? .7 : .34) * hero.clientHeight + 12 * Math.sin(tt * .7)];
-  };
-  [x, y] = route(Motion.still ? 2 : -30);
-  function frame(now) {
-    raf = 0;
-    const dt = Math.min(.05, (now - last) / 1000); last = now;
-    if (!Motion.still) t += dt;
-    if (!dragging) {
-      const [tx, ty] = route(t);
-      vx += ((tx - x) * 2.2 - vx * 1.6) * dt; vy += ((ty - y) * 2.2 - vy * 1.6) * dt;
-      x += vx * dt; y += vy * dt;
-      const ndir = Math.cos(t * .045) >= 0 ? 1 : -1;
-      if (ndir !== dir && !Motion.still) { dir = ndir; ship.style.setProperty('--flip', dir); }
-    }
-    ship.style.translate = `${x.toFixed(1)}px ${y.toFixed(1)}px`;
-    ship.style.rotate = clamp(vx * .02, -8, 8).toFixed(2) + 'deg';
-    if (onScreen && (!Motion.still || dragging || Math.abs(vx) + Math.abs(vy) > .5)) raf = requestAnimationFrame(frame);
-  }
-  const kick = () => { if (!raf) { last = performance.now(); raf = requestAnimationFrame(frame); } };
-  new IntersectionObserver(([e]) => { onScreen = e.isIntersecting; if (onScreen) kick(); }).observe(hero);
-  Motion.on(kick);
-  let px = 0, py = 0, pt = 0, pid = null;
-  ship.addEventListener('pointerdown', (e) => {
-    if (dragging) return;
-    dragging = true; pid = e.pointerId; ship.classList.add('drag'); ship.setPointerCapture(e.pointerId);
-    const r = hero.getBoundingClientRect(); offX = e.clientX - r.left - x; offY = e.clientY - r.top - y;
-    px = e.clientX; py = e.clientY; pt = performance.now(); vx = vy = 0; kick();
-  });
-  ship.addEventListener('pointermove', (e) => {
-    if (!dragging || e.pointerId !== pid) return;
-    const r = hero.getBoundingClientRect(), now = performance.now(), dt = Math.max(8, now - pt);
-    x = e.clientX - r.left - offX; y = e.clientY - r.top - offY;
-    vx = (e.clientX - px) / dt * 1000; vy = (e.clientY - py) / dt * 1000; px = e.clientX; py = e.clientY; pt = now;
-    if (Math.abs(vx) > 60) { dir = vx > 0 ? 1 : -1; ship.style.setProperty('--flip', dir); }
-  });
-  const end = (e) => { if (!dragging || e.pointerId !== pid) return; dragging = false; pid = null; ship.classList.remove('drag'); kick(); };
-  ship.addEventListener('pointerup', end); ship.addEventListener('pointercancel', end);
-  addEventListener('resize', kick);
-  kick();
 
   const nav = $('#nav');
   const onScroll = () => nav.classList.toggle('scrolled', scrollY > 8);
@@ -1402,7 +1533,7 @@ void main(){
 
 /* ═══════════════════════════════════════════════ BREATH: live inhalation counter */
 (() => {
-  const start = performance.now();
+  const start = T0;
   const L = $('#c-litres'), M = $('#c-micro'), lungs = $('#lungs'), label = $('#orb-label'), orb = $('.orb');
   let on = false, raf = 0, last = 0;
   function tick(now) {
@@ -1467,7 +1598,7 @@ void main(){
     raf = 0;
     const r = sec.getBoundingClientRect();
     const inside = r.top < innerHeight * .5 && r.bottom > innerHeight * .5;
-    if (inside !== active) { active = inside; if (!inside) Stage.setJourney(null); }
+    if (inside !== active) { active = inside; if (!inside) FX.setScrub(2); }
     if (!data || !pts.length) return;
     const p = clamp(-r.top / (sec.offsetHeight - innerHeight), 0, 1);
     const fi = p * (pts.length - 1), i0 = Math.floor(fi), i1 = Math.min(pts.length - 1, i0 + 1), f = fi - i0, k = Math.round(fi);
@@ -1481,7 +1612,7 @@ void main(){
     el.val.textContent = `${nf1.format(v)} µg/m³ · ${nf1.format(v / Air.WHO)}× WHO`;
     el.dot.style.background = Air.pmBand(v).c;
     el.note.textContent = Math.abs(k - data.now) <= 1 ? 'This is now. Everything after is forecast.' : Math.abs(k - hiI) <= 1 ? 'The dirtiest hour in this window.' : Math.abs(k - loI) <= 1 ? 'The cleanest hour in this window.' : v <= Air.WHO ? 'Within the WHO guideline.' : '';
-    if (inside) { const hour = (+data.time[i0].slice(11, 13) + f) % 24, sky = skyFor(hour); Stage.setJourney({ smog: clamp(v / 110, .08, 1), dark: sky.dark, sun: sky.sun }); }
+    if (inside) FX.setScrub(x / W * 2 - 1);
   }
   addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(update); }, { passive: true });
   addEventListener('resize', update);
@@ -1571,7 +1702,7 @@ void main(){
     { t: 'Go to 48 hours', k: 'forecast history chart time section', hint: 'Section', run: go('#day') },
     { t: 'Go to the problems', k: 'tracks build sense predict act section', hint: 'Section', run: go('#build') },
     { t: 'Go to the 2027 plan', k: 'plan timeline dates section', hint: 'Section', run: go('#plan') },
-    { t: 'Purify the sky', k: 'clean clear blast smog effect', hint: 'Action', run: () => { scrollTo({ top: 0, behavior: reduceMQ.matches ? 'auto' : 'smooth' }); setTimeout(() => Stage.blast(), 450); } },
+    { t: 'Blow the particles apart', k: 'clean clear blast smog effect purify', hint: 'Action', run: () => { scrollTo({ top: 0, behavior: reduceMQ.matches ? 'auto' : 'smooth' }); setTimeout(() => FX.blast(), 450); } },
     { t: () => Motion.still ? 'Play motion' : 'Pause motion', k: 'pause play motion animation stop', hint: 'Action', run: () => Motion.toggle() },
     { t: 'Toggle city sound', k: 'sound audio wind mute', hint: 'Action', run: () => $('#sound').click() },
     { t: 'Use my location', k: 'location gps where my city', hint: 'Action', run: () => { go('#air')(); Air.locate(); } },
@@ -1616,7 +1747,7 @@ void main(){
 /* ═══════════════════════════════════════════════ INTRO (once per session, skippable) */
 (() => {
   const root = document.documentElement, intro = $('#intro');
-  const ready = () => { root.classList.add('ready'); Stage.reveal(); };
+  const ready = () => { root.classList.add('ready'); FX.reveal(); };
   if (!root.classList.contains('has-intro')) { intro.remove(); ready(); return; }
   try { sessionStorage.setItem('intro-seen', '1'); } catch (e) {}
   const bar = $('#intro-bar'), t0 = performance.now();
